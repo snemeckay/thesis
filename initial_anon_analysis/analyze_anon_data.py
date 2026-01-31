@@ -96,16 +96,12 @@ def main(path: str, streaks_path: str) -> str:
     Returns:
         Formatted statistics as string
     """
-    # Read and process CSV
     stats, detector = read_and_process_csv(path)
 
-    # Finalize streak detection
     streaks = detector.finalize(stats.total_rows)
 
-    # Write streaks CSV
     write_streaks_csv(streaks_path, streaks)
 
-    # Format and return output
     output_lines = stats.format_stats(len(streaks))
     return "\n".join(output_lines)
 

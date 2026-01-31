@@ -16,8 +16,8 @@ import argparse
 import os
 import sys
 
-import initial_analysis.analyze_anon_data as analyze_anon
-import initial_analysis.analyze_streaks as analyze_streaks
+import initial_anon_analysis.analyze_anon_data as analyze_anon
+import initial_anon_analysis.analyze_streaks as analyze_streaks
 
 
 def main():
