@@ -1,119 +1,150 @@
 # Diploma Thesis
 
-## Anonymized Data Analysis Pipeline
+Activity log analysis and preprocessing pipeline for behavioral process mining.
 
-Decision support tool for dataset assesment aimed at whether we can omit rows with anonymized URLs (url3).
+## Project Structure
 
-### Purpose
+This project consists of three sequential components, each with detailed documentation in their respective folders:
 
-This pipeline quantifies the impact of removing rows with anonymized/unknown URLs (where `url3` is redacted using anonymized). It helps answer:
+### 1. [Anonymized Data Analysis](initial_analysis/README.md) – `initial_analysis/`
 
-1. **What is the cost of omission?** - How much data would we lose (% of rows, duration coverage)?
-2. **Is the remaining data workable?** - After omitting anonymized rows, do we have enough data for process mining?
-3. **What are the patterns in anonymized data?** - How are these rows distributed? Do they cluster?
+**What it does:**
+Analyzes patterns of missing/anonymized data in the raw logs. Detects streaks of consecutive anonymized rows, calculates dataset statistics, and provides impact assessment for downstream analysis.
 
-### Overview
+**Key analyses:**
+- Anonymized data percentage and temporal coverage
+- Streak detection and duration distribution
+- Dataset completeness assessment
+- Cost/benefit of data omission strategies
 
-The pipeline identifies consecutive sequences of rows with anonymized URLs ("streaks") and analyzes their impact on dataset completeness. A streak is defined as consecutive rows where `url3` is unknown, split when gaps exceed 1 hour (indicating distinct activity sessions).
+**Entry point:** `python -m initial_analysis.run_analysis_pipeline`
 
-### Architecture
+---
 
-The pipeline is organized into modular components in `initial_analysis/`:
+### 2. [Data Preprocessing Pipeline](preprocessing/README.md) – `preprocessing/`
 
-- **`streak_detector.py`** - Core streak detection logic
-  - `Streak` dataclass: Represents a single streak with start/end row indices, count, timestamps, and duration
-  - `StreakDetector` class: Processes CSV rows sequentially and detects streaks with gap-based splitting (> 1 hour = new streak)
+**What it does:**
+Comprehensive data transformation and normalization. Removes anonymized rows, parses timestamps, combines activity labels, detects behavioral day boundaries via intelligent gap analysis, generates case IDs for process mining, and outputs clean, segmented data.
 
-- **`data_stats.py`** - Dataset-level statistics tracking
-  - `DataStats` class: Tracks total rows, duration, browser activity, anonymized (url3) data counts
-  - Formats statistics for readable output
+**Key transformations:**
+- Datetime parsing and normalization
+- **Anonymized data removal** (filters out unknown/redacted URLs)
+- Activity label unification (app + URL → single label)
+- Behavioral day segmentation (three-phase gap detection)
+- Case ID generation for each behavioral day
+- Column filtering and schema normalization
 
-- **`analyze_anon_data.py`** - Main anonymized data analyzer
-  - Reads CSV file and detects anonymized URL streaks using `StreakDetector`
-  - Calculates dataset statistics using `DataStats`
-  - Outputs formatted report with dataset analysis and streak CSV
+**Entry point:** `python -m preprocessing.main`
 
-- **`streak_statistics.py`** - Streak-specific analysis
-  - `StreakStatistics` class: Analyzes detected streaks from CSV
-  - Methods: `get_duration_stats()`, `get_duration_categories()`, `get_streak_length_distribution()`, `get_streak_characteristics()`
+---
 
-- **`analyze_streaks.py`** - Streak analysis entry point
-  - Loads streaks CSV and delegates to `StreakStatistics` for detailed analysis
-  - Combines basic stats with comprehensive streak breakdowns
+### 3. [Visualization & Analysis Scripts](scripts/README.md) – `scripts/`
 
-- **`run_analysis_pipeline.py`** - Full pipeline orchestrator
-  - Runs `analyze_anon_data` and `analyze_streaks` in sequence
-  - Combines both analyses into single output file
-  - Outputs unified stats report + streaks CSV
+**What they do:**
+Validate preprocessing results and explore preprocessed data through visualizations and aggregations.
 
-### Usage
+**Available tools:**
+- **`plot_user_activity.py`**: Timeline visualization with 3 layout modes (timeline, event-index, case-id)
+  - Recommended: Use `case-id` layout to visually confirm day-splitting correctness
+- **`activity_per_day.py`**: Per-behavioral-day aggregation with activity duration and temporal bounds
+  - Recommended: Spot-check day boundaries and identify anomalies
 
-Run the full analysis pipeline:
+---
+
+## Data Processing Workflow
+
+```
+Raw Activity Logs
+    ↓
+[1. Anonymized Data Analysis]
+    ├─ Assess data quality
+    ├─ Quantify missing data impact
+    └─ Decide on omission strategy
+    ↓
+[2. Data Preprocessing Pipeline]
+    ├─ Parse & normalize timestamps
+    ├─ Standardize activity labels
+    ├─ Segment into behavioral days
+    ├─ Generate case IDs
+    └─ Output clean data
+    ↓
+[3. Visualization & Validation]
+    ├─ Visually inspect day boundaries
+    ├─ Aggregate by behavioral day
+    └─ Spot-check segmentation quality
+    ↓
+Ready for Process Mining Analysis
+```
+
+---
+
+## Quick Start
+
+### 1. Assess data quality
 
 ```bash
-python -m initial_analysis.run_analysis_pipeline "data/path/to/input.csv" \
-  --out-stats "output/analysis/stats.txt" \
-  --out-streaks "output/analysis/streaks.csv"
+python -m initial_analysis.run_analysis_pipeline "data/raw_input.csv"
+# Output: output/analysis/anon_stats.txt, anon_streaks.csv
 ```
 
-**Default output paths:**
-- Stats: `output/analysis/anon_stats.txt`
-- Streaks: `output/analysis/anon_streaks.csv`
+### 2. Preprocess into behavioral days
 
-### Output Format
-
-**Stats File** (unified text report):
-
-1. **DATASET ANALYSIS** section
-  - General statistics (row count, total duration)
-  - Browser activity (rows/duration with known URLs)
-  - Anonymized data summary (rows/duration with unknown URLs)
-  - Streak overview
-
-2. **ANONYMIZED STREAKS ANALYSIS** section
-  - Duration statistics (mean, median, percentiles)
-  - Streak categories (instant, short, medium, long)
-  - Duration distribution by time buckets
-  - Streak characteristics (single-row vs multi-row)
-
-**Streaks CSV**: Detailed row for each streak (start_row, end_row, count, start_time, end_time, duration_seconds)
-
-### Key Concepts
-
-- **Anonymized Data**: Rows where the URL is unknown/redacted
-- **Streak**: Consecutive rows with anonymized URLs, split when gap > 1 hour (indicating separate sessions)
-- **Gap Threshold**: 3600 seconds (1 hour) - gaps larger than this create new streaks
-- **Duration**: Total time span from first to last row in streak (in seconds)
-
-### Example Output & Interpretation
-
+```bash
+python -m preprocessing.main \
+  --raw_csv "data/raw_input.csv" \
+  --out_csv "data/preprocessed.csv"
+# Output: data/preprocessed.csv (clean, segmented)
 ```
-================================================================================
-DATASET ANALYSIS
-================================================================================
 
-GENERAL STATISTICS
-Rows (excluding header): 1,513,057
-Total duration (all): 11,526.99 h
+### 3. Validate and explore
 
-BROWSER ACTIVITY
-Total browser rows: 1,032,302 (68.2%)
-Total browser duration: 8,603.51 h (74.6%)
+```bash
+# Visual validation (recommended for day-splitting verification)
+python scripts/plot_user_activity.py \
+  --in data/preprocessed.csv \
+  --layout case-id \
+  --out output/plots/validation.png
 
-ANONYMIZED DATA
-Total anon rows: 305,244 (20.17%)  ← Cost of omission
-Total anon duration: 898.74 h (7.8%)
-Anon share of duration (vs browser): 10.45%
-
-ANONYMIZED STREAKS
-Total anon streaks found: 145,871
-
-================================================================================
-ANONYMIZED STREAKS ANALYSIS
-================================================================================
-
-STREAK LENGTH DISTRIBUTION
-0-30 min:   145,778 (99.9%)  ← Most anonymized data is short bursts
-30 min - 1 h:     73 (0.1%)
->24 h:            3 (0.0%)
+# Activity summary by behavioral day
+python scripts/activity_per_day.py \
+  --in data/preprocessed.csv \
+  --out output/activity_per_day.txt
 ```
+
+---
+
+## Documentation Structure
+
+- **Main README (this file):** High-level overview and workflow
+- **`initial_analysis/README.md`:** Detailed documentation on anonymized data analysis
+- **`preprocessing/README.md`:** Complete preprocessing pipeline and transformation details
+- **`scripts/README.md`:** Visualization and analysis script usage
+
+---
+
+## Key Configuration
+
+All behavioral day parameters are customizable in `preprocessing/constants.py`:
+
+```python
+# Time windows for gap detection
+WAKING_WINDOW_START = 4        # 4am
+WAKING_WINDOW_END = 12         # noon
+NIGHT_WINDOW_START = 20        # 8pm
+NIGHT_WINDOW_END = 4           # 4am next day
+LATE_SLEEP_START = 3           # 3am
+LATE_SLEEP_END = 10            # 10am
+
+MIN_INACTIVITY_GAP_HOURS = 4   # Minimum gap to trigger day split
+```
+
+Adjust for different user types or behavioral patterns.
+
+---
+
+## Output Directories
+
+- `output/analysis/` — Anonymized data analysis results (stats, streaks CSV)
+- `output/users/` — Per-user extracts from preprocessed data
+- `output/plots/` — Generated visualizations (PNG images)
+- `data/` — Preprocessed CSV files and intermediate outputs
