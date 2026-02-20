@@ -24,11 +24,12 @@ Analyzes patterns of missing/anonymized data in the raw logs. Detects streaks of
 ### 2. [Data Preprocessing Pipeline](preprocessing/README.md) – `preprocessing/`
 
 **What it does:**
-Comprehensive data transformation and normalization. Removes anonymized rows, parses timestamps, combines activity labels, detects behavioral day boundaries via intelligent gap analysis, generates case IDs for process mining, and outputs clean, segmented data.
+Comprehensive data transformation and normalization. Removes anonymized rows, merges consecutive events, parses timestamps, combines activity labels, detects behavioral day boundaries via intelligent gap analysis, generates case IDs for process mining, and outputs clean, segmented data.
 
 **Key transformations:**
 - Datetime parsing and normalization
 - **Anonymized data removal** (filters out unknown/redacted URLs)
+- **Consecutive event merging** (merge events <1 min apart with same activity)
 - Activity label unification (app + URL → single label)
 - Behavioral day segmentation (three-phase gap detection)
 - Case ID generation for each behavioral day
@@ -63,6 +64,7 @@ Raw Activity Logs
     ↓
 [2. Data Preprocessing Pipeline]
     ├─ Parse & normalize timestamps
+    ├─ Merge consecutive events
     ├─ Standardize activity labels
     ├─ Segment into behavioral days
     ├─ Generate case IDs

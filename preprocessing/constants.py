@@ -24,3 +24,20 @@ LATE_SLEEP_END = 10           # 10:00 (10am)
 
 # Minimum gap length to be considered for boundary selection
 MIN_INACTIVITY_GAP_HOURS = 4
+
+OUTPUT_COLS = [
+	"case_id",
+	"activity_clean",
+	"timestamp",
+	RAW_COL_USER,
+	RAW_COL_START,
+	RAW_COL_END,
+	"duration_secs",
+	"source",
+	"client",
+	"audible",
+	"incognito",
+	"tab_count",
+	RAW_COL_URL,
+	RAW_COL_APP,
+]
