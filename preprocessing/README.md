@@ -5,11 +5,13 @@
 The preprocessing pipeline performs comprehensive data transformation and normalization on raw activity logs:
 
 1. **Datetime Parsing** - Convert string timestamps to proper `pd.Timestamp` objects
-2. **Activity Normalization** - Combine application name and URL into unified, cleaned activity labels
-3. **Timestamp Formatting** - Create readable timestamp column for analysis
-4. **Behavioral Day Segmentation** - Split events into cohesive activity sequences using intelligent gap detection
-5. **Case ID Generation** - Create unique identifiers for each behavioral day (for process mining)
-6. **Column Selection** - Filter and output only relevant columns for downstream analysis
+2. **Anonymized Data Filtering** - Remove rows with unknown/redacted URLs
+3. **Event Merging** - Merge consecutive events <1 minute apart with the same activity
+4. **Activity Normalization** - Combine application name and URL into unified, cleaned activity labels
+5. **Timestamp Formatting** - Create readable timestamp column for analysis
+6. **Behavioral Day Segmentation** - Split events into cohesive activity sequences using intelligent gap detection
+7. **Case ID Generation** - Create unique identifiers for each behavioral day (for process mining)
+8. **Column Selection** - Filter and output only relevant columns for downstream analysis
 
 The result is a clean, normalized dataset grouped into behavioral days - activity sequences representing cohesive periods of user engagement, enabling meaningful process mining and temporal analysis.
 
@@ -30,6 +32,8 @@ parse_datetime_columns() → Convert timestamp strings to pd.Timestamp
     ↓
 filter_anonymized_rows() → Remove rows with unknown/redacted URLs
     ↓
+merge_consecutive_events() → Merge consecutive events <1 min apart with same activity
+  ↓
 assign_day_counter() → Detect behavioral day boundaries via gap analysis
     ↓
 build_case_id() → Create case IDs: {user_id}_{date}
@@ -53,6 +57,7 @@ Preprocessed CSV Output
 - **`transforms.py`** - Individual transformation functions
   - `parse_datetime_columns()`: Convert timestamp strings to `pd.Timestamp`
   - `filter_anonymized_rows()`: Remove rows with unknown/redacted URLs
+  - `merge_consecutive_events()`: Merge consecutive events <1 min apart with same activity
   - `build_activity_column()`: Combine `app_in_focus` and `url3` into unified, cleaned `activity_clean` label
   - `build_timestamp_column()`: Format start_time into readable ISO timestamp
   - `select_output_columns()`: Filter DataFrame to final output schema

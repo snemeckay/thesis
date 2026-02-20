@@ -4,11 +4,12 @@ Pipeline orchestrator for data preprocessing.
 Applies sequence of transformations to raw activity logs:
     1. Parse datetime strings to pd.Timestamp
     2. Filter out anonymized/unknown rows
-    3. Detect behavioral day boundaries via gap analysis
-    4. Generate case IDs for process mining
-    5. Normalize and combine activity labels (app + URL)
-    6. Format timestamps
-    7. Select output columns
+    3. Merge consecutive events (<1min apart, same activity)
+    4. Detect behavioral day boundaries via gap analysis
+    5. Generate case IDs for process mining
+    6. Normalize and combine activity labels (app + URL)
+    7. Format timestamps
+    8. Select output columns
 
 Usage:
     python -m preprocessing.main --raw_csv <input.csv> --out_csv <output.csv>
@@ -21,6 +22,7 @@ from .day_split import assign_day_counter, build_case_id
 from .transforms import (
     parse_datetime_columns,
     filter_anonymized_rows,
+    merge_consecutive_events,
     build_activity_column,
     build_timestamp_column,
     select_output_columns,
@@ -34,6 +36,7 @@ def main(raw_csv: str, out_csv: str):
     df = pd.read_csv(raw_path)
     df = parse_datetime_columns(df)
     df = filter_anonymized_rows(df)
+    df = merge_consecutive_events(df)
     df = assign_day_counter(df)
     df = build_case_id(df)
     df = build_activity_column(df)
