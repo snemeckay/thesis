@@ -1,3 +1,10 @@
+"""Utility functions shared across all pipeline modules.
+
+Currently provides a single helper that loads a CSV activity log and
+converts it to a pm4py EventLog, handling project-specific column
+renames automatically.
+"""
+
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.conversion.log import converter as log_converter
@@ -6,8 +13,17 @@ from .constants import CASE_COL, ACTIVITY_COL, TIMESTAMP_COL, RESOURCE_COL
 
 
 def csv_to_pm4py_log(csv_path):
-    """
-    Load a CSV and convert it into a pm4py EventLog.
+    """Load a CSV and convert it to a pm4py EventLog.
+
+    Renames project-specific columns (``case_id``, ``activity_clean``,
+    ``timestamp``, ``resource``) to the pm4py standard names before
+    conversion so that all pm4py operations work out of the box.
+
+    Args:
+        csv_path: Path (str or ``pathlib.Path``) to the preprocessed CSV.
+
+    Returns:
+        A pm4py ``EventLog`` instance ready for process mining.
     """
     df = pd.read_csv(csv_path, sep=",")
 

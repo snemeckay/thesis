@@ -1,13 +1,37 @@
+"""Graph-based visualisation of a Declare4Py DECLARE model.
+
+Parses the serialised constraint strings from a ``DeclareModel`` and
+builds a directed NetworkX graph where activities are nodes and binary
+constraints are labelled edges.  Unary constraints (e.g. Existence,
+Init) are rendered as small text annotations below the corresponding
+node.
+
+Output is a PNG saved to the requested path.
+"""
+
 from pathlib import Path
 import re
 
 import networkx as nx
 import matplotlib.pyplot as plt
 
+# matches ``Response[A,B]`` or ``Existence1[A]``.
 CONSTRAINT_RE = re.compile(r"^(\w+)\[([^\]]*)\]")
 
 
-def visualize_declare_graph(model, out_path: Path):
+def visualize_declare_graph(model, out_path: Path) -> None:
+    """Render a Declare4Py DeclareModel as a directed activity graph.
+
+    Parses ``model.serialized_constraints``, adds each activity as a node,
+    and each binary constraint as a directed edge labelled with the template
+    name.  Unary constraints are shown as text annotations on the node.
+
+    Args:
+        model:    A Declare4Py ``DeclareModel`` with a
+                  ``serialized_constraints`` attribute.
+        out_path: Destination path for the PNG image.  Parent directories
+                  are created automatically.
+    """
     G = nx.DiGraph()
 
     for s in model.serialized_constraints:
