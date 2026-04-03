@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Constraint Visualization | Diploma Thesis</title>
+  <meta name="description" content="Interactive visualization of declarative process mining constraints exported as CSV files." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles/main.css" />
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/cytoscape@3.29.2/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="app">
+    <header>
+      <div class="header-top">
+        <div class="title-wrap">
+          <h1>Declarative Constraint Visualization</h1>
+        </div>
+        <div class="header-controls">
+          <button id="themeToggle" type="button" aria-label="Toggle light and dark mode">
+            <i data-lucide="moon"></i>
+            Theme
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="layout">
+      <section id="filtersPanel" class="panel" aria-labelledby="filters-title">
+        <div class="panel-head">
+          <h2 id="filters-title">Filters</h2>
+          <div class="panel-head-actions">
+            <button id="resetFilters" type="button" class="btn-subtle">Reset all</button>
+            <button id="toggleFiltersPanel" type="button" class="btn-subtle" aria-label="Collapse filters panel" aria-expanded="true">
+              <i data-lucide="chevrons-left"></i>
+            </button>
+          </div>
+        </div>
+        <div class="panel-body side-scroll">
+          <div class="filter-section">
+            <h4>Data source</h4>
+            <div class="data-source-stack" aria-label="Data source controls">
+              <div class="control-group">
+                <label for="sourceSelect">Dataset file</label>
+                <select id="sourceSelect"></select>
+                <p class="helper">Sample files from output are listed here. Choose one dataset at a time.</p>
+              </div>
+
+              <div class="control-group">
+                <label for="uploadInput">Upload custom CSV</label>
+                <input id="uploadInput" type="file" accept=".csv,text/csv" />
+              </div>
+
+              <div class="control-group">
+                <button id="reloadBuiltins" type="button" class="btn-subtle" aria-label="Reload built-in source list">
+                  <i data-lucide="refresh-cw"></i>
+                  Refresh sources
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="helper">Use filters to narrow visible constraints and inspect model behavior in context.</div>
+
+          <div class="filter-section">
+            <h4>Source</h4>
+            <div id="sourceChoiceGroup" class="source-choice" role="radiogroup" aria-label="Choose source"></div>
+            <div class="helper">Narrow results to constraints from a specific miner/export source.</div>
+          </div>
+
+          <div id="filterMetrics" class="metrics" aria-live="polite"></div>
+
+          <div class="filter-section">
+            <h4>Activity search</h4>
+            <label for="activitySearch" class="sr-only">Activity name search</label>
+            <input id="activitySearch" type="text" placeholder="Type activity name..." />
+            <div class="helper">Keep only constraints where any activity name matches your text.</div>
+          </div>
+
+          <div id="categoricalFilters"></div>
+          <div id="numericFilters"></div>
+
+          <div class="filter-section">
+            <h4>Active filters</h4>
+            <div id="activeChips" class="chips"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="graph-title">
+        <div class="panel-head">
+          <h2 id="graph-title">Constraint graph</h2>
+          <div id="statusText" class="muted" aria-live="polite">Preparing data…</div>
+        </div>
+
+        <div class="graph-toolbar" role="toolbar" aria-label="Graph controls">
+          <label for="layoutSelect" class="sr-only">Graph layout</label>
+          <select id="layoutSelect" aria-label="Graph layout">
+            <option value="cose">cose</option>
+            <option value="concentric">concentric</option>
+            <option value="breadthfirst">breadthfirst</option>
+            <option value="grid">grid</option>
+          </select>
+          <button id="relayoutBtn" type="button"><i data-lucide="shuffle"></i>Relayout</button>
+          <button id="fitBtn" type="button"><i data-lucide="maximize"></i>Fit</button>
+          <button id="zoomInBtn" type="button" aria-label="Zoom in"><i data-lucide="zoom-in"></i></button>
+          <button id="zoomOutBtn" type="button" aria-label="Zoom out"><i data-lucide="zoom-out"></i></button>
+          <button id="resetSelectionBtn" type="button"><i data-lucide="x-circle"></i>Reset selection</button>
+        </div>
+
+        <div class="graph-wrap">
+          <div id="graphMessage" class="empty" hidden></div>
+          <div id="cy" role="img" aria-label="Network graph of activities and constraints"></div>
+        </div>
+      </section>
+
+      <aside id="detailsPanelWrap" class="panel" aria-labelledby="details-title">
+        <div class="panel-head">
+          <h3 id="details-title">Details</h3>
+          <div class="panel-head-actions">
+            <button id="toggleDetailsPanel" type="button" class="btn-subtle" aria-label="Collapse details panel" aria-expanded="true">
+              <i data-lucide="chevrons-right"></i>
+            </button>
+          </div>
+        </div>
+        <div class="panel-body side-scroll" id="detailsPanel">
+          <div class="note">Select a node or edge to view plain-language explanation and technical metadata.</div>
+          <p class="helper">Dashed edges indicate uncertain or symmetric direction based on available metadata.</p>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "sources": [
+    "../output/preprocessed_declare_constraints.csv",
+    "../output/preprocessed_dcr_constraints.csv"
+  ]
+}

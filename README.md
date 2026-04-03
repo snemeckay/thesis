@@ -145,6 +145,29 @@ python discover_pipeline.py \
 
 ---
 
+### 5. Constraint Visualization Dashboard – `visualization/`
+
+Interactive web dashboard for exploring discovered constraints as a graph with filters (source, template family/category, activity search, and numeric thresholds such as support/confidence).
+
+**What it includes (quick view):**
+- Constraint graph rendering (Cytoscape)
+- Dynamic filtering and active filter chips
+- Details side panel for selected nodes/edges
+- Built-in CSV discovery + custom CSV upload
+- Light/dark theme and responsive layout
+
+**Open locally:**
+```bash
+# run from project root
+python -m http.server 8000
+# then open:
+# http://localhost:8000/visualization/constraint-visualization.html
+```
+
+Full documentation: [visualization/README.md](visualization/README.md)
+
+---
+
 ## Data Processing Workflow
 
 ```
