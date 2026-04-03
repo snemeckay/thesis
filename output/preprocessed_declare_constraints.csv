@@ -1,0 +1,1112 @@
+rule_id,rule_type,template,activities,support,confidence,cardinality,category,trace_count,support_count,violation_count,activation_count,fulfillment_count,activation_trace_count,metrics_source,source
+declare_0,EXISTENCE,EXISTENCE,browser/youtube,0.41065056272303047,0.41065056272303047,,unary,3643,1496,2147,3643,1496,3643,computed,declare4py
+declare_1,ABSENCE,ABSENCE,browser/youtube,0.5893494372769695,0.5893494372769695,,unary,3643,2147,1496,3643,2147,3643,computed,declare4py
+declare_2,EXISTENCE,EXISTENCE,browser/facebook,0.3562997529508647,0.3562997529508647,,unary,3643,1298,2345,3643,1298,3643,computed,declare4py
+declare_3,ABSENCE,ABSENCE,browser/facebook,0.6437002470491353,0.6437002470491353,,unary,3643,2345,1298,3643,2345,3643,computed,declare4py
+declare_4,EXISTENCE,EXISTENCE,browser/maps/navigation,0.11199560801537195,0.11199560801537195,,unary,3643,408,3235,3643,408,3643,computed,declare4py
+declare_5,ABSENCE,ABSENCE,browser/maps/navigation,0.8880043919846281,0.8880043919846281,,unary,3643,3235,408,3643,3235,3643,computed,declare4py
+declare_6,EXISTENCE,EXISTENCE,browser_file/nan,0.7521273675542136,0.7521273675542136,,unary,3643,2740,903,3643,2740,3643,computed,declare4py
+declare_7,ABSENCE,ABSENCE,browser_file/nan,0.24787263244578644,0.24787263244578644,,unary,3643,903,2740,3643,903,3643,computed,declare4py
+declare_8,INIT,INIT,browser_file/nan,0.25500960746637386,0.25500960746637386,,unary,3643,929,2714,3643,929,3643,computed,declare4py
+declare_9,END,END,browser_file/nan,0.19077683228108702,0.19077683228108702,,unary,3643,695,2948,3643,695,3643,computed,declare4py
+declare_10,EXISTENCE,EXISTENCE,browser/other browser activity,0.6807576173483393,0.6807576173483393,,unary,3643,2480,1163,3643,2480,3643,computed,declare4py
+declare_11,ABSENCE,ABSENCE,browser/other browser activity,0.3192423826516607,0.3192423826516607,,unary,3643,1163,2480,3643,1163,3643,computed,declare4py
+declare_12,EXACTLY,EXACTLY,browser/other browser activity,0.10952511666209168,0.10952511666209168,,unary,3643,399,3244,3643,399,3643,computed,declare4py
+declare_13,EXISTENCE,EXISTENCE,os_core_components/nan,0.6382102662640681,0.6382102662640681,,unary,3643,2325,1318,3643,2325,3643,computed,declare4py
+declare_14,ABSENCE,ABSENCE,os_core_components/nan,0.36178973373593193,0.36178973373593193,,unary,3643,1318,2325,3643,1318,3643,computed,declare4py
+declare_15,EXACTLY,EXACTLY,os_core_components/nan,0.121877573428493,0.121877573428493,,unary,3643,444,3199,3643,444,3643,computed,declare4py
+declare_16,END,END,os_core_components/nan,0.2879494921767774,0.2879494921767774,,unary,3643,1049,2594,3643,1049,3643,computed,declare4py
+declare_17,EXISTENCE,EXISTENCE,browser/searching,0.5547625583310458,0.5547625583310458,,unary,3643,2021,1622,3643,2021,3643,computed,declare4py
+declare_18,ABSENCE,ABSENCE,browser/searching,0.4452374416689542,0.4452374416689542,,unary,3643,1622,2021,3643,1622,3643,computed,declare4py
+declare_19,EXACTLY,EXACTLY,browser/searching,0.12077957727147955,0.12077957727147955,,unary,3643,440,3203,3643,440,3643,computed,declare4py
+declare_20,EXISTENCE,EXISTENCE,browser/Outlook/Email,0.5015097447158935,0.5015097447158935,,unary,3643,1827,1816,3643,1827,3643,computed,declare4py
+declare_21,ABSENCE,ABSENCE,browser/Outlook/Email,0.4984902552841065,0.4984902552841065,,unary,3643,1816,1827,3643,1816,3643,computed,declare4py
+declare_22,EXISTENCE,EXISTENCE,browser/seznam,0.3862201482294812,0.3862201482294812,,unary,3643,1407,2236,3643,1407,3643,computed,declare4py
+declare_23,ABSENCE,ABSENCE,browser/seznam,0.6137798517705189,0.6137798517705189,,unary,3643,2236,1407,3643,2236,3643,computed,declare4py
+declare_24,EXISTENCE,EXISTENCE,os_management/nan,0.2758715344496294,0.2758715344496294,,unary,3643,1005,2638,3643,1005,3643,computed,declare4py
+declare_25,ABSENCE,ABSENCE,os_management/nan,0.7241284655503706,0.7241284655503706,,unary,3643,2638,1005,3643,2638,3643,computed,declare4py
+declare_26,EXACTLY,EXACTLY,os_management/nan,0.12489706286027999,0.12489706286027999,,unary,3643,455,3188,3643,455,3643,computed,declare4py
+declare_27,EXISTENCE,EXISTENCE,browser/survey,0.22783420258029097,0.22783420258029097,,unary,3643,830,2813,3643,830,3643,computed,declare4py
+declare_28,ABSENCE,ABSENCE,browser/survey,0.772165797419709,0.772165797419709,,unary,3643,2813,830,3643,2813,3643,computed,declare4py
+declare_29,EXISTENCE,EXISTENCE,browser/mozilla firefox,0.10787812242657151,0.10787812242657151,,unary,3643,393,3250,3643,393,3643,computed,declare4py
+declare_30,ABSENCE,ABSENCE,browser/mozilla firefox,0.8921218775734285,0.8921218775734285,,unary,3643,3250,393,3643,3250,3643,computed,declare4py
+declare_31,EXISTENCE,EXISTENCE,browser/reading (study) materials,0.20971726598956902,0.20971726598956902,,unary,3643,764,2879,3643,764,3643,computed,declare4py
+declare_32,ABSENCE,ABSENCE,browser/reading (study) materials,0.7902827340104309,0.7902827340104309,,unary,3643,2879,764,3643,2879,3643,computed,declare4py
+declare_33,EXISTENCE,EXISTENCE,browser/novinky,0.20175679385122153,0.20175679385122153,,unary,3643,735,2908,3643,735,3643,computed,declare4py
+declare_34,ABSENCE,ABSENCE,browser/novinky,0.7982432061487785,0.7982432061487785,,unary,3643,2908,735,3643,2908,3643,computed,declare4py
+declare_35,EXISTENCE,EXISTENCE,EXCEL.EXE/nan,0.10513313203403789,0.10513313203403789,,unary,3643,383,3260,3643,383,3643,computed,declare4py
+declare_36,ABSENCE,ABSENCE,EXCEL.EXE/nan,0.8948668679659622,0.8948668679659622,,unary,3643,3260,383,3643,3260,3643,computed,declare4py
+declare_37,EXISTENCE,EXISTENCE,WINWORD.EXE/nan,0.1314850398023607,0.1314850398023607,,unary,3643,479,3164,3643,479,3643,computed,declare4py
+declare_38,ABSENCE,ABSENCE,WINWORD.EXE/nan,0.8685149601976393,0.8685149601976393,,unary,3643,3164,479,3643,3164,3643,computed,declare4py
+declare_39,CHOICE,CHOICE,browser/youtube|browser_file/nan,0.8764754323359868,0.8764754323359868,,binary,3643,3193,450,3643,3193,3193,computed,declare4py
+declare_40,CHOICE,CHOICE,browser_file/nan|browser/youtube,0.8764754323359868,0.8764754323359868,,binary,3643,3193,450,3643,3193,3193,computed,declare4py
+declare_41,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser_file/nan,0.5901729343947296,0.5901729343947296,,binary,3643,2150,1493,3643,2150,3193,computed,declare4py
+declare_42,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/youtube,0.5901729343947296,0.5901729343947296,,binary,3643,2150,1493,3643,2150,3193,computed,declare4py
+declare_43,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser_file/nan,0.8756519352182267,0.428027418126428,,binary,3643,3190,453,14443,6182,1496,computed,declare4py
+declare_44,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/youtube,0.5341751303870437,0.485463309531373,,binary,3643,1946,1697,72403,35149,2740,computed,declare4py
+declare_45,RESPONSE,RESPONSE,browser/youtube|browser_file/nan,0.796321712874005,0.37097555909437097,,binary,3643,2901,742,14443,5358,1496,computed,declare4py
+declare_46,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/youtube,0.8234971177600878,0.4004015786194004,,binary,3643,3000,643,14443,5783,1496,computed,declare4py
+declare_47,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser_file/nan,0.7408729069448257,0.629024440905629,,binary,3643,2699,944,14443,9085,1496,computed,declare4py
+declare_48,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/youtube,0.7279714520999176,0.6200709915335,,binary,3643,2652,991,72403,44895,2740,computed,declare4py
+declare_49,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser_file/nan,0.7408729069448257,0.629024440905629,,binary,3643,2699,944,14443,9085,1496,computed,declare4py
+declare_50,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/youtube,0.7279714520999176,0.6200709915335,,binary,3643,2652,991,72403,44895,2740,computed,declare4py
+declare_51,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser_file/nan,0.7408729069448257,0.6958551441238623,,binary,3643,2699,944,72403,50382,2740,computed,declare4py
+declare_52,NOT_PRECEDENCE,NOT_PRECEDENCE,browser_file/nan|browser/youtube,0.7279714520999176,0.5995984213805996,,binary,3643,2652,991,14443,8660,1496,computed,declare4py
+declare_53,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_54,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_55,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_56,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_57,CHOICE,CHOICE,browser/youtube|browser/other browser activity,0.8166346417787538,0.8166346417787538,,binary,3643,2975,668,3643,2975,2975,computed,declare4py
+declare_58,CHOICE,CHOICE,browser/other browser activity|browser/youtube,0.8166346417787538,0.8166346417787538,,binary,3643,2975,668,3643,2975,2975,computed,declare4py
+declare_59,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/other browser activity,0.5418611034861378,0.5418611034861378,,binary,3643,1974,1669,3643,1974,2975,computed,declare4py
+declare_60,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/youtube,0.5418611034861378,0.5418611034861378,,binary,3643,1974,1669,3643,1974,2975,computed,declare4py
+declare_61,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/other browser activity,0.8641229755695855,0.4141106418334141,,binary,3643,3148,495,14443,5981,1496,computed,declare4py
+declare_62,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/youtube,0.5940159209442767,0.5701285194264913,,binary,3643,2164,1479,26922,15349,2480,computed,declare4py
+declare_63,RESPONSE,RESPONSE,browser/youtube|browser/other browser activity,0.7614603348888279,0.3336564425673337,,binary,3643,2774,869,14443,4819,1496,computed,declare4py
+declare_64,RESPONSE,RESPONSE,browser/other browser activity|browser/youtube,0.42190502333241836,0.4318029864051705,,binary,3643,1537,2106,26922,11625,2480,computed,declare4py
+declare_65,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/youtube,0.8127916552292067,0.37914560686837917,,binary,3643,2961,682,14443,5476,1496,computed,declare4py
+declare_66,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/youtube,0.6955805654680208,0.20175863740220176,,binary,3643,2534,1109,14443,2914,1496,computed,declare4py
+declare_67,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/other browser activity,0.7581663464177876,0.6663435574326664,,binary,3643,2762,881,14443,9624,1496,computed,declare4py
+declare_68,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/youtube,0.7375789184737853,0.5681970135948295,,binary,3643,2687,956,26922,15297,2480,computed,declare4py
+declare_69,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/other browser activity,0.7581663464177876,0.6663435574326664,,binary,3643,2762,881,14443,9624,1496,computed,declare4py
+declare_70,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/youtube,0.7375789184737853,0.5681970135948295,,binary,3643,2687,956,26922,15297,2480,computed,declare4py
+declare_71,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/other browser activity,0.7581663464177876,0.6302280662655078,,binary,3643,2762,881,26922,16967,2480,computed,declare4py
+declare_72,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/other browser activity|browser/youtube,0.7375789184737853,0.6208543931316208,,binary,3643,2687,956,14443,8967,1496,computed,declare4py
+declare_73,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_74,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_75,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_76,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_77,CHOICE,CHOICE,browser/youtube|os_core_components/nan,0.7897337359319242,0.7897337359319242,,binary,3643,2877,766,3643,2877,2877,computed,declare4py
+declare_78,CHOICE,CHOICE,os_core_components/nan|browser/youtube,0.7897337359319242,0.7897337359319242,,binary,3643,2877,766,3643,2877,2877,computed,declare4py
+declare_79,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|os_core_components/nan,0.53060664287675,0.53060664287675,,binary,3643,1933,1710,3643,1933,2877,computed,declare4py
+declare_80,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/youtube,0.53060664287675,0.53060664287675,,binary,3643,1933,1710,3643,1933,2877,computed,declare4py
+declare_81,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|os_core_components/nan,0.8484765303321439,0.39804749705739806,,binary,3643,3091,552,14443,5749,1496,computed,declare4py
+declare_82,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/youtube,0.6209168267911063,0.4562432212581345,,binary,3643,2262,1381,29504,13461,2325,computed,declare4py
+declare_83,RESPONSE,RESPONSE,browser/youtube|os_core_components/nan,0.7765577820477628,0.32465554247732464,,binary,3643,2829,814,14443,4689,1496,computed,declare4py
+declare_84,PRECEDENCE,PRECEDENCE,browser/youtube|os_core_components/nan,0.4721383475157837,0.32544739696312364,,binary,3643,1720,1923,29504,9602,2325,computed,declare4py
+declare_85,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/youtube,0.738127916552292,0.31814719933531815,,binary,3643,2689,954,14443,4595,1496,computed,declare4py
+declare_86,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|os_core_components/nan,0.7661268185561351,0.6753444575226754,,binary,3643,2791,852,14443,9754,1496,computed,declare4py
+declare_87,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/youtube,0.7839692561076036,0.6902453904555315,,binary,3643,2856,787,29504,20365,2325,computed,declare4py
+declare_88,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|os_core_components/nan,0.7661268185561351,0.6753444575226754,,binary,3643,2791,852,14443,9754,1496,computed,declare4py
+declare_89,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/youtube,0.7839692561076036,0.6902453904555315,,binary,3643,2856,787,29504,20365,2325,computed,declare4py
+declare_90,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|os_core_components/nan,0.7661268185561351,0.6745526030368764,,binary,3643,2791,852,29504,19902,2325,computed,declare4py
+declare_91,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/youtube,0.7839692561076036,0.6818528006646819,,binary,3643,2856,787,14443,9848,1496,computed,declare4py
+declare_92,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_93,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_94,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_95,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_96,CHOICE,CHOICE,browser/youtube|browser/searching,0.7169914905297832,0.7169914905297832,,binary,3643,2612,1031,3643,2612,2612,computed,declare4py
+declare_97,CHOICE,CHOICE,browser/searching|browser/youtube,0.7169914905297832,0.7169914905297832,,binary,3643,2612,1031,3643,2612,2612,computed,declare4py
+declare_98,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/searching,0.46856986000549,0.46856986000549,,binary,3643,1707,1936,3643,1707,2612,computed,declare4py
+declare_99,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/youtube,0.46856986000549,0.46856986000549,,binary,3643,1707,1936,3643,1707,2612,computed,declare4py
+declare_100,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/searching,0.8377710678012626,0.4456830298414457,,binary,3643,3052,591,14443,6437,1496,computed,declare4py
+declare_101,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/youtube,0.6936590721932473,0.5886641271509261,,binary,3643,2527,1116,15226,8963,2021,computed,declare4py
+declare_102,RESPONSE,RESPONSE,browser/youtube|browser/searching,0.7244029645896239,0.322024510143322,,binary,3643,2639,1004,14443,4651,1496,computed,declare4py
+declare_103,RESPONSE,RESPONSE,browser/searching|browser/youtube,0.5586055448805929,0.43373177459608564,,binary,3643,2035,1608,15226,6604,2021,computed,declare4py
+declare_104,PRECEDENCE,PRECEDENCE,browser/searching|browser/youtube,0.7422454021410925,0.3598975282143599,,binary,3643,2704,939,14443,5198,1496,computed,declare4py
+declare_105,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/searching,0.785067252264617,0.677975489856678,,binary,3643,2860,783,14443,9792,1496,computed,declare4py
+declare_106,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/youtube,0.7729892945374691,0.5662682254039143,,binary,3643,2816,827,15226,8622,2021,computed,declare4py
+declare_107,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/searching,0.785067252264617,0.677975489856678,,binary,3643,2860,783,14443,9792,1496,computed,declare4py
+declare_108,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/youtube,0.7729892945374691,0.5662682254039143,,binary,3643,2816,827,15226,8622,2021,computed,declare4py
+declare_109,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/searching,0.785067252264617,0.581570996978852,,binary,3643,2860,783,15226,8855,2021,computed,declare4py
+declare_110,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|browser/youtube,0.7729892945374691,0.6401024717856401,,binary,3643,2816,827,14443,9245,1496,computed,declare4py
+declare_111,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_112,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_113,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_114,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_115,CHOICE,CHOICE,browser/youtube|browser/Outlook/Email,0.7087565193521823,0.7087565193521823,,binary,3643,2582,1061,3643,2582,2582,computed,declare4py
+declare_116,CHOICE,CHOICE,browser/Outlook/Email|browser/youtube,0.7087565193521823,0.7087565193521823,,binary,3643,2582,1061,3643,2582,2582,computed,declare4py
+declare_117,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/Outlook/Email,0.5053527312654406,0.5053527312654406,,binary,3643,1841,1802,3643,1841,2582,computed,declare4py
+declare_118,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/youtube,0.5053527312654406,0.5053527312654406,,binary,3643,1841,1802,3643,1841,2582,computed,declare4py
+declare_119,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/Outlook/Email,0.7927532253637112,0.3131620854393132,,binary,3643,2888,755,14443,4523,1496,computed,declare4py
+declare_120,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/youtube,0.7018940433708482,0.4958850190839695,,binary,3643,2557,1086,16768,8315,1827,computed,declare4py
+declare_121,RESPONSE,RESPONSE,browser/youtube|browser/Outlook/Email,0.6991490529783145,0.2316000830852316,,binary,3643,2547,1096,14443,3345,1496,computed,declare4py
+declare_122,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/youtube,0.7307164424924513,0.266980544208267,,binary,3643,2662,981,14443,3856,1496,computed,declare4py
+declare_123,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/Outlook/Email,0.8328300850947021,0.7683999169147684,,binary,3643,3034,609,14443,11098,1496,computed,declare4py
+declare_124,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/youtube,0.8138896513862202,0.6207657442748091,,binary,3643,2965,678,16768,10409,1827,computed,declare4py
+declare_125,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/Outlook/Email,0.8328300850947021,0.7683999169147684,,binary,3643,3034,609,14443,11098,1496,computed,declare4py
+declare_126,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/youtube,0.8138896513862202,0.6207657442748091,,binary,3643,2965,678,16768,10409,1827,computed,declare4py
+declare_127,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/Outlook/Email,0.8328300850947021,0.6746779580152672,,binary,3643,3034,609,16768,11313,1827,computed,declare4py
+declare_128,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|browser/youtube,0.8138896513862202,0.733019455791733,,binary,3643,2965,678,14443,10587,1496,computed,declare4py
+declare_129,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_130,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_131,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_132,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_133,CHOICE,CHOICE,browser/youtube|browser/facebook,0.5786439747460884,0.5786439747460884,,binary,3643,2108,1535,3643,2108,2108,computed,declare4py
+declare_134,CHOICE,CHOICE,browser/facebook|browser/youtube,0.5786439747460884,0.5786439747460884,,binary,3643,2108,1535,3643,2108,2108,computed,declare4py
+declare_135,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/facebook,0.3903376338182816,0.3903376338182816,,binary,3643,1422,2221,3643,1422,2108,computed,declare4py
+declare_136,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/youtube,0.3903376338182816,0.3903376338182816,,binary,3643,1422,2221,3643,1422,2108,computed,declare4py
+declare_137,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/facebook,0.7776557782047763,0.3359412864363359,,binary,3643,2833,810,14443,4852,1496,computed,declare4py
+declare_138,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/youtube,0.832006587976942,0.5740170320710274,,binary,3643,3031,612,11038,6336,1298,computed,declare4py
+declare_139,RESPONSE,RESPONSE,browser/youtube|browser/facebook,0.6895415866044469,0.24697085093124696,,binary,3643,2512,1131,14443,3567,1496,computed,declare4py
+declare_140,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/facebook,0.8331045841339555,0.7530291490687531,,binary,3643,3035,608,14443,10876,1496,computed,declare4py
+declare_141,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|browser/youtube,0.838045566840516,0.5978438122848342,,binary,3643,3053,590,11038,6599,1298,computed,declare4py
+declare_142,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/facebook,0.8331045841339555,0.7530291490687531,,binary,3643,3035,608,14443,10876,1496,computed,declare4py
+declare_143,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/youtube,0.838045566840516,0.5978438122848342,,binary,3643,3053,590,11038,6599,1298,computed,declare4py
+declare_144,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/facebook,0.8331045841339555,0.598296792897264,,binary,3643,3035,608,11038,6604,1298,computed,declare4py
+declare_145,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/youtube,0.838045566840516,0.761960811465762,,binary,3643,3053,590,14443,11005,1496,computed,declare4py
+declare_146,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_147,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_148,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_149,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_150,CHOICE,CHOICE,browser_file/nan|browser/facebook,0.7976942080702718,0.7976942080702718,,binary,3643,2906,737,3643,2906,2906,computed,declare4py
+declare_151,CHOICE,CHOICE,browser/facebook|browser_file/nan,0.7976942080702718,0.7976942080702718,,binary,3643,2906,737,3643,2906,2906,computed,declare4py
+declare_152,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/facebook,0.48696129563546525,0.48696129563546525,,binary,3643,1774,1869,3643,1774,2906,computed,declare4py
+declare_153,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser_file/nan,0.48696129563546525,0.48696129563546525,,binary,3643,1774,1869,3643,1774,2906,computed,declare4py
+declare_154,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/facebook,0.5586055448805929,0.4636410093504413,,binary,3643,2035,1608,72403,33569,2740,computed,declare4py
+declare_155,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser_file/nan,0.9544331594839418,0.9568762456966842,,binary,3643,3477,166,11038,10562,1298,computed,declare4py
+declare_156,RESPONSE,RESPONSE,browser/facebook|browser_file/nan,0.8580839967060115,0.848432687080993,,binary,3643,3126,517,11038,9365,1298,computed,declare4py
+declare_157,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/facebook,0.8915728794949218,0.8796883493386483,,binary,3643,3248,395,11038,9710,1298,computed,declare4py
+declare_158,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/facebook,0.7057370299203953,0.6563816416446833,,binary,3643,2571,1072,72403,47524,2740,computed,declare4py
+declare_159,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/facebook,0.7057370299203953,0.6563816416446833,,binary,3643,2571,1072,72403,47524,2740,computed,declare4py
+declare_160,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser_file/nan,0.7169914905297832,0.6960623178597571,,binary,3643,2612,1031,72403,50397,2740,computed,declare4py
+declare_161,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_162,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_163,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_164,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_165,CHOICE,CHOICE,browser/other browser activity|browser/facebook,0.734284930002745,0.734284930002745,,binary,3643,2675,968,3643,2675,2675,computed,declare4py
+declare_166,CHOICE,CHOICE,browser/facebook|browser/other browser activity,0.734284930002745,0.734284930002745,,binary,3643,2675,968,3643,2675,2675,computed,declare4py
+declare_167,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/facebook,0.43151248970628603,0.43151248970628603,,binary,3643,1572,2071,3643,1572,2675,computed,declare4py
+declare_168,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/other browser activity,0.43151248970628603,0.43151248970628603,,binary,3643,1572,2071,3643,1572,2675,computed,declare4py
+declare_169,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/facebook,0.6220148229481197,0.649468835896293,,binary,3643,2266,1377,26922,17485,2480,computed,declare4py
+declare_170,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/other browser activity,0.9464726873455943,0.9383946367095488,,binary,3643,3448,195,11038,10358,1298,computed,declare4py
+declare_171,RESPONSE,RESPONSE,browser/other browser activity|browser/facebook,0.45127642053252814,0.5281182675878464,,binary,3643,1644,1999,26922,14218,2480,computed,declare4py
+declare_172,RESPONSE,RESPONSE,browser/facebook|browser/other browser activity,0.8144386494647269,0.8196231201304585,,binary,3643,2967,676,11038,9047,1298,computed,declare4py
+declare_173,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/facebook,0.8869063958276147,0.8875702119949266,,binary,3643,3231,412,11038,9797,1298,computed,declare4py
+declare_174,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/facebook,0.7460883886906395,0.43902880956695056,,binary,3643,2718,925,11038,4846,1298,computed,declare4py
+declare_175,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/facebook,0.7073840241559155,0.47188173241215364,,binary,3643,2577,1066,26922,12704,2480,computed,declare4py
+declare_176,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/facebook,0.7073840241559155,0.47188173241215364,,binary,3643,2577,1066,26922,12704,2480,computed,declare4py
+declare_177,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/other browser activity,0.7268734559429042,0.548287645791546,,binary,3643,2648,995,26922,14761,2480,computed,declare4py
+declare_178,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_179,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_180,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_181,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_182,CHOICE,CHOICE,os_core_components/nan|browser/facebook,0.715344496294263,0.715344496294263,,binary,3643,2606,1037,3643,2606,2606,computed,declare4py
+declare_183,CHOICE,CHOICE,browser/facebook|os_core_components/nan,0.715344496294263,0.715344496294263,,binary,3643,2606,1037,3643,2606,2606,computed,declare4py
+declare_184,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/facebook,0.4361789733735932,0.4361789733735932,,binary,3643,1589,2054,3643,1589,2606,computed,declare4py
+declare_185,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|os_core_components/nan,0.4361789733735932,0.4361789733735932,,binary,3643,1589,2054,3643,1589,2606,computed,declare4py
+declare_186,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/facebook,0.6409552566566017,0.5578904555314533,,binary,3643,2335,1308,29504,16460,2325,computed,declare4py
+declare_187,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|os_core_components/nan,0.9228657699698051,0.86329045116869,,binary,3643,3362,281,11038,9529,1298,computed,declare4py
+declare_188,RESPONSE,RESPONSE,browser/facebook|os_core_components/nan,0.8229481196815811,0.7246783837651749,,binary,3643,2998,645,11038,7999,1298,computed,declare4py
+declare_189,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/facebook,0.8012626955805655,0.703116506613517,,binary,3643,2919,724,11038,7761,1298,computed,declare4py
+declare_190,PRECEDENCE,PRECEDENCE,browser/facebook|os_core_components/nan,0.48339280812517155,0.41587581344902386,,binary,3643,1761,1882,29504,12270,2325,computed,declare4py
+declare_191,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/facebook,0.7584408454570409,0.5998508676789588,,binary,3643,2763,880,29504,17698,2325,computed,declare4py
+declare_192,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/facebook,0.7584408454570409,0.5998508676789588,,binary,3643,2763,880,29504,17698,2325,computed,declare4py
+declare_193,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|os_core_components/nan,0.7565193521822674,0.27532161623482515,,binary,3643,2756,887,11038,3039,1298,computed,declare4py
+declare_194,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/facebook,0.7584408454570409,0.29688349338648307,,binary,3643,2763,880,11038,3277,1298,computed,declare4py
+declare_195,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|os_core_components/nan,0.7565193521822674,0.5841241865509761,,binary,3643,2756,887,29504,17234,2325,computed,declare4py
+declare_196,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_197,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_198,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_199,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_200,CHOICE,CHOICE,browser/searching|browser/facebook,0.6365632720285479,0.6365632720285479,,binary,3643,2319,1324,3643,2319,2319,computed,declare4py
+declare_201,CHOICE,CHOICE,browser/facebook|browser/searching,0.6365632720285479,0.6365632720285479,,binary,3643,2319,1324,3643,2319,2319,computed,declare4py
+declare_202,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/facebook,0.3620642327751853,0.3620642327751853,,binary,3643,1319,2324,3643,1319,2319,computed,declare4py
+declare_203,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/searching,0.3620642327751853,0.3620642327751853,,binary,3643,1319,2324,3643,1319,2319,computed,declare4py
+declare_204,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/facebook,0.7197364809223168,0.6228819125180612,,binary,3643,2622,1021,15226,9484,2021,computed,declare4py
+declare_205,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/searching,0.9181992863024979,0.8834027903605726,,binary,3643,3345,298,11038,9751,1298,computed,declare4py
+declare_206,RESPONSE,RESPONSE,browser/searching|browser/facebook,0.5956629151797969,0.4953369236831735,,binary,3643,2170,1473,15226,7542,2021,computed,declare4py
+declare_207,RESPONSE,RESPONSE,browser/facebook|browser/searching,0.7677738127916552,0.7283022286646131,,binary,3643,2797,846,11038,8039,1298,computed,declare4py
+declare_208,PRECEDENCE,PRECEDENCE,browser/searching|browser/facebook,0.8053801811693659,0.7321978619315094,,binary,3643,2934,709,11038,8082,1298,computed,declare4py
+declare_209,PRECEDENCE,PRECEDENCE,browser/facebook|browser/searching,0.5580565468020862,0.4515302771574938,,binary,3643,2033,1610,15226,6875,2021,computed,declare4py
+declare_210,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/facebook,0.7433433982981059,0.5046630763168265,,binary,3643,2708,935,15226,7684,2021,computed,declare4py
+declare_211,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/facebook,0.7433433982981059,0.5046630763168265,,binary,3643,2708,935,15226,7684,2021,computed,declare4py
+declare_212,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/searching,0.7625583310458414,0.27169777133538686,,binary,3643,2778,865,11038,2999,1298,computed,declare4py
+declare_213,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/searching,0.7625583310458414,0.5484697228425063,,binary,3643,2778,865,15226,8351,2021,computed,declare4py
+declare_214,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_215,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_216,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_217,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_218,CHOICE,CHOICE,browser/Outlook/Email|browser/facebook,0.600329398847104,0.600329398847104,,binary,3643,2187,1456,3643,2187,2187,computed,declare4py
+declare_219,CHOICE,CHOICE,browser/facebook|browser/Outlook/Email,0.600329398847104,0.600329398847104,,binary,3643,2187,1456,3643,2187,2187,computed,declare4py
+declare_220,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/facebook,0.3428493000274499,0.3428493000274499,,binary,3643,1249,2394,3643,1249,2187,computed,declare4py
+declare_221,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/Outlook/Email,0.3428493000274499,0.3428493000274499,,binary,3643,1249,2394,3643,1249,2187,computed,declare4py
+declare_222,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/facebook,0.7559703541037607,0.6466483778625954,,binary,3643,2754,889,16768,10843,1827,computed,declare4py
+declare_223,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/Outlook/Email,0.9011803458687895,0.7554810654104004,,binary,3643,3283,360,11038,8339,1298,computed,declare4py
+declare_224,RESPONSE,RESPONSE,browser/Outlook/Email|browser/facebook,0.6228383200658798,0.5273139312977099,,binary,3643,2269,1374,16768,8842,1827,computed,declare4py
+declare_225,RESPONSE,RESPONSE,browser/facebook|browser/Outlook/Email,0.7768322810870162,0.5973908316724045,,binary,3643,2830,813,11038,6594,1298,computed,declare4py
+declare_226,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/facebook,0.8237716167993412,0.6545569849610436,,binary,3643,3001,642,11038,7225,1298,computed,declare4py
+declare_227,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/facebook,0.7617348339280813,0.4726860687022901,,binary,3643,2775,868,16768,7926,1827,computed,declare4py
+declare_228,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/facebook,0.7617348339280813,0.4726860687022901,,binary,3643,2775,868,16768,7926,1827,computed,declare4py
+declare_229,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/Outlook/Email,0.7773812791655229,0.4026091683275956,,binary,3643,2832,811,11038,4444,1298,computed,declare4py
+declare_230,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|browser/facebook,0.7617348339280813,0.34544301503895636,,binary,3643,2775,868,11038,3813,1298,computed,declare4py
+declare_231,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/Outlook/Email,0.7773812791655229,0.5388835877862596,,binary,3643,2832,811,16768,9036,1827,computed,declare4py
+declare_232,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_233,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_234,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_235,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_236,CHOICE,CHOICE,browser/seznam|browser/facebook,0.5240186659346693,0.5240186659346693,,binary,3643,1909,1734,3643,1909,1909,computed,declare4py
+declare_237,CHOICE,CHOICE,browser/facebook|browser/seznam,0.5240186659346693,0.5240186659346693,,binary,3643,1909,1734,3643,1909,1909,computed,declare4py
+declare_238,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/facebook,0.30551743068899256,0.30551743068899256,,binary,3643,1113,2530,3643,1113,1909,computed,declare4py
+declare_239,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/seznam,0.30551743068899256,0.30551743068899256,,binary,3643,1113,2530,3643,1113,1909,computed,declare4py
+declare_240,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/facebook,0.8322810870161954,0.6881281719574087,,binary,3643,3032,611,10049,6915,1407,computed,declare4py
+declare_241,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/seznam,0.862201482294812,0.724497191520203,,binary,3643,3141,502,11038,7997,1298,computed,declare4py
+declare_242,RESPONSE,RESPONSE,browser/seznam|browser/facebook,0.7274224540214109,0.565429395959797,,binary,3643,2650,993,10049,5682,1407,computed,declare4py
+declare_243,RESPONSE,RESPONSE,browser/facebook|browser/seznam,0.7485588800439198,0.5587968834933865,,binary,3643,2727,916,11038,6168,1298,computed,declare4py
+declare_244,PRECEDENCE,PRECEDENCE,browser/seznam|browser/facebook,0.7798517705188032,0.5910491030983874,,binary,3643,2841,802,11038,6524,1298,computed,declare4py
+declare_245,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|browser/facebook,0.7968707109525117,0.434570604040203,,binary,3643,2903,740,10049,4367,1407,computed,declare4py
+declare_246,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|browser/seznam,0.8097721657974197,0.44120311650661354,,binary,3643,2950,693,11038,4870,1298,computed,declare4py
+declare_247,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/facebook,0.7968707109525117,0.434570604040203,,binary,3643,2903,740,10049,4367,1407,computed,declare4py
+declare_248,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/seznam,0.8097721657974197,0.44120311650661354,,binary,3643,2950,693,11038,4870,1298,computed,declare4py
+declare_249,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/facebook,0.7968707109525117,0.4089508969016126,,binary,3643,2903,740,11038,4514,1298,computed,declare4py
+declare_250,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/seznam,0.8097721657974197,0.48064484028261517,,binary,3643,2950,693,10049,4830,1407,computed,declare4py
+declare_251,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_252,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_253,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_254,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_255,CHOICE,CHOICE,browser/maps/navigation|browser_file/nan,0.7578918473785342,0.7578918473785342,,binary,3643,2761,882,3643,2761,2761,computed,declare4py
+declare_256,CHOICE,CHOICE,browser_file/nan|browser/maps/navigation,0.7578918473785342,0.7578918473785342,,binary,3643,2761,882,3643,2761,2761,computed,declare4py
+declare_257,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/maps/navigation|browser_file/nan,0.6516607191874828,0.6516607191874828,,binary,3643,2374,1269,3643,2374,2761,computed,declare4py
+declare_258,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/maps/navigation,0.6516607191874828,0.6516607191874828,,binary,3643,2374,1269,3643,2374,2761,computed,declare4py
+declare_259,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/maps/navigation|browser_file/nan,0.9942355201756794,0.981398332264272,,binary,3643,3622,21,1559,1530,408,computed,declare4py
+declare_260,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/maps/navigation,0.3541037606368378,0.20837534356311202,,binary,3643,1290,2353,72403,15087,2740,computed,declare4py
+declare_261,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/maps/navigation,0.8998078506725227,0.8532381254920376,,binary,3643,3278,365,72403,61777,2740,computed,declare4py
+declare_262,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/maps/navigation,0.8998078506725227,0.8532381254920376,,binary,3643,3278,365,72403,61777,2740,computed,declare4py
+declare_263,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/maps/navigation|browser_file/nan,0.903101839143563,0.8780713506346423,,binary,3643,3290,353,72403,63575,2740,computed,declare4py
+declare_264,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/maps/navigation,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_265,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/maps/navigation|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_266,CHOICE,CHOICE,browser_file/nan|browser/other browser activity,0.7971452099917651,0.7971452099917651,,binary,3643,2904,739,3643,2904,2904,computed,declare4py
+declare_267,CHOICE,CHOICE,browser/other browser activity|browser_file/nan,0.7971452099917651,0.7971452099917651,,binary,3643,2904,739,3643,2904,2904,computed,declare4py
+declare_268,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/other browser activity,0.1614054350809772,0.1614054350809772,,binary,3643,588,3055,3643,588,2904,computed,declare4py
+declare_269,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser_file/nan,0.1614054350809772,0.1614054350809772,,binary,3643,588,3055,3643,588,2904,computed,declare4py
+declare_270,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/other browser activity,0.8836124073565742,0.92099774871207,,binary,3643,3219,424,72403,66683,2740,computed,declare4py
+declare_271,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser_file/nan,0.9549821575624485,0.9802392095683827,,binary,3643,3479,164,26922,26390,2480,computed,declare4py
+declare_272,RESPONSE,RESPONSE,browser_file/nan|browser/other browser activity,0.46500137249519624,0.7906716572517714,,binary,3643,1694,1949,72403,57247,2740,computed,declare4py
+declare_273,RESPONSE,RESPONSE,browser/other browser activity|browser_file/nan,0.7378534175130387,0.8809523809523809,,binary,3643,2688,955,26922,23717,2480,computed,declare4py
+declare_274,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/other browser activity|browser_file/nan,0.4411199560801537,0.3513854839907882,,binary,3643,1607,2036,26922,9460,2480,computed,declare4py
+declare_275,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/other browser activity,0.7485588800439198,0.8895698685090261,,binary,3643,2727,916,26922,23949,2480,computed,declare4py
+declare_276,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser_file/nan,0.4542959099643151,0.8069693244755052,,binary,3643,1655,1988,72403,58427,2740,computed,declare4py
+declare_277,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser_file/nan|browser/other browser activity,0.4449629426297008,0.3528341133645346,,binary,3643,1621,2022,26922,9499,2480,computed,declare4py
+declare_278,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/other browser activity,0.39994510019214935,0.20932834274822867,,binary,3643,1457,2186,72403,15156,2740,computed,declare4py
+declare_279,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/other browser activity,0.39994510019214935,0.20932834274822867,,binary,3643,1457,2186,72403,15156,2740,computed,declare4py
+declare_280,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/other browser activity|browser_file/nan,0.41010156464452374,0.19303067552449485,,binary,3643,1494,2149,72403,13976,2740,computed,declare4py
+declare_281,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_282,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_283,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_284,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_285,CHOICE,CHOICE,os_core_components/nan|browser_file/nan,0.7784792753225364,0.7784792753225364,,binary,3643,2836,807,3643,2836,2836,computed,declare4py
+declare_286,CHOICE,CHOICE,browser_file/nan|os_core_components/nan,0.7784792753225364,0.7784792753225364,,binary,3643,2836,807,3643,2836,2836,computed,declare4py
+declare_287,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser_file/nan,0.16662091682679112,0.16662091682679112,,binary,3643,607,3036,3643,607,2836,computed,declare4py
+declare_288,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|os_core_components/nan,0.16662091682679112,0.16662091682679112,,binary,3643,607,3036,3643,607,2836,computed,declare4py
+declare_289,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser_file/nan,0.9736480922316771,0.9917638286334056,,binary,3643,3547,96,29504,29261,2325,computed,declare4py
+declare_290,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|os_core_components/nan,0.8597309909415317,0.936591025233761,,binary,3643,3132,511,72403,67812,2740,computed,declare4py
+declare_291,RESPONSE,RESPONSE,os_core_components/nan|browser_file/nan,0.6329947845182542,0.8721868221258134,,binary,3643,2306,1337,29504,25733,2325,computed,declare4py
+declare_292,RESPONSE,RESPONSE,browser_file/nan|os_core_components/nan,0.5885259401592094,0.8222311230197644,,binary,3643,2144,1499,72403,59532,2740,computed,declare4py
+declare_293,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser_file/nan,0.39994510019214935,0.7675234451611122,,binary,3643,1457,2186,72403,55571,2740,computed,declare4py
+declare_294,PRECEDENCE,PRECEDENCE,browser_file/nan|os_core_components/nan,0.8215756244853143,0.9223834056399133,,binary,3643,2993,650,29504,27214,2325,computed,declare4py
+declare_295,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser_file/nan|os_core_components/nan,0.5256656601701895,0.3012472885032538,,binary,3643,1915,1728,29504,8888,2325,computed,declare4py
+declare_296,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|os_core_components/nan,0.4081800713697502,0.17776887698023563,,binary,3643,1487,2156,72403,12871,2740,computed,declare4py
+declare_297,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser_file/nan,0.4693933571232501,0.12781317787418656,,binary,3643,1710,1933,29504,3771,2325,computed,declare4py
+declare_298,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|os_core_components/nan,0.4081800713697502,0.17776887698023563,,binary,3643,1487,2156,72403,12871,2740,computed,declare4py
+declare_299,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser_file/nan,0.4693933571232501,0.23247655483888788,,binary,3643,1710,1933,72403,16832,2740,computed,declare4py
+declare_300,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_301,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_302,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_303,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_304,CHOICE,CHOICE,os_core_components/nan|browser/other browser activity,0.7644798243206149,0.7644798243206149,,binary,3643,2785,858,3643,2785,2785,computed,declare4py
+declare_305,CHOICE,CHOICE,browser/other browser activity|os_core_components/nan,0.7644798243206149,0.7644798243206149,,binary,3643,2785,858,3643,2785,2785,computed,declare4py
+declare_306,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/other browser activity,0.20999176502882239,0.20999176502882239,,binary,3643,765,2878,3643,765,2785,computed,declare4py
+declare_307,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|os_core_components/nan,0.20999176502882239,0.20999176502882239,,binary,3643,765,2878,3643,765,2785,computed,declare4py
+declare_308,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/other browser activity,0.9162777930277244,0.8889642082429501,,binary,3643,3338,305,29504,26228,2325,computed,declare4py
+declare_309,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|os_core_components/nan,0.8737304419434532,0.9182453012406211,,binary,3643,3183,460,26922,24721,2480,computed,declare4py
+declare_310,RESPONSE,RESPONSE,os_core_components/nan|browser/other browser activity,0.5679385122152072,0.7317990780911063,,binary,3643,2069,1574,29504,21591,2325,computed,declare4py
+declare_311,RESPONSE,RESPONSE,browser/other browser activity|os_core_components/nan,0.6675816634641779,0.7905801946363569,,binary,3643,2432,1211,26922,21284,2480,computed,declare4py
+declare_312,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/other browser activity,0.5083722206972275,0.7026595349528267,,binary,3643,1852,1791,26922,18917,2480,computed,declare4py
+declare_313,PRECEDENCE,PRECEDENCE,browser/other browser activity|os_core_components/nan,0.7271479549821576,0.8041960412147505,,binary,3643,2649,994,29504,23727,2325,computed,declare4py
+declare_314,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|os_core_components/nan,0.481471314850398,0.2141065618221258,,binary,3643,1754,1889,29504,6317,2325,computed,declare4py
+declare_315,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|os_core_components/nan,0.4822948119681581,0.20941980536364313,,binary,3643,1757,1886,26922,5638,2480,computed,declare4py
+declare_316,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/other browser activity,0.5396651111721109,0.2682009219088937,,binary,3643,1966,1677,29504,7913,2325,computed,declare4py
+declare_317,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|os_core_components/nan,0.4822948119681581,0.20941980536364313,,binary,3643,1757,1886,26922,5638,2480,computed,declare4py
+declare_318,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/other browser activity,0.5396651111721109,0.2973404650471733,,binary,3643,1966,1677,26922,8005,2480,computed,declare4py
+declare_319,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/other browser activity|os_core_components/nan,0.4822948119681581,0.19580395878524945,,binary,3643,1757,1886,29504,5777,2325,computed,declare4py
+declare_320,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_321,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_322,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_323,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_324,CHOICE,CHOICE,browser/searching|browser_file/nan,0.788086741696404,0.788086741696404,,binary,3643,2871,772,3643,2871,2871,computed,declare4py
+declare_325,CHOICE,CHOICE,browser_file/nan|browser/searching,0.788086741696404,0.788086741696404,,binary,3643,2871,772,3643,2871,2871,computed,declare4py
+declare_326,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser_file/nan,0.26928355750754873,0.26928355750754873,,binary,3643,981,2662,3643,981,2871,computed,declare4py
+declare_327,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/searching,0.26928355750754873,0.26928355750754873,,binary,3643,981,2662,3643,981,2871,computed,declare4py
+declare_328,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser_file/nan,0.9640406258578095,0.9797714435833442,,binary,3643,3512,131,15226,14918,2021,computed,declare4py
+declare_329,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/searching,0.7666758166346418,0.8581550488239438,,binary,3643,2793,850,72403,62133,2740,computed,declare4py
+declare_330,RESPONSE,RESPONSE,browser/searching|browser_file/nan,0.8262421081526214,0.8881518455273874,,binary,3643,3010,633,15226,13523,2021,computed,declare4py
+declare_331,RESPONSE,RESPONSE,browser_file/nan|browser/searching,0.3856711501509745,0.6800408822838833,,binary,3643,1405,2238,72403,49237,2740,computed,declare4py
+declare_332,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/searching|browser_file/nan,0.5742519901180346,0.3986601865230527,,binary,3643,2092,1551,15226,6070,2021,computed,declare4py
+declare_333,PRECEDENCE,PRECEDENCE,browser/searching|browser_file/nan,0.38237716167993413,0.6894327583111197,,binary,3643,1393,2250,72403,49917,2740,computed,declare4py
+declare_334,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/searching,0.8295360966236618,0.8981347694732694,,binary,3643,3022,621,15226,13675,2021,computed,declare4py
+declare_335,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser_file/nan|browser/searching,0.5761734833928082,0.3994483120977276,,binary,3643,2099,1544,15226,6082,2021,computed,declare4py
+declare_336,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/searching,0.516332692835575,0.31995911771611674,,binary,3643,1881,1762,72403,23166,2740,computed,declare4py
+declare_337,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/searching,0.516332692835575,0.31995911771611674,,binary,3643,1881,1762,72403,23166,2740,computed,declare4py
+declare_338,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|browser_file/nan,0.5226461707384024,0.3105672416888803,,binary,3643,1904,1739,72403,22486,2740,computed,declare4py
+declare_339,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_340,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_341,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_342,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_343,CHOICE,CHOICE,browser/searching|browser/other browser activity,0.7298929453746912,0.7298929453746912,,binary,3643,2659,984,3643,2659,2659,computed,declare4py
+declare_344,CHOICE,CHOICE,browser/other browser activity|browser/searching,0.7298929453746912,0.7298929453746912,,binary,3643,2659,984,3643,2659,2659,computed,declare4py
+declare_345,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/other browser activity,0.22426571506999726,0.22426571506999726,,binary,3643,817,2826,3643,817,2659,computed,declare4py
+declare_346,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/searching,0.22426571506999726,0.22426571506999726,,binary,3643,817,2826,3643,817,2659,computed,declare4py
+declare_347,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/other browser activity,0.9508646719736481,0.9512675686326021,,binary,3643,3464,179,15226,14484,2021,computed,declare4py
+declare_348,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/searching,0.8248696129563546,0.8926528489711018,,binary,3643,3005,638,26922,24032,2480,computed,declare4py
+declare_349,RESPONSE,RESPONSE,browser/searching|browser/other browser activity,0.7326379357672248,0.8285826875082096,,binary,3643,2669,974,15226,12616,2021,computed,declare4py
+declare_350,RESPONSE,RESPONSE,browser/other browser activity|browser/searching,0.537469118858084,0.748829953198128,,binary,3643,1958,1685,26922,20160,2480,computed,declare4py
+declare_351,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/searching|browser/other browser activity,0.5682130112544607,0.49225009851569684,,binary,3643,2070,1573,15226,7495,2021,computed,declare4py
+declare_352,PRECEDENCE,PRECEDENCE,browser/searching|browser/other browser activity,0.4197090310183914,0.7074140108461481,,binary,3643,1529,2114,26922,19045,2480,computed,declare4py
+declare_353,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/searching,0.8503980236069174,0.8911073164324183,,binary,3643,3098,545,15226,13568,2021,computed,declare4py
+declare_354,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/searching,0.6085643700247049,0.5204255878103244,,binary,3643,2217,1426,15226,7924,2021,computed,declare4py
+declare_355,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/searching,0.5119407082075212,0.25117004680187205,,binary,3643,1865,1778,26922,6762,2480,computed,declare4py
+declare_356,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/searching,0.5119407082075212,0.25117004680187205,,binary,3643,1865,1778,26922,6762,2480,computed,declare4py
+declare_357,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|browser/other browser activity,0.543508097721658,0.29258598915385187,,binary,3643,1980,1663,26922,7877,2480,computed,declare4py
+declare_358,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_359,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_360,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_361,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_362,CHOICE,CHOICE,browser/searching|os_core_components/nan,0.7279714520999176,0.7279714520999176,,binary,3643,2652,991,3643,2652,2652,computed,declare4py
+declare_363,CHOICE,CHOICE,os_core_components/nan|browser/searching,0.7279714520999176,0.7279714520999176,,binary,3643,2652,991,3643,2652,2652,computed,declare4py
+declare_364,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|os_core_components/nan,0.2629700796047214,0.2629700796047214,,binary,3643,958,2685,3643,958,2652,computed,declare4py
+declare_365,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/searching,0.2629700796047214,0.2629700796047214,,binary,3643,958,2685,3643,958,2652,computed,declare4py
+declare_366,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|os_core_components/nan,0.9102388141641504,0.9300538552476028,,binary,3643,3316,327,15226,14161,2021,computed,declare4py
+declare_367,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/searching,0.8267911062311282,0.8356155097613883,,binary,3643,3012,631,29504,24654,2325,computed,declare4py
+declare_368,RESPONSE,RESPONSE,browser/searching|os_core_components/nan,0.7639308262421082,0.7962695389465388,,binary,3643,2783,860,15226,12124,2021,computed,declare4py
+declare_369,RESPONSE,RESPONSE,os_core_components/nan|browser/searching,0.5080977216579742,0.6327277657266811,,binary,3643,1851,1792,29504,18668,2325,computed,declare4py
+declare_370,PRECEDENCE,PRECEDENCE,browser/searching|os_core_components/nan,0.5951139171012901,0.6799078091106291,,binary,3643,2168,1475,29504,20060,2325,computed,declare4py
+declare_371,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/searching,0.6769146307987922,0.73532116117168,,binary,3643,2466,1177,15226,11196,2021,computed,declare4py
+declare_372,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/searching,0.6137798517705189,0.3672722342733189,,binary,3643,2236,1407,29504,10836,2325,computed,declare4py
+declare_373,NOT_RESPONSE,NOT_RESPONSE,browser/searching|os_core_components/nan,0.5772714795498216,0.20373046105346118,,binary,3643,2103,1540,15226,3102,2021,computed,declare4py
+declare_374,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/searching,0.6137798517705189,0.3672722342733189,,binary,3643,2236,1407,29504,10836,2325,computed,declare4py
+declare_375,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|os_core_components/nan,0.5772714795498216,0.3200921908893709,,binary,3643,2103,1540,29504,9444,2325,computed,declare4py
+declare_376,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/searching,0.6137798517705189,0.26467883882832,,binary,3643,2236,1407,15226,4030,2021,computed,declare4py
+declare_377,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_378,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_379,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_380,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_381,CHOICE,CHOICE,browser_file/nan|browser/Outlook/Email,0.7834202580290969,0.7834202580290969,,binary,3643,2854,789,3643,2854,2854,computed,declare4py
+declare_382,CHOICE,CHOICE,browser/Outlook/Email|browser_file/nan,0.7834202580290969,0.7834202580290969,,binary,3643,2854,789,3643,2854,2854,computed,declare4py
+declare_383,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/Outlook/Email,0.31320340378808675,0.31320340378808675,,binary,3643,1141,2502,3643,1141,2854,computed,declare4py
+declare_384,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser_file/nan,0.31320340378808675,0.31320340378808675,,binary,3643,1141,2502,3643,1141,2854,computed,declare4py
+declare_385,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/Outlook/Email,0.7180894866867966,0.7104263635484718,,binary,3643,2616,1027,72403,51437,2740,computed,declare4py
+declare_386,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser_file/nan,0.9687071095251166,0.9756679389312977,,binary,3643,3529,114,16768,16360,1827,computed,declare4py
+declare_387,RESPONSE,RESPONSE,browser_file/nan|browser/Outlook/Email,0.377710678012627,0.5650042125326299,,binary,3643,1376,2267,72403,40908,2740,computed,declare4py
+declare_388,RESPONSE,RESPONSE,browser/Outlook/Email|browser_file/nan,0.8388690639582761,0.8679031488549618,,binary,3643,3056,587,16768,14553,1827,computed,declare4py
+declare_389,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/Outlook/Email|browser_file/nan,0.5997804007685973,0.32198234732824427,,binary,3643,2185,1458,16768,5399,1827,computed,declare4py
+declare_390,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/Outlook/Email,0.8237716167993412,0.8804866412213741,,binary,3643,3001,642,16768,14764,1827,computed,declare4py
+declare_391,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser_file/nan,0.3928081251715619,0.5704597875778628,,binary,3643,1431,2212,72403,41303,2740,computed,declare4py
+declare_392,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/Outlook/Email,0.5649190227834202,0.4349957874673701,,binary,3643,2058,1585,72403,31495,2740,computed,declare4py
+declare_393,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/Outlook/Email,0.5649190227834202,0.4349957874673701,,binary,3643,2058,1585,72403,31495,2740,computed,declare4py
+declare_394,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|browser_file/nan,0.5646445237441668,0.4295402124221372,,binary,3643,2057,1586,72403,31100,2740,computed,declare4py
+declare_395,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_396,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_397,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_398,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_399,CHOICE,CHOICE,browser/other browser activity|browser/Outlook/Email,0.7180894866867966,0.7180894866867966,,binary,3643,2616,1027,3643,2616,2616,computed,declare4py
+declare_400,CHOICE,CHOICE,browser/Outlook/Email|browser/other browser activity,0.7180894866867966,0.7180894866867966,,binary,3643,2616,1027,3643,2616,2616,computed,declare4py
+declare_401,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/Outlook/Email,0.2539116113093604,0.2539116113093604,,binary,3643,925,2718,3643,925,2616,computed,declare4py
+declare_402,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/other browser activity,0.2539116113093604,0.2539116113093604,,binary,3643,925,2718,3643,925,2616,computed,declare4py
+declare_403,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/Outlook/Email,0.7834202580290969,0.7861971621722011,,binary,3643,2854,789,26922,21166,2480,computed,declare4py
+declare_404,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/other browser activity,0.9626681306615427,0.9631440839694656,,binary,3643,3507,136,16768,16150,1827,computed,declare4py
+declare_405,RESPONSE,RESPONSE,browser/other browser activity|browser/Outlook/Email,0.5102937139720011,0.6483545056087958,,binary,3643,1859,1784,26922,17455,2480,computed,declare4py
+declare_406,RESPONSE,RESPONSE,browser/Outlook/Email|browser/other browser activity,0.7716167993412023,0.8400524809160306,,binary,3643,2811,832,16768,14086,1827,computed,declare4py
+declare_407,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/Outlook/Email|browser/other browser activity,0.5992314026900906,0.44763835877862596,,binary,3643,2183,1460,16768,7506,1827,computed,declare4py
+declare_408,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/Outlook/Email,0.8218501235245677,0.8831106870229007,,binary,3643,2994,649,16768,14808,1827,computed,declare4py
+declare_409,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/other browser activity,0.4600603897886357,0.666109501522918,,binary,3643,1676,1967,26922,17933,2480,computed,declare4py
+declare_410,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/Outlook/Email,0.6091133681032116,0.4585520038167939,,binary,3643,2219,1424,16768,7689,1827,computed,declare4py
+declare_411,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/Outlook/Email,0.559429041998353,0.35164549439120424,,binary,3643,2038,1605,26922,9467,2480,computed,declare4py
+declare_412,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/Outlook/Email,0.559429041998353,0.35164549439120424,,binary,3643,2038,1605,26922,9467,2480,computed,declare4py
+declare_413,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|browser/other browser activity,0.571506999725501,0.33389049847708197,,binary,3643,2082,1561,26922,8989,2480,computed,declare4py
+declare_414,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_415,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_416,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_417,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_418,CHOICE,CHOICE,os_core_components/nan|browser/Outlook/Email,0.7224814713148504,0.7224814713148504,,binary,3643,2632,1011,3643,2632,2632,computed,declare4py
+declare_419,CHOICE,CHOICE,browser/Outlook/Email|os_core_components/nan,0.7224814713148504,0.7224814713148504,,binary,3643,2632,1011,3643,2632,2632,computed,declare4py
+declare_420,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/Outlook/Email,0.3052429316497392,0.3052429316497392,,binary,3643,1112,2531,3643,1112,2632,computed,declare4py
+declare_421,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|os_core_components/nan,0.3052429316497392,0.3052429316497392,,binary,3643,1112,2531,3643,1112,2632,computed,declare4py
+declare_422,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/Outlook/Email,0.7790282734010431,0.6739086225596529,,binary,3643,2838,805,29504,19883,2325,computed,declare4py
+declare_423,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|os_core_components/nan,0.9157287949492177,0.9178196564885496,,binary,3643,3336,307,16768,15390,1827,computed,declare4py
+declare_424,RESPONSE,RESPONSE,os_core_components/nan|browser/Outlook/Email,0.5067252264617074,0.49037418655097614,,binary,3643,1846,1797,29504,14468,2325,computed,declare4py
+declare_425,RESPONSE,RESPONSE,browser/Outlook/Email|os_core_components/nan,0.7707933022234422,0.782800572519084,,binary,3643,2808,835,16768,13126,1827,computed,declare4py
+declare_426,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/Outlook/Email,0.6730716442492451,0.6800453244274809,,binary,3643,2452,1191,16768,11403,1827,computed,declare4py
+declare_427,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|os_core_components/nan,0.6044468844359044,0.5657199023861171,,binary,3643,2202,1441,29504,16691,2325,computed,declare4py
+declare_428,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/Outlook/Email,0.653307713423003,0.5096258134490239,,binary,3643,2380,1263,29504,15036,2325,computed,declare4py
+declare_429,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/Outlook/Email,0.653307713423003,0.5096258134490239,,binary,3643,2380,1263,29504,15036,2325,computed,declare4py
+declare_430,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|os_core_components/nan,0.6200933296733462,0.21719942748091603,,binary,3643,2259,1384,16768,3642,1827,computed,declare4py
+declare_431,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/Outlook/Email,0.653307713423003,0.3199546755725191,,binary,3643,2380,1263,16768,5365,1827,computed,declare4py
+declare_432,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|os_core_components/nan,0.6200933296733462,0.43428009761388287,,binary,3643,2259,1384,29504,12813,2325,computed,declare4py
+declare_433,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_434,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_435,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_436,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_437,CHOICE,CHOICE,browser/searching|browser/Outlook/Email,0.6607191874828439,0.6607191874828439,,binary,3643,2407,1236,3643,2407,2407,computed,declare4py
+declare_438,CHOICE,CHOICE,browser/Outlook/Email|browser/searching,0.6607191874828439,0.6607191874828439,,binary,3643,2407,1236,3643,2407,2407,computed,declare4py
+declare_439,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/Outlook/Email,0.2651660719187483,0.2651660719187483,,binary,3643,966,2677,3643,966,2407,computed,declare4py
+declare_440,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/searching,0.2651660719187483,0.2651660719187483,,binary,3643,966,2677,3643,966,2407,computed,declare4py
+declare_441,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/Outlook/Email,0.8407905572330496,0.7531196637330881,,binary,3643,3063,580,15226,11467,2021,computed,declare4py
+declare_442,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/searching,0.8940433708482021,0.892593034351145,,binary,3643,3257,386,16768,14967,1827,computed,declare4py
+declare_443,RESPONSE,RESPONSE,browser/searching|browser/Outlook/Email,0.6747186384847653,0.6215683698936031,,binary,3643,2458,1185,15226,9464,2021,computed,declare4py
+declare_444,RESPONSE,RESPONSE,browser/Outlook/Email|browser/searching,0.6645621740323909,0.7331822519083969,,binary,3643,2421,1222,16768,12294,1827,computed,declare4py
+declare_445,PRECEDENCE,PRECEDENCE,browser/searching|browser/Outlook/Email,0.6596211913258304,0.7239384541984732,,binary,3643,2403,1240,16768,12139,1827,computed,declare4py
+declare_446,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/searching,0.6796596211913258,0.6391041639301195,,binary,3643,2476,1167,15226,9731,2021,computed,declare4py
+declare_447,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/Outlook/Email,0.6384847653033214,0.37843163010639697,,binary,3643,2326,1317,15226,5762,2021,computed,declare4py
+declare_448,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/searching,0.6491902278342025,0.2668177480916031,,binary,3643,2365,1278,16768,4474,1827,computed,declare4py
+declare_449,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/Outlook/Email,0.6384847653033214,0.37843163010639697,,binary,3643,2326,1317,15226,5762,2021,computed,declare4py
+declare_450,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/searching,0.6491902278342025,0.2668177480916031,,binary,3643,2365,1278,16768,4474,1827,computed,declare4py
+declare_451,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|browser/Outlook/Email,0.6384847653033214,0.2760615458015267,,binary,3643,2326,1317,16768,4629,1827,computed,declare4py
+declare_452,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|browser/searching,0.6491902278342025,0.36089583606988046,,binary,3643,2365,1278,15226,5495,2021,computed,declare4py
+declare_453,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_454,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_455,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_456,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_457,CHOICE,CHOICE,browser/seznam|browser_file/nan,0.7696953060664288,0.7696953060664288,,binary,3643,2804,839,3643,2804,2804,computed,declare4py
+declare_458,CHOICE,CHOICE,browser_file/nan|browser/seznam,0.7696953060664288,0.7696953060664288,,binary,3643,2804,839,3643,2804,2804,computed,declare4py
+declare_459,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser_file/nan,0.4010430963491628,0.4010430963491628,,binary,3643,1461,2182,3643,1461,2804,computed,declare4py
+declare_460,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/seznam,0.4010430963491628,0.4010430963491628,,binary,3643,1461,2182,3643,1461,2804,computed,declare4py
+declare_461,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser_file/nan,0.9824320614877848,0.9767141009055628,,binary,3643,3579,64,10049,9815,1407,computed,declare4py
+declare_462,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/seznam,0.6165248421630525,0.5833321823681339,,binary,3643,2246,1397,72403,42235,2740,computed,declare4py
+declare_463,RESPONSE,RESPONSE,browser/seznam|browser_file/nan,0.8745539390612133,0.8603841178226689,,binary,3643,3186,457,10049,8646,1407,computed,declare4py
+declare_464,RESPONSE,RESPONSE,browser_file/nan|browser/seznam,0.35575075487235797,0.44257834620112424,,binary,3643,1296,2347,72403,32044,2740,computed,declare4py
+declare_465,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/seznam,0.8874553939061214,0.8690416956911136,,binary,3643,3233,410,10049,8733,1407,computed,declare4py
+declare_466,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser_file/nan|browser/seznam,0.71836398572605,0.3767539058612797,,binary,3643,2617,1026,10049,3786,1407,computed,declare4py
+declare_467,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/seznam,0.6513862201482294,0.5574216537988758,,binary,3643,2373,1270,72403,40359,2740,computed,declare4py
+declare_468,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/seznam,0.6513862201482294,0.5574216537988758,,binary,3643,2373,1270,72403,40359,2740,computed,declare4py
+declare_469,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser_file/nan,0.6620916826791107,0.5576978854467356,,binary,3643,2412,1231,72403,40379,2740,computed,declare4py
+declare_470,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_471,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_472,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_473,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_474,CHOICE,CHOICE,browser/seznam|browser/other browser activity,0.7073840241559155,0.7073840241559155,,binary,3643,2577,1066,3643,2577,2577,computed,declare4py
+declare_475,CHOICE,CHOICE,browser/other browser activity|browser/seznam,0.7073840241559155,0.7073840241559155,,binary,3643,2577,1066,3643,2577,2577,computed,declare4py
+declare_476,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/other browser activity,0.3477902827340104,0.3477902827340104,,binary,3643,1267,2376,3643,1267,2577,computed,declare4py
+declare_477,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/seznam,0.3477902827340104,0.3477902827340104,,binary,3643,1267,2376,3643,1267,2577,computed,declare4py
+declare_478,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/other browser activity,0.9733735931924238,0.9523335655289084,,binary,3643,3546,97,10049,9570,1407,computed,declare4py
+declare_479,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/seznam,0.6788361240735657,0.6834559096649581,,binary,3643,2473,1170,26922,18400,2480,computed,declare4py
+declare_480,RESPONSE,RESPONSE,browser/seznam|browser/other browser activity,0.8303595937414219,0.8255547815703055,,binary,3643,3025,618,10049,8296,1407,computed,declare4py
+declare_481,RESPONSE,RESPONSE,browser/other browser activity|browser/seznam,0.4622563821026626,0.5427159943540599,,binary,3643,1684,1959,26922,14611,2480,computed,declare4py
+declare_482,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/seznam|browser/other browser activity,0.715344496294263,0.4775599562145487,,binary,3643,2606,1037,10049,4799,1407,computed,declare4py
+declare_483,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/seznam,0.9003568487510294,0.8882475868245596,,binary,3643,3280,363,10049,8926,1407,computed,declare4py
+declare_484,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/seznam,0.7362064232775185,0.5029356154841278,,binary,3643,2682,961,10049,5054,1407,computed,declare4py
+declare_485,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/seznam,0.6544057095800164,0.45728400564594013,,binary,3643,2384,1259,26922,12311,2480,computed,declare4py
+declare_486,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/seznam,0.6544057095800164,0.45728400564594013,,binary,3643,2384,1259,26922,12311,2480,computed,declare4py
+declare_487,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/other browser activity,0.6741696404062586,0.45821261421885445,,binary,3643,2456,1187,26922,12336,2480,computed,declare4py
+declare_488,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_489,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_490,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_491,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_492,CHOICE,CHOICE,browser/seznam|os_core_components/nan,0.6917375789184738,0.6917375789184738,,binary,3643,2520,1123,3643,2520,2520,computed,declare4py
+declare_493,CHOICE,CHOICE,os_core_components/nan|browser/seznam,0.6917375789184738,0.6917375789184738,,binary,3643,2520,1123,3643,2520,2520,computed,declare4py
+declare_494,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|os_core_components/nan,0.3590447433433983,0.3590447433433983,,binary,3643,1308,2335,3643,1308,2520,computed,declare4py
+declare_495,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/seznam,0.3590447433433983,0.3590447433433983,,binary,3643,1308,2335,3643,1308,2520,computed,declare4py
+declare_496,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|os_core_components/nan,0.9464726873455943,0.9294457159916409,,binary,3643,3448,195,10049,9340,1407,computed,declare4py
+declare_497,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/seznam,0.6944825693110074,0.5688720173535792,,binary,3643,2530,1113,29504,16784,2325,computed,declare4py
+declare_498,RESPONSE,RESPONSE,browser/seznam|os_core_components/nan,0.838045566840516,0.8046571798188874,,binary,3643,3053,590,10049,8086,1407,computed,declare4py
+declare_499,RESPONSE,RESPONSE,os_core_components/nan|browser/seznam,0.4702168542410102,0.3873034164859002,,binary,3643,1713,1930,29504,11427,2325,computed,declare4py
+declare_500,PRECEDENCE,PRECEDENCE,browser/seznam|os_core_components/nan,0.5382926159758441,0.46461496746203906,,binary,3643,1961,1682,29504,13708,2325,computed,declare4py
+declare_501,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/seznam,0.7699698051056821,0.7206687232560454,,binary,3643,2805,838,10049,7242,1407,computed,declare4py
+declare_502,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/seznam,0.7208344770793302,0.6126965835140998,,binary,3643,2626,1017,29504,18077,2325,computed,declare4py
+declare_503,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/seznam,0.7208344770793302,0.6126965835140998,,binary,3643,2626,1017,29504,18077,2325,computed,declare4py
+declare_504,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|os_core_components/nan,0.6986000548998078,0.535385032537961,,binary,3643,2545,1098,29504,15796,2325,computed,declare4py
+declare_505,NOT_PRECEDENCE,NOT_PRECEDENCE,os_core_components/nan|browser/seznam,0.7208344770793302,0.27933127674395464,,binary,3643,2626,1017,10049,2807,1407,computed,declare4py
+declare_506,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_507,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_508,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_509,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_510,CHOICE,CHOICE,browser/seznam|browser/Outlook/Email,0.5608015371946198,0.5608015371946198,,binary,3643,2043,1600,3643,2043,2043,computed,declare4py
+declare_511,CHOICE,CHOICE,browser/Outlook/Email|browser/seznam,0.5608015371946198,0.5608015371946198,,binary,3643,2043,1600,3643,2043,2043,computed,declare4py
+declare_512,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/Outlook/Email,0.23387318144386496,0.23387318144386496,,binary,3643,852,2791,3643,852,2043,computed,declare4py
+declare_513,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/seznam,0.23387318144386496,0.23387318144386496,,binary,3643,852,2791,3643,852,2043,computed,declare4py
+declare_514,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/Outlook/Email,0.9407082075212737,0.9344213354562643,,binary,3643,3427,216,10049,9390,1407,computed,declare4py
+declare_515,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/seznam,0.8254186110348614,0.7761211832061069,,binary,3643,3007,636,16768,13014,1827,computed,declare4py
+declare_516,RESPONSE,RESPONSE,browser/seznam|browser/Outlook/Email,0.7897337359319242,0.7888347099213852,,binary,3643,2877,766,10049,7927,1407,computed,declare4py
+declare_517,RESPONSE,RESPONSE,browser/Outlook/Email|browser/seznam,0.6494647268734559,0.6226145038167938,,binary,3643,2366,1277,16768,10440,1827,computed,declare4py
+declare_518,PRECEDENCE,PRECEDENCE,browser/seznam|browser/Outlook/Email,0.6851496019763931,0.6628101145038168,,binary,3643,2496,1147,16768,11114,1827,computed,declare4py
+declare_519,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/seznam,0.7540488608289871,0.8019703453079908,,binary,3643,2747,896,10049,8059,1407,computed,declare4py
+declare_520,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/seznam,0.7136975020587428,0.3773854961832061,,binary,3643,2600,1043,16768,6328,1827,computed,declare4py
+declare_521,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/seznam,0.7136975020587428,0.3773854961832061,,binary,3643,2600,1043,16768,6328,1827,computed,declare4py
+declare_522,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/Outlook/Email,0.6969530606642876,0.33718988549618323,,binary,3643,2539,1104,16768,5654,1827,computed,declare4py
+declare_523,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_524,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_525,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_526,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_527,CHOICE,CHOICE,browser/seznam|browser/searching,0.640406258578095,0.640406258578095,,binary,3643,2333,1310,3643,2333,2333,computed,declare4py
+declare_528,CHOICE,CHOICE,browser/searching|browser/seznam,0.640406258578095,0.640406258578095,,binary,3643,2333,1310,3643,2333,2333,computed,declare4py
+declare_529,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/searching,0.3398298105956629,0.3398298105956629,,binary,3643,1238,2405,3643,1238,2333,computed,declare4py
+declare_530,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/seznam,0.3398298105956629,0.3398298105956629,,binary,3643,1238,2405,3643,1238,2333,computed,declare4py
+declare_531,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/searching,0.9143562997529509,0.8415762762463926,,binary,3643,3331,312,10049,8457,1407,computed,declare4py
+declare_532,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/seznam,0.7458138896513862,0.5939182976487587,,binary,3643,2717,926,15226,9043,2021,computed,declare4py
+declare_533,RESPONSE,RESPONSE,browser/seznam|browser/searching,0.7576173483392808,0.6543934719872624,,binary,3643,2760,883,10049,6576,1407,computed,declare4py
+declare_534,RESPONSE,RESPONSE,browser/searching|browser/seznam,0.6019763930826242,0.4559963220806515,,binary,3643,2193,1450,15226,6943,2021,computed,declare4py
+declare_535,PRECEDENCE,PRECEDENCE,browser/seznam|browser/searching,0.6140543508097722,0.46565086037041903,,binary,3643,2237,1406,15226,7090,2021,computed,declare4py
+declare_536,PRECEDENCE,PRECEDENCE,browser/searching|browser/seznam,0.7455393906121328,0.6497163896905165,,binary,3643,2716,927,10049,6529,1407,computed,declare4py
+declare_537,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/seznam,0.728245951139171,0.5440036779193484,,binary,3643,2653,990,15226,8283,2021,computed,declare4py
+declare_538,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/searching,0.7315399396102114,0.3456065280127376,,binary,3643,2665,978,10049,3473,1407,computed,declare4py
+declare_539,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/seznam,0.728245951139171,0.5440036779193484,,binary,3643,2653,990,15226,8283,2021,computed,declare4py
+declare_540,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/searching,0.7315399396102114,0.534349139629581,,binary,3643,2665,978,15226,8136,2021,computed,declare4py
+declare_541,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|browser/seznam,0.728245951139171,0.3502836103094835,,binary,3643,2653,990,10049,3520,1407,computed,declare4py
+declare_542,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_543,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_544,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_545,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_546,CHOICE,CHOICE,browser/youtube|browser/seznam,0.6250343123799067,0.6250343123799067,,binary,3643,2277,1366,3643,2277,2277,computed,declare4py
+declare_547,CHOICE,CHOICE,browser/seznam|browser/youtube,0.6250343123799067,0.6250343123799067,,binary,3643,2277,1366,3643,2277,2277,computed,declare4py
+declare_548,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/seznam,0.4531979138073017,0.4531979138073017,,binary,3643,1651,1992,3643,1651,2277,computed,declare4py
+declare_549,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/youtube,0.4531979138073017,0.4531979138073017,,binary,3643,1651,1992,3643,1651,2277,computed,declare4py
+declare_550,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/seznam,0.7611858358495746,0.26344942186526343,,binary,3643,2773,870,14443,3805,1496,computed,declare4py
+declare_551,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/youtube,0.7856162503431238,0.5095034331774306,,binary,3643,2862,781,10049,5120,1407,computed,declare4py
+declare_552,PRECEDENCE,PRECEDENCE,browser/seznam|browser/youtube,0.7046390337633819,0.21435989752821435,,binary,3643,2567,1076,14443,3096,1496,computed,declare4py
+declare_553,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/seznam,0.8605544880592918,0.821089801287821,,binary,3643,3135,508,14443,11859,1496,computed,declare4py
+declare_554,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|browser/youtube,0.8471040351358771,0.6223504826350881,,binary,3643,3086,557,10049,6254,1407,computed,declare4py
+declare_555,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/seznam,0.8605544880592918,0.821089801287821,,binary,3643,3135,508,14443,11859,1496,computed,declare4py
+declare_556,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/youtube,0.8471040351358771,0.6223504826350881,,binary,3643,3086,557,10049,6254,1407,computed,declare4py
+declare_557,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/seznam,0.8605544880592918,0.6774803463031147,,binary,3643,3135,508,10049,6808,1407,computed,declare4py
+declare_558,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/youtube,0.8471040351358771,0.7856401024717856,,binary,3643,3086,557,14443,11347,1496,computed,declare4py
+declare_559,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_560,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_561,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_562,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_563,CHOICE,CHOICE,os_management/nan|browser_file/nan,0.7647543233598683,0.7647543233598683,,binary,3643,2786,857,3643,2786,2786,computed,declare4py
+declare_564,CHOICE,CHOICE,browser_file/nan|os_management/nan,0.7647543233598683,0.7647543233598683,,binary,3643,2786,857,3643,2786,2786,computed,declare4py
+declare_565,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser_file/nan,0.5015097447158935,0.5015097447158935,,binary,3643,1827,1816,3643,1827,2786,computed,declare4py
+declare_566,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|os_management/nan,0.5015097447158935,0.5015097447158935,,binary,3643,1827,1816,3643,1827,2786,computed,declare4py
+declare_567,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser_file/nan,0.9873730441943454,0.976657824933687,,binary,3643,3597,46,3770,3682,1005,computed,declare4py
+declare_568,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|os_management/nan,0.5111172110897612,0.4950623592945044,,binary,3643,1862,1781,72403,35844,2740,computed,declare4py
+declare_569,RESPONSE,RESPONSE,os_management/nan|browser_file/nan,0.9475706835026078,0.9175066312997348,,binary,3643,3452,191,3770,3459,1005,computed,declare4py
+declare_570,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,os_management/nan|browser_file/nan,0.8693384573153994,0.5347480106100796,,binary,3643,3167,476,3770,2016,1005,computed,declare4py
+declare_571,PRECEDENCE,PRECEDENCE,browser_file/nan|os_management/nan,0.925061762283832,0.8944297082228116,,binary,3643,3370,273,3770,3372,1005,computed,declare4py
+declare_572,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser_file/nan|os_management/nan,0.853143013999451,0.5129973474801061,,binary,3643,3108,535,3770,1934,1005,computed,declare4py
+declare_573,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|os_management/nan,0.7688718089486687,0.7062276425010013,,binary,3643,2801,842,72403,51133,2740,computed,declare4py
+declare_574,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|os_management/nan,0.7688718089486687,0.7062276425010013,,binary,3643,2801,842,72403,51133,2740,computed,declare4py
+declare_575,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser_file/nan,0.7537743617897338,0.6591439581232822,,binary,3643,2746,897,72403,47724,2740,computed,declare4py
+declare_576,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_577,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_578,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_579,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_580,CHOICE,CHOICE,os_management/nan|browser/other browser activity,0.7180894866867966,0.7180894866867966,,binary,3643,2616,1027,3643,2616,2616,computed,declare4py
+declare_581,CHOICE,CHOICE,browser/other browser activity|os_management/nan,0.7180894866867966,0.7180894866867966,,binary,3643,2616,1027,3643,2616,2616,computed,declare4py
+declare_582,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/other browser activity,0.4795498215756245,0.4795498215756245,,binary,3643,1747,1896,3643,1747,2616,computed,declare4py
+declare_583,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|os_management/nan,0.4795498215756245,0.4795498215756245,,binary,3643,1747,1896,3643,1747,2616,computed,declare4py
+declare_584,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/other browser activity,0.9626681306615427,0.8355437665782494,,binary,3643,3507,136,3770,3150,1005,computed,declare4py
+declare_585,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|os_management/nan,0.5577820477628328,0.4143451452343808,,binary,3643,2032,1611,26922,11155,2480,computed,declare4py
+declare_586,RESPONSE,RESPONSE,os_management/nan|browser/other browser activity,0.8984353554762559,0.7114058355437666,,binary,3643,3273,370,3770,2682,1005,computed,declare4py
+declare_587,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,os_management/nan|browser/other browser activity,0.8328300850947021,0.336604774535809,,binary,3643,3034,609,3770,1269,1005,computed,declare4py
+declare_588,PRECEDENCE,PRECEDENCE,browser/other browser activity|os_management/nan,0.8855339006313477,0.686737400530504,,binary,3643,3226,417,3770,2589,1005,computed,declare4py
+declare_589,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|os_management/nan,0.8245951139171013,0.32413793103448274,,binary,3643,3004,639,3770,1222,1005,computed,declare4py
+declare_590,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|os_management/nan,0.799341202305792,0.7547359037218632,,binary,3643,2912,731,26922,20319,2480,computed,declare4py
+declare_591,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|os_management/nan,0.799341202305792,0.7547359037218632,,binary,3643,2912,731,26922,20319,2480,computed,declare4py
+declare_592,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/other browser activity,0.7905572330496843,0.7309263799123393,,binary,3643,2880,763,26922,19678,2480,computed,declare4py
+declare_593,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_594,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_595,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_596,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_597,CHOICE,CHOICE,os_management/nan|os_core_components/nan,0.6774636288772989,0.6774636288772989,,binary,3643,2468,1175,3643,2468,2468,computed,declare4py
+declare_598,CHOICE,CHOICE,os_core_components/nan|os_management/nan,0.6774636288772989,0.6774636288772989,,binary,3643,2468,1175,3643,2468,2468,computed,declare4py
+declare_599,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|os_core_components/nan,0.44084545704090033,0.44084545704090033,,binary,3643,1606,2037,3643,1606,2468,computed,declare4py
+declare_600,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|os_management/nan,0.44084545704090033,0.44084545704090033,,binary,3643,1606,2037,3643,1606,2468,computed,declare4py
+declare_601,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|os_core_components/nan,0.9607466373867691,0.9026525198938992,,binary,3643,3500,143,3770,3403,1005,computed,declare4py
+declare_602,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|os_management/nan,0.5984079055723305,0.4242136659436009,,binary,3643,2180,1463,29504,12516,2325,computed,declare4py
+declare_603,RESPONSE,RESPONSE,os_management/nan|os_core_components/nan,0.9135328026351908,0.8076923076923077,,binary,3643,3328,315,3770,3045,1005,computed,declare4py
+declare_604,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,os_management/nan|os_core_components/nan,0.8298105956629152,0.34350132625994695,,binary,3643,3023,620,3770,1295,1005,computed,declare4py
+declare_605,PRECEDENCE,PRECEDENCE,os_management/nan|os_core_components/nan,0.4644523744166895,0.2915536876355748,,binary,3643,1692,1951,29504,8602,2325,computed,declare4py
+declare_606,PRECEDENCE,PRECEDENCE,os_core_components/nan|os_management/nan,0.8580839967060115,0.7084880636604775,,binary,3643,3126,517,3770,2671,1005,computed,declare4py
+declare_607,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|os_management/nan,0.8234971177600878,0.7575244034707158,,binary,3643,3000,643,29504,22350,2325,computed,declare4py
+declare_608,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|os_management/nan,0.8234971177600878,0.7575244034707158,,binary,3643,3000,643,29504,22350,2325,computed,declare4py
+declare_609,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|os_core_components/nan,0.7869887455393906,0.7084463123644251,,binary,3643,2867,776,29504,20902,2325,computed,declare4py
+declare_610,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_611,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_612,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_613,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_614,CHOICE,CHOICE,os_management/nan|browser/searching,0.6203678287125995,0.6203678287125995,,binary,3643,2260,1383,3643,2260,2260,computed,declare4py
+declare_615,CHOICE,CHOICE,browser/searching|os_management/nan,0.6203678287125995,0.6203678287125995,,binary,3643,2260,1383,3643,2260,2260,computed,declare4py
+declare_616,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/searching,0.41010156464452374,0.41010156464452374,,binary,3643,1494,2149,3643,1494,2260,computed,declare4py
+declare_617,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|os_management/nan,0.41010156464452374,0.41010156464452374,,binary,3643,1494,2149,3643,1494,2260,computed,declare4py
+declare_618,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/searching,0.9343947296184464,0.7360742705570292,,binary,3643,3404,239,3770,2775,1005,computed,declare4py
+declare_619,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|os_management/nan,0.6555037057370299,0.4583606988046762,,binary,3643,2388,1255,15226,6979,2021,computed,declare4py
+declare_620,RESPONSE,RESPONSE,os_management/nan|browser/searching,0.8611034861377985,0.5429708222811671,,binary,3643,3137,506,3770,2047,1005,computed,declare4py
+declare_621,PRECEDENCE,PRECEDENCE,browser/searching|os_management/nan,0.8418885533900632,0.5541114058355437,,binary,3643,3067,576,3770,2089,1005,computed,declare4py
+declare_622,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|os_management/nan,0.8402415591545429,0.7226454748456588,,binary,3643,3061,582,15226,11003,2021,computed,declare4py
+declare_623,NOT_RESPONSE,NOT_RESPONSE,browser/searching|os_management/nan,0.8402415591545429,0.7226454748456588,,binary,3643,3061,582,15226,11003,2021,computed,declare4py
+declare_624,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/searching,0.8226736206423277,0.6980165506370681,,binary,3643,2997,646,15226,10628,2021,computed,declare4py
+declare_625,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/searching|os_management/nan,0.8402415591545429,0.44588859416445625,,binary,3643,3061,582,3770,1681,1005,computed,declare4py
+declare_626,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_627,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_628,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_629,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_630,CHOICE,CHOICE,os_management/nan|browser/Outlook/Email,0.5888004391984628,0.5888004391984628,,binary,3643,2145,1498,3643,2145,2145,computed,declare4py
+declare_631,CHOICE,CHOICE,browser/Outlook/Email|os_management/nan,0.5888004391984628,0.5888004391984628,,binary,3643,2145,1498,3643,2145,2145,computed,declare4py
+declare_632,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/Outlook/Email,0.4002195992314027,0.4002195992314027,,binary,3643,1458,2185,3643,1458,2145,computed,declare4py
+declare_633,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|os_management/nan,0.4002195992314027,0.4002195992314027,,binary,3643,1458,2185,3643,1458,2145,computed,declare4py
+declare_634,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/Outlook/Email,0.9127093055174307,0.6310344827586207,,binary,3643,3325,318,3770,2379,1005,computed,declare4py
+declare_635,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|os_management/nan,0.6870710952511666,0.5147304389312977,,binary,3643,2503,1140,16768,8631,1827,computed,declare4py
+declare_636,RESPONSE,RESPONSE,os_management/nan|browser/Outlook/Email,0.8520450178424376,0.5209549071618037,,binary,3643,3104,539,3770,1964,1005,computed,declare4py
+declare_637,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|os_management/nan,0.8479275322536372,0.5053050397877984,,binary,3643,3089,554,3770,1905,1005,computed,declare4py
+declare_638,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|os_management/nan,0.8427120505078233,0.6794489503816794,,binary,3643,3070,573,16768,11393,1827,computed,declare4py
+declare_639,NOT_RESPONSE,NOT_RESPONSE,os_management/nan|browser/Outlook/Email,0.8413395553115565,0.4790450928381963,,binary,3643,3065,578,3770,1806,1005,computed,declare4py
+declare_640,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|os_management/nan,0.8427120505078233,0.6794489503816794,,binary,3643,3070,573,16768,11393,1827,computed,declare4py
+declare_641,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/Outlook/Email,0.8413395553115565,0.6808206106870229,,binary,3643,3065,578,16768,11416,1827,computed,declare4py
+declare_642,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/Outlook/Email|os_management/nan,0.8427120505078233,0.4946949602122016,,binary,3643,3070,573,3770,1865,1005,computed,declare4py
+declare_643,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_644,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_645,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_646,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_647,CHOICE,CHOICE,browser/seznam|os_management/nan,0.512489706286028,0.512489706286028,,binary,3643,1867,1776,3643,1867,1867,computed,declare4py
+declare_648,CHOICE,CHOICE,os_management/nan|browser/seznam,0.512489706286028,0.512489706286028,,binary,3643,1867,1776,3643,1867,1867,computed,declare4py
+declare_649,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|os_management/nan,0.3628877298929454,0.3628877298929454,,binary,3643,1322,2321,3643,1322,1867,computed,declare4py
+declare_650,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/seznam,0.3628877298929454,0.3628877298929454,,binary,3643,1322,2321,3643,1322,1867,computed,declare4py
+declare_651,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|os_management/nan,0.7633818281636015,0.4950741367300229,,binary,3643,2781,862,10049,4975,1407,computed,declare4py
+declare_652,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/seznam,0.8737304419434532,0.5204244031830239,,binary,3643,3183,460,3770,1962,1005,computed,declare4py
+declare_653,RESPONSE,RESPONSE,os_management/nan|browser/seznam,0.8265166071918748,0.4023872679045093,,binary,3643,3011,632,3770,1517,1005,computed,declare4py
+declare_654,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|os_management/nan,0.8841614054350809,0.7142999303413275,,binary,3643,3221,422,10049,7178,1407,computed,declare4py
+declare_655,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_management/nan|browser/seznam,0.8734559429041998,0.5976127320954907,,binary,3643,3182,461,3770,2253,1005,computed,declare4py
+declare_656,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|os_management/nan,0.8841614054350809,0.7142999303413275,,binary,3643,3221,422,10049,7178,1407,computed,declare4py
+declare_657,NOT_RESPONSE,NOT_RESPONSE,os_management/nan|browser/seznam,0.8734559429041998,0.5976127320954907,,binary,3643,3182,461,3770,2253,1005,computed,declare4py
+declare_658,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|os_management/nan,0.8841614054350809,0.5846153846153846,,binary,3643,3221,422,3770,2204,1005,computed,declare4py
+declare_659,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/seznam,0.8734559429041998,0.6797691312568415,,binary,3643,3182,461,10049,6831,1407,computed,declare4py
+declare_660,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_661,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_662,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_663,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_664,CHOICE,CHOICE,os_management/nan|browser/facebook,0.509470216854241,0.509470216854241,,binary,3643,1856,1787,3643,1856,1856,computed,declare4py
+declare_665,CHOICE,CHOICE,browser/facebook|os_management/nan,0.509470216854241,0.509470216854241,,binary,3643,1856,1787,3643,1856,1856,computed,declare4py
+declare_666,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/facebook,0.3867691463079879,0.3867691463079879,,binary,3643,1409,2234,3643,1409,1856,computed,declare4py
+declare_667,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|os_management/nan,0.3867691463079879,0.3867691463079879,,binary,3643,1409,2234,3643,1409,1856,computed,declare4py
+declare_668,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/facebook,0.8468295360966237,0.47771883289124667,,binary,3643,3085,558,3770,1801,1005,computed,declare4py
+declare_669,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|os_management/nan,0.7664013175953884,0.4138430875158543,,binary,3643,2792,851,11038,4568,1298,computed,declare4py
+declare_670,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_management/nan|browser/facebook,0.8934943727696953,0.6554376657824934,,binary,3643,3255,388,3770,2471,1005,computed,declare4py
+declare_671,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|os_management/nan,0.9102388141641504,0.7602826599021562,,binary,3643,3316,327,11038,8392,1298,computed,declare4py
+declare_672,NOT_RESPONSE,NOT_RESPONSE,os_management/nan|browser/facebook,0.8934943727696953,0.6554376657824934,,binary,3643,3255,388,3770,2471,1005,computed,declare4py
+declare_673,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|os_management/nan,0.9102388141641504,0.7602826599021562,,binary,3643,3316,327,11038,8392,1298,computed,declare4py
+declare_674,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/facebook,0.8934943727696953,0.7277586519296975,,binary,3643,3255,388,11038,8033,1298,computed,declare4py
+declare_675,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|os_management/nan,0.9102388141641504,0.6596816976127321,,binary,3643,3316,327,3770,2487,1005,computed,declare4py
+declare_676,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_677,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_678,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_679,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_680,CHOICE,CHOICE,browser/youtube|os_management/nan,0.5758989843535548,0.5758989843535548,,binary,3643,2098,1545,3643,2098,2098,computed,declare4py
+declare_681,CHOICE,CHOICE,os_management/nan|browser/youtube,0.5758989843535548,0.5758989843535548,,binary,3643,2098,1545,3643,2098,2098,computed,declare4py
+declare_682,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|os_management/nan,0.4652758715344496,0.4652758715344496,,binary,3643,1695,1948,3643,1695,2098,computed,declare4py
+declare_683,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_management/nan|browser/youtube,0.4652758715344496,0.4652758715344496,,binary,3643,1695,1948,3643,1695,2098,computed,declare4py
+declare_684,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|os_management/nan,0.6999725500960746,0.17143252786817142,,binary,3643,2550,1093,14443,2476,1496,computed,declare4py
+declare_685,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_management/nan|browser/youtube,0.8347515783694757,0.4,,binary,3643,3041,602,3770,1508,1005,computed,declare4py
+declare_686,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|os_management/nan,0.9267087565193521,0.9022363774839023,,binary,3643,3376,267,14443,13031,1496,computed,declare4py
+declare_687,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_management/nan|browser/youtube,0.9047488333790832,0.706366047745358,,binary,3643,3296,347,3770,2663,1005,computed,declare4py
+declare_688,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|os_management/nan,0.9267087565193521,0.9022363774839023,,binary,3643,3376,267,14443,13031,1496,computed,declare4py
+declare_689,NOT_RESPONSE,NOT_RESPONSE,os_management/nan|browser/youtube,0.9047488333790832,0.706366047745358,,binary,3643,3296,347,3770,2663,1005,computed,declare4py
+declare_690,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|os_management/nan,0.9267087565193521,0.7318302387267904,,binary,3643,3376,267,3770,2759,1005,computed,declare4py
+declare_691,NOT_PRECEDENCE,NOT_PRECEDENCE,os_management/nan|browser/youtube,0.9047488333790832,0.8775185210828775,,binary,3643,3296,347,14443,12674,1496,computed,declare4py
+declare_692,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_693,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_management/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_694,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|os_management/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_695,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_management/nan|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_696,CHOICE,CHOICE,browser/other browser activity|browser/survey,0.6928355750754872,0.6928355750754872,,binary,3643,2524,1119,3643,2524,2524,computed,declare4py
+declare_697,CHOICE,CHOICE,browser/survey|browser/other browser activity,0.6928355750754872,0.6928355750754872,,binary,3643,2524,1119,3643,2524,2524,computed,declare4py
+declare_698,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/survey,0.4770793302223442,0.4770793302223442,,binary,3643,1738,1905,3643,1738,2524,computed,declare4py
+declare_699,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/other browser activity,0.4770793302223442,0.4770793302223442,,binary,3643,1738,1905,3643,1738,2524,computed,declare4py
+declare_700,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/survey,0.5349986275048038,0.4624470693113439,,binary,3643,1949,1694,26922,12450,2480,computed,declare4py
+declare_701,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/other browser activity,0.9879220422728521,0.986946287181682,,binary,3643,3599,44,4673,4612,830,computed,declare4py
+declare_702,RESPONSE,RESPONSE,browser/survey|browser/other browser activity,0.9426297007960472,0.9039161138454954,,binary,3643,3434,209,4673,4224,830,computed,declare4py
+declare_703,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/survey,0.9434531979138073,0.9291675583137171,,binary,3643,3437,206,4673,4342,830,computed,declare4py
+declare_704,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/survey,0.8067526763656327,0.692704851051185,,binary,3643,2939,704,26922,18649,2480,computed,declare4py
+declare_705,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/survey,0.8067526763656327,0.692704851051185,,binary,3643,2939,704,26922,18649,2480,computed,declare4py
+declare_706,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/other browser activity,0.8004391984628054,0.662357922888344,,binary,3643,2916,727,26922,17832,2480,computed,declare4py
+declare_707,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_708,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_709,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_710,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_711,CHOICE,CHOICE,browser_file/nan|browser/survey,0.7669503156738952,0.7669503156738952,,binary,3643,2794,849,3643,2794,2794,computed,declare4py
+declare_712,CHOICE,CHOICE,browser/survey|browser_file/nan,0.7669503156738952,0.7669503156738952,,binary,3643,2794,849,3643,2794,2794,computed,declare4py
+declare_713,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/survey,0.5539390612132857,0.5539390612132857,,binary,3643,2018,1625,3643,2018,2794,computed,declare4py
+declare_714,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser_file/nan,0.5539390612132857,0.5539390612132857,,binary,3643,2018,1625,3643,2018,2794,computed,declare4py
+declare_715,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/survey,0.4608838869063958,0.3532588428656271,,binary,3643,1679,1964,72403,25577,2740,computed,declare4py
+declare_716,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser_file/nan,0.9851770518803185,0.9711106355660175,,binary,3643,3589,54,4673,4538,830,computed,declare4py
+declare_717,RESPONSE,RESPONSE,browser/survey|browser_file/nan,0.9453746911885809,0.8848705328482773,,binary,3643,3444,199,4673,4135,830,computed,declare4py
+declare_718,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/survey,0.9135328026351908,0.8106141664883373,,binary,3643,3328,315,4673,3788,830,computed,declare4py
+declare_719,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/survey,0.8229481196815811,0.8189854011574106,,binary,3643,2998,645,72403,59297,2740,computed,declare4py
+declare_720,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/survey,0.8229481196815811,0.8189854011574106,,binary,3643,2998,645,72403,59297,2740,computed,declare4py
+declare_721,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser_file/nan,0.8020861926983256,0.7487258815242462,,binary,3643,2922,721,72403,54210,2740,computed,declare4py
+declare_722,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_723,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_724,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_725,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_726,CHOICE,CHOICE,browser/Outlook/Email|browser/survey,0.5286851496019764,0.5286851496019764,,binary,3643,1926,1717,3643,1926,1926,computed,declare4py
+declare_727,CHOICE,CHOICE,browser/survey|browser/Outlook/Email,0.5286851496019764,0.5286851496019764,,binary,3643,1926,1717,3643,1926,1926,computed,declare4py
+declare_728,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/survey,0.3280263519077683,0.3280263519077683,,binary,3643,1195,2448,3643,1195,1926,computed,declare4py
+declare_729,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/Outlook/Email,0.3280263519077683,0.3280263519077683,,binary,3643,1195,2448,3643,1195,1926,computed,declare4py
+declare_730,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/survey,0.6991490529783145,0.5322041984732825,,binary,3643,2547,1096,16768,8924,1827,computed,declare4py
+declare_731,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/Outlook/Email,0.9728245951139171,0.9355874170768244,,binary,3643,3544,99,4673,4372,830,computed,declare4py
+declare_732,RESPONSE,RESPONSE,browser/survey|browser/Outlook/Email,0.9343947296184464,0.8752407447036166,,binary,3643,3404,239,4673,4090,830,computed,declare4py
+declare_733,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/survey,0.9308262421081526,0.8790926599614809,,binary,3643,3391,252,4673,4108,830,computed,declare4py
+declare_734,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/survey,0.8232226187208345,0.6326932251908397,,binary,3643,2999,644,16768,10609,1827,computed,declare4py
+declare_735,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/survey,0.8232226187208345,0.6326932251908397,,binary,3643,2999,644,16768,10609,1827,computed,declare4py
+declare_736,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/Outlook/Email,0.8097721657974197,0.5969704198473282,,binary,3643,2950,693,16768,10010,1827,computed,declare4py
+declare_737,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_738,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_739,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_740,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_741,CHOICE,CHOICE,os_core_components/nan|browser/survey,0.6738951413670052,0.6738951413670052,,binary,3643,2455,1188,3643,2455,2455,computed,declare4py
+declare_742,CHOICE,CHOICE,browser/survey|os_core_components/nan,0.6738951413670052,0.6738951413670052,,binary,3643,2455,1188,3643,2455,2455,computed,declare4py
+declare_743,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/survey,0.4817458138896514,0.4817458138896514,,binary,3643,1755,1888,3643,1755,2455,computed,declare4py
+declare_744,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|os_core_components/nan,0.4817458138896514,0.4817458138896514,,binary,3643,1755,1888,3643,1755,2455,computed,declare4py
+declare_745,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/survey,0.5539390612132857,0.33002304772234275,,binary,3643,2018,1625,29504,9737,2325,computed,declare4py
+declare_746,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|os_core_components/nan,0.9643151248970628,0.9079820243954633,,binary,3643,3513,130,4673,4243,830,computed,declare4py
+declare_747,RESPONSE,RESPONSE,browser/survey|os_core_components/nan,0.9234147680483118,0.8039803124331265,,binary,3643,3364,279,4673,3757,830,computed,declare4py
+declare_748,PRECEDENCE,PRECEDENCE,browser/survey|os_core_components/nan,0.4630798792204227,0.24488204989154014,,binary,3643,1687,1956,29504,7225,2325,computed,declare4py
+declare_749,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/survey,0.8594564919022784,0.8280233188720173,,binary,3643,3131,512,29504,24430,2325,computed,declare4py
+declare_750,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/survey,0.8594564919022784,0.8280233188720173,,binary,3643,3131,512,29504,24430,2325,computed,declare4py
+declare_751,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|os_core_components/nan,0.8243206148778479,0.7551179501084598,,binary,3643,3003,640,29504,22279,2325,computed,declare4py
+declare_752,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_753,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_754,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_755,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_756,CHOICE,CHOICE,browser/searching|browser/survey,0.5915454295909964,0.5915454295909964,,binary,3643,2155,1488,3643,2155,2155,computed,declare4py
+declare_757,CHOICE,CHOICE,browser/survey|browser/searching,0.5915454295909964,0.5915454295909964,,binary,3643,2155,1488,3643,2155,2155,computed,declare4py
+declare_758,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/survey,0.4004940982706561,0.4004940982706561,,binary,3643,1459,2184,3643,1459,2155,computed,declare4py
+declare_759,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/searching,0.4004940982706561,0.4004940982706561,,binary,3643,1459,2184,3643,1459,2155,computed,declare4py
+declare_760,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/survey,0.6362887729892945,0.3514383291737817,,binary,3643,2318,1325,15226,5351,2021,computed,declare4py
+declare_761,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/searching,0.9632171287400494,0.9214637277979885,,binary,3643,3509,134,4673,4306,830,computed,declare4py
+declare_762,RESPONSE,RESPONSE,browser/survey|browser/searching,0.8995333516332693,0.7907126043227048,,binary,3643,3277,366,4673,3695,830,computed,declare4py
+declare_763,PRECEDENCE,PRECEDENCE,browser/survey|browser/searching,0.5476255833104584,0.26875082096414027,,binary,3643,1995,1648,15226,4092,2021,computed,declare4py
+declare_764,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/survey,0.8525940159209443,0.7879942204124524,,binary,3643,3106,537,15226,11998,2021,computed,declare4py
+declare_765,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/survey,0.8525940159209443,0.7879942204124524,,binary,3643,3106,537,15226,11998,2021,computed,declare4py
+declare_766,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/searching,0.8278891023881416,0.7312491790358597,,binary,3643,3016,627,15226,11134,2021,computed,declare4py
+declare_767,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_768,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_769,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_770,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_771,CHOICE,CHOICE,browser/seznam|browser/survey,0.45841339555311555,0.45841339555311555,,binary,3643,1670,1973,3643,1670,1670,computed,declare4py
+declare_772,CHOICE,CHOICE,browser/survey|browser/seznam,0.45841339555311555,0.45841339555311555,,binary,3643,1670,1973,3643,1670,1670,computed,declare4py
+declare_773,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/survey,0.30277244029645894,0.30277244029645894,,binary,3643,1103,2540,3643,1103,1670,computed,declare4py
+declare_774,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/seznam,0.30277244029645894,0.30277244029645894,,binary,3643,1103,2540,3643,1103,1670,computed,declare4py
+declare_775,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/survey,0.7694208070271754,0.55627425614489,,binary,3643,2803,840,10049,5590,1407,computed,declare4py
+declare_776,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/seznam,0.9278067526763656,0.8174620158356516,,binary,3643,3380,263,4673,3820,830,computed,declare4py
+declare_777,RESPONSE,RESPONSE,browser/survey|browser/seznam,0.8838869063958276,0.7145302803338327,,binary,3643,3220,423,4673,3339,830,computed,declare4py
+declare_778,PRECEDENCE,PRECEDENCE,browser/seznam|browser/survey,0.8844359044743343,0.7307939225337042,,binary,3643,3222,421,4673,3415,830,computed,declare4py
+declare_779,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|browser/survey,0.8671424650013725,0.6236441436958902,,binary,3643,3159,484,10049,6267,1407,computed,declare4py
+declare_780,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/survey,0.8671424650013725,0.6236441436958902,,binary,3643,3159,484,10049,6267,1407,computed,declare4py
+declare_781,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/seznam,0.865220971726599,0.5843367499253657,,binary,3643,3152,491,10049,5872,1407,computed,declare4py
+declare_782,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_783,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_784,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_785,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_786,CHOICE,CHOICE,browser/survey|browser/facebook,0.45621740323908866,0.45621740323908866,,binary,3643,1662,1981,3643,1662,1662,computed,declare4py
+declare_787,CHOICE,CHOICE,browser/facebook|browser/survey,0.45621740323908866,0.45621740323908866,,binary,3643,1662,1981,3643,1662,1662,computed,declare4py
+declare_788,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/facebook,0.32830085094702166,0.32830085094702166,,binary,3643,1196,2447,3643,1196,1662,computed,declare4py
+declare_789,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/survey,0.32830085094702166,0.32830085094702166,,binary,3643,1196,2447,3643,1196,1662,computed,declare4py
+declare_790,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/facebook,0.900082349711776,0.7301519366573935,,binary,3643,3279,364,4673,3412,830,computed,declare4py
+declare_791,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/survey,0.7716167993412023,0.4864105816271064,,binary,3643,2811,832,11038,5369,1298,computed,declare4py
+declare_792,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|browser/survey,0.9094153170463903,0.6982243159992753,,binary,3643,3313,330,11038,7707,1298,computed,declare4py
+declare_793,NOT_RESPONSE,NOT_RESPONSE,browser/survey|browser/facebook,0.8825144111995608,0.3393965332762679,,binary,3643,3215,428,4673,1586,830,computed,declare4py
+declare_794,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/survey,0.9094153170463903,0.6982243159992753,,binary,3643,3313,330,11038,7707,1298,computed,declare4py
+declare_795,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/facebook,0.8825144111995608,0.6291900706649756,,binary,3643,3215,428,11038,6945,1298,computed,declare4py
+declare_796,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/survey,0.9094153170463903,0.5270704044511021,,binary,3643,3313,330,4673,2463,830,computed,declare4py
+declare_797,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_798,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_799,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_800,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_801,CHOICE,CHOICE,browser/youtube|browser/survey,0.5366456217403239,0.5366456217403239,,binary,3643,1955,1688,3643,1955,1955,computed,declare4py
+declare_802,CHOICE,CHOICE,browser/survey|browser/youtube,0.5366456217403239,0.5366456217403239,,binary,3643,1955,1688,3643,1955,1955,computed,declare4py
+declare_803,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/youtube|browser/survey,0.43480647817732637,0.43480647817732637,,binary,3643,1584,2059,3643,1584,1955,computed,declare4py
+declare_804,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/survey|browser/youtube,0.43480647817732637,0.43480647817732637,,binary,3643,1584,2059,3643,1584,1955,computed,declare4py
+declare_805,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/youtube|browser/survey,0.691188580839967,0.1715017655611715,,binary,3643,2518,1125,14443,2477,1496,computed,declare4py
+declare_806,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/survey|browser/youtube,0.8740049409827065,0.5790712604322705,,binary,3643,3184,459,4673,2706,830,computed,declare4py
+declare_807,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/youtube|browser/survey,0.9302772440296458,0.9101294744859101,,binary,3643,3389,254,14443,13145,1496,computed,declare4py
+declare_808,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/survey|browser/youtube,0.9083173208893769,0.5540338112561524,,binary,3643,3309,334,4673,2589,830,computed,declare4py
+declare_809,NOT_RESPONSE,NOT_RESPONSE,browser/youtube|browser/survey,0.9302772440296458,0.9101294744859101,,binary,3643,3389,254,14443,13145,1496,computed,declare4py
+declare_810,NOT_RESPONSE,NOT_RESPONSE,browser/survey|browser/youtube,0.9083173208893769,0.5540338112561524,,binary,3643,3309,334,4673,2589,830,computed,declare4py
+declare_811,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/youtube|browser/survey,0.9302772440296458,0.6302161352450246,,binary,3643,3389,254,4673,2945,830,computed,declare4py
+declare_812,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/survey|browser/youtube,0.9083173208893769,0.8661635394308662,,binary,3643,3309,334,14443,12510,1496,computed,declare4py
+declare_813,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/youtube|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_814,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/survey|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_815,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/youtube|browser/survey,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_816,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/survey|browser/youtube,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_817,CHOICE,CHOICE,browser/mozilla firefox|browser_file/nan,0.755421356025254,0.755421356025254,,binary,3643,2752,891,3643,2752,2752,computed,declare4py
+declare_818,CHOICE,CHOICE,browser_file/nan|browser/mozilla firefox,0.755421356025254,0.755421356025254,,binary,3643,2752,891,3643,2752,2752,computed,declare4py
+declare_819,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/mozilla firefox|browser_file/nan,0.6508372220697227,0.6508372220697227,,binary,3643,2371,1272,3643,2371,2752,computed,declare4py
+declare_820,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/mozilla firefox,0.6508372220697227,0.6508372220697227,,binary,3643,2371,1272,3643,2371,2752,computed,declare4py
+declare_821,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/mozilla firefox|browser_file/nan,0.9967060115289597,0.9922269724057521,,binary,3643,3631,12,2573,2553,393,computed,declare4py
+declare_822,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/mozilla firefox,0.3524567664013176,0.15796306782868114,,binary,3643,1284,2359,72403,11437,2740,computed,declare4py
+declare_823,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/mozilla firefox,0.9020038429865496,0.8818004778807508,,binary,3643,3286,357,72403,63845,2740,computed,declare4py
+declare_824,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/mozilla firefox,0.9020038429865496,0.8818004778807508,,binary,3643,3286,357,72403,63845,2740,computed,declare4py
+declare_825,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/mozilla firefox|browser_file/nan,0.9014548449080428,0.873292543126666,,binary,3643,3284,359,72403,63229,2740,computed,declare4py
+declare_826,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/mozilla firefox,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_827,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/mozilla firefox|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_828,CHOICE,CHOICE,browser/reading (study) materials|browser_file/nan,0.7655778204776283,0.7655778204776283,,binary,3643,2789,854,3643,2789,2789,computed,declare4py
+declare_829,CHOICE,CHOICE,browser_file/nan|browser/reading (study) materials,0.7655778204776283,0.7655778204776283,,binary,3643,2789,854,3643,2789,2789,computed,declare4py
+declare_830,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser_file/nan,0.5693110074114741,0.5693110074114741,,binary,3643,2074,1569,3643,2074,2789,computed,declare4py
+declare_831,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/reading (study) materials,0.5693110074114741,0.5693110074114741,,binary,3643,2074,1569,3643,2074,2789,computed,declare4py
+declare_832,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser_file/nan,0.9865495470765853,0.9652582159624413,,binary,3643,3594,49,4260,4112,764,computed,declare4py
+declare_833,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/reading (study) materials,0.44413944551194073,0.37713906882311504,,binary,3643,1618,2025,72403,27306,2740,computed,declare4py
+declare_834,RESPONSE,RESPONSE,browser/reading (study) materials|browser_file/nan,0.9549821575624485,0.8737089201877934,,binary,3643,3479,164,4260,3722,764,computed,declare4py
+declare_835,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/reading (study) materials,0.9527861652484216,0.892018779342723,,binary,3643,3471,172,4260,3800,764,computed,declare4py
+declare_836,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/reading (study) materials,0.816085643700247,0.7425521041945776,,binary,3643,2973,670,72403,53763,2740,computed,declare4py
+declare_837,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/reading (study) materials,0.816085643700247,0.7425521041945776,,binary,3643,2973,670,72403,53763,2740,computed,declare4py
+declare_838,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser_file/nan,0.8174581388965139,0.7500656050163668,,binary,3643,2978,665,72403,54307,2740,computed,declare4py
+declare_839,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_840,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_841,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_842,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_843,CHOICE,CHOICE,browser/reading (study) materials|browser/other browser activity,0.6980510568213011,0.6980510568213011,,binary,3643,2543,1100,3643,2543,2543,computed,declare4py
+declare_844,CHOICE,CHOICE,browser/other browser activity|browser/reading (study) materials,0.6980510568213011,0.6980510568213011,,binary,3643,2543,1100,3643,2543,2543,computed,declare4py
+declare_845,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser/other browser activity,0.5056272303046939,0.5056272303046939,,binary,3643,1842,1801,3643,1842,2543,computed,declare4py
+declare_846,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/reading (study) materials,0.5056272303046939,0.5056272303046939,,binary,3643,1842,1801,3643,1842,2543,computed,declare4py
+declare_847,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser/other browser activity,0.9827065605270382,0.9065727699530517,,binary,3643,3580,63,4260,3862,764,computed,declare4py
+declare_848,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/reading (study) materials,0.5116662091682679,0.3637916945249239,,binary,3643,1864,1779,26922,9794,2480,computed,declare4py
+declare_849,RESPONSE,RESPONSE,browser/reading (study) materials|browser/other browser activity,0.9327477353829262,0.7321596244131455,,binary,3643,3398,245,4260,3119,764,computed,declare4py
+declare_850,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/reading (study) materials,0.9481196815811145,0.814319248826291,,binary,3643,3454,189,4260,3469,764,computed,declare4py
+declare_851,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/reading (study) materials,0.8177326379357672,0.7708565485476562,,binary,3643,2979,664,26922,20753,2480,computed,declare4py
+declare_852,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/reading (study) materials,0.8177326379357672,0.7708565485476562,,binary,3643,2979,664,26922,20753,2480,computed,declare4py
+declare_853,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser/other browser activity,0.825144111995608,0.7737909516380655,,binary,3643,3006,637,26922,20832,2480,computed,declare4py
+declare_854,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_855,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_856,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_857,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_858,CHOICE,CHOICE,browser/reading (study) materials|os_core_components/nan,0.6675816634641779,0.6675816634641779,,binary,3643,2432,1211,3643,2432,2432,computed,declare4py
+declare_859,CHOICE,CHOICE,os_core_components/nan|browser/reading (study) materials,0.6675816634641779,0.6675816634641779,,binary,3643,2432,1211,3643,2432,2432,computed,declare4py
+declare_860,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|os_core_components/nan,0.4872357946747186,0.4872357946747186,,binary,3643,1775,1868,3643,1775,2432,computed,declare4py
+declare_861,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/reading (study) materials,0.4872357946747186,0.4872357946747186,,binary,3643,1775,1868,3643,1775,2432,computed,declare4py
+declare_862,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|os_core_components/nan,0.9706286027998902,0.8755868544600939,,binary,3643,3536,107,4260,3730,764,computed,declare4py
+declare_863,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/reading (study) materials,0.5421356025253912,0.3380558568329718,,binary,3643,1975,1668,29504,9974,2325,computed,declare4py
+declare_864,RESPONSE,RESPONSE,browser/reading (study) materials|os_core_components/nan,0.9247872632445786,0.7014084507042253,,binary,3643,3369,274,4260,2988,764,computed,declare4py
+declare_865,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/reading (study) materials,0.9072193247323634,0.6960093896713615,,binary,3643,3305,338,4260,2965,764,computed,declare4py
+declare_866,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/reading (study) materials,0.8542410101564645,0.809652928416486,,binary,3643,3112,531,29504,23888,2325,computed,declare4py
+declare_867,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/reading (study) materials,0.8542410101564645,0.809652928416486,,binary,3643,3112,531,29504,23888,2325,computed,declare4py
+declare_868,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|os_core_components/nan,0.8438100466648367,0.7613543926247288,,binary,3643,3074,569,29504,22463,2325,computed,declare4py
+declare_869,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_870,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_871,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_872,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_873,CHOICE,CHOICE,browser/reading (study) materials|browser/searching,0.5857809497666758,0.5857809497666758,,binary,3643,2134,1509,3643,2134,2134,computed,declare4py
+declare_874,CHOICE,CHOICE,browser/searching|browser/reading (study) materials,0.5857809497666758,0.5857809497666758,,binary,3643,2134,1509,3643,2134,2134,computed,declare4py
+declare_875,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser/searching,0.40708207521273676,0.40708207521273676,,binary,3643,1483,2160,3643,1483,2134,computed,declare4py
+declare_876,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/reading (study) materials,0.40708207521273676,0.40708207521273676,,binary,3643,1483,2160,3643,1483,2134,computed,declare4py
+declare_877,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser/searching,0.96898160856437,0.889906103286385,,binary,3643,3530,113,4260,3791,764,computed,declare4py
+declare_878,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/reading (study) materials,0.6239363162228933,0.4404308419808223,,binary,3643,2273,1370,15226,6706,2021,computed,declare4py
+declare_879,RESPONSE,RESPONSE,browser/reading (study) materials|browser/searching,0.9055723304968433,0.7408450704225352,,binary,3643,3299,344,4260,3156,764,computed,declare4py
+declare_880,PRECEDENCE,PRECEDENCE,browser/searching|browser/reading (study) materials,0.9165522920669777,0.7572769953051643,,binary,3643,3339,304,4260,3226,764,computed,declare4py
+declare_881,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/reading (study) materials,0.8407905572330496,0.6978195192433995,,binary,3643,3063,580,15226,10625,2021,computed,declare4py
+declare_882,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/reading (study) materials,0.8407905572330496,0.6978195192433995,,binary,3643,3063,580,15226,10625,2021,computed,declare4py
+declare_883,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser/searching,0.8512215207246775,0.7112833311440956,,binary,3643,3101,542,15226,10830,2021,computed,declare4py
+declare_884,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_885,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_886,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_887,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_888,CHOICE,CHOICE,browser/reading (study) materials|browser/Outlook/Email,0.5528410650562723,0.5528410650562723,,binary,3643,2014,1629,3643,2014,2014,computed,declare4py
+declare_889,CHOICE,CHOICE,browser/Outlook/Email|browser/reading (study) materials,0.5528410650562723,0.5528410650562723,,binary,3643,2014,1629,3643,2014,2014,computed,declare4py
+declare_890,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser/Outlook/Email,0.39445511940708206,0.39445511940708206,,binary,3643,1437,2206,3643,1437,2014,computed,declare4py
+declare_891,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/reading (study) materials,0.39445511940708206,0.39445511940708206,,binary,3643,1437,2206,3643,1437,2014,computed,declare4py
+declare_892,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser/Outlook/Email,0.9486686796596212,0.6638497652582159,,binary,3643,3456,187,4260,2828,764,computed,declare4py
+declare_893,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/reading (study) materials,0.6568762009332967,0.40625,,binary,3643,2393,1250,16768,6812,1827,computed,declare4py
+declare_894,RESPONSE,RESPONSE,browser/reading (study) materials|browser/Outlook/Email,0.909140818007137,0.5591549295774648,,binary,3643,3312,331,4260,2382,764,computed,declare4py
+declare_895,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/reading (study) materials,0.9162777930277244,0.5650234741784037,,binary,3643,3338,305,4260,2407,764,computed,declare4py
+declare_896,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/reading (study) materials,0.8580839967060115,0.7426645992366412,,binary,3643,3126,517,16768,12453,1827,computed,declare4py
+declare_897,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/reading (study) materials,0.8580839967060115,0.7426645992366412,,binary,3643,3126,517,16768,12453,1827,computed,declare4py
+declare_898,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser/Outlook/Email,0.8572604995882515,0.7425453244274809,,binary,3643,3123,520,16768,12451,1827,computed,declare4py
+declare_899,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_900,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_901,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_902,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_903,CHOICE,CHOICE,browser/reading (study) materials|browser/seznam,0.47241284655503707,0.47241284655503707,,binary,3643,1721,1922,3643,1721,1721,computed,declare4py
+declare_904,CHOICE,CHOICE,browser/seznam|browser/reading (study) materials,0.47241284655503707,0.47241284655503707,,binary,3643,1721,1922,3643,1721,1721,computed,declare4py
+declare_905,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser/seznam,0.34888827889102386,0.34888827889102386,,binary,3643,1271,2372,3643,1271,1721,computed,declare4py
+declare_906,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/reading (study) materials,0.34888827889102386,0.34888827889102386,,binary,3643,1271,2372,3643,1271,1721,computed,declare4py
+declare_907,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser/seznam,0.9138073016744441,0.5765258215962441,,binary,3643,3329,314,4260,2456,764,computed,declare4py
+declare_908,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/reading (study) materials,0.737304419434532,0.34331774305901086,,binary,3643,2686,957,10049,3450,1407,computed,declare4py
+declare_909,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|browser/reading (study) materials,0.8976118583584958,0.7921186187680366,,binary,3643,3270,373,10049,7960,1407,computed,declare4py
+declare_910,NOT_RESPONSE,NOT_RESPONSE,browser/reading (study) materials|browser/seznam,0.8995333516332693,0.5821596244131455,,binary,3643,3277,366,4260,2480,764,computed,declare4py
+declare_911,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/reading (study) materials,0.8976118583584958,0.7921186187680366,,binary,3643,3270,373,10049,7960,1407,computed,declare4py
+declare_912,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser/seznam,0.8995333516332693,0.7860483630211962,,binary,3643,3277,366,10049,7899,1407,computed,declare4py
+declare_913,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/seznam|browser/reading (study) materials,0.8976118583584958,0.5838028169014085,,binary,3643,3270,373,4260,2487,764,computed,declare4py
+declare_914,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_915,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_916,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_917,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_918,CHOICE,CHOICE,browser/reading (study) materials|browser/facebook,0.4630798792204227,0.4630798792204227,,binary,3643,1687,1956,3643,1687,1687,computed,declare4py
+declare_919,CHOICE,CHOICE,browser/facebook|browser/reading (study) materials,0.4630798792204227,0.4630798792204227,,binary,3643,1687,1956,3643,1687,1687,computed,declare4py
+declare_920,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/reading (study) materials|browser/facebook,0.36014273950041176,0.36014273950041176,,binary,3643,1312,2331,3643,1312,1687,computed,declare4py
+declare_921,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/reading (study) materials,0.36014273950041176,0.36014273950041176,,binary,3643,1312,2331,3643,1312,1687,computed,declare4py
+declare_922,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/reading (study) materials|browser/facebook,0.893219873730442,0.4619718309859155,,binary,3643,3254,389,4260,1968,764,computed,declare4py
+declare_923,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/reading (study) materials,0.7466373867691463,0.42643594854140243,,binary,3643,2720,923,11038,4707,1298,computed,declare4py
+declare_924,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/reading (study) materials|browser/facebook,0.9099643151248971,0.6213615023474178,,binary,3643,3315,328,4260,2647,764,computed,declare4py
+declare_925,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|browser/reading (study) materials,0.9214932747735383,0.7388113788729842,,binary,3643,3357,286,11038,8155,1298,computed,declare4py
+declare_926,NOT_RESPONSE,NOT_RESPONSE,browser/reading (study) materials|browser/facebook,0.9099643151248971,0.6213615023474178,,binary,3643,3315,328,4260,2647,764,computed,declare4py
+declare_927,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/reading (study) materials,0.9214932747735383,0.7388113788729842,,binary,3643,3357,286,11038,8155,1298,computed,declare4py
+declare_928,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/reading (study) materials|browser/facebook,0.9099643151248971,0.7293893821344446,,binary,3643,3315,328,11038,8051,1298,computed,declare4py
+declare_929,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/reading (study) materials,0.9214932747735383,0.6434272300469484,,binary,3643,3357,286,4260,2741,764,computed,declare4py
+declare_930,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/reading (study) materials|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_931,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_932,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/reading (study) materials|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_933,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/reading (study) materials,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_934,CHOICE,CHOICE,browser_file/nan|browser/novinky,0.771342300301949,0.771342300301949,,binary,3643,2810,833,3643,2810,2810,computed,declare4py
+declare_935,CHOICE,CHOICE,browser/novinky|browser_file/nan,0.771342300301949,0.771342300301949,,binary,3643,2810,833,3643,2810,2810,computed,declare4py
+declare_936,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|browser/novinky,0.5888004391984628,0.5888004391984628,,binary,3643,2145,1498,3643,2145,2810,computed,declare4py
+declare_937,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser_file/nan,0.5888004391984628,0.5888004391984628,,binary,3643,2145,1498,3643,2145,2810,computed,declare4py
+declare_938,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|browser/novinky,0.4304144935492726,0.2933580100272088,,binary,3643,1568,2075,72403,21240,2740,computed,declare4py
+declare_939,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser_file/nan,0.9807850672522647,0.9255707762557077,,binary,3643,3573,70,2190,2027,735,computed,declare4py
+declare_940,RESPONSE,RESPONSE,browser/novinky|browser_file/nan,0.9396102113642603,0.7853881278538812,,binary,3643,3423,220,2190,1720,735,computed,declare4py
+declare_941,PRECEDENCE,PRECEDENCE,browser_file/nan|browser/novinky,0.943178698874554,0.7926940639269406,,binary,3643,3436,207,2190,1736,735,computed,declare4py
+declare_942,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|browser/novinky,0.8339280812517156,0.8095106556358161,,binary,3643,3038,605,72403,58611,2740,computed,declare4py
+declare_943,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|browser/novinky,0.8339280812517156,0.8095106556358161,,binary,3643,3038,605,72403,58611,2740,computed,declare4py
+declare_944,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser_file/nan,0.8366730716442492,0.8457798709998204,,binary,3643,3048,595,72403,61237,2740,computed,declare4py
+declare_945,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_946,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_947,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser_file/nan|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_948,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_949,CHOICE,CHOICE,browser/other browser activity|browser/novinky,0.7029920395278616,0.7029920395278616,,binary,3643,2561,1082,3643,2561,2561,computed,declare4py
+declare_950,CHOICE,CHOICE,browser/novinky|browser/other browser activity,0.7029920395278616,0.7029920395278616,,binary,3643,2561,1082,3643,2561,2561,computed,declare4py
+declare_951,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|browser/novinky,0.5234696678561626,0.5234696678561626,,binary,3643,1907,1736,3643,1907,2561,computed,declare4py
+declare_952,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser/other browser activity,0.5234696678561626,0.5234696678561626,,binary,3643,1907,1736,3643,1907,2561,computed,declare4py
+declare_953,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|browser/novinky,0.49876475432335987,0.38800980610652996,,binary,3643,1817,1826,26922,10446,2480,computed,declare4py
+declare_954,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser/other browser activity,0.9777655778204777,0.9077625570776255,,binary,3643,3562,81,2190,1988,735,computed,declare4py
+declare_955,RESPONSE,RESPONSE,browser/novinky|browser/other browser activity,0.9404337084820203,0.7479452054794521,,binary,3643,3426,217,2190,1638,735,computed,declare4py
+declare_956,ALTERNATE_RESPONSE,ALTERNATE_RESPONSE,browser/novinky|browser/other browser activity,0.899258852594016,0.5378995433789955,,binary,3643,3276,367,2190,1178,735,computed,declare4py
+declare_957,PRECEDENCE,PRECEDENCE,browser/other browser activity|browser/novinky,0.9505901729343947,0.815068493150685,,binary,3643,3463,180,2190,1785,735,computed,declare4py
+declare_958,ALTERNATE_PRECEDENCE,ALTERNATE_PRECEDENCE,browser/other browser activity|browser/novinky,0.9022783420258029,0.5547945205479452,,binary,3643,3287,356,2190,1215,735,computed,declare4py
+declare_959,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|browser/novinky,0.8314575898984353,0.7505757373152069,,binary,3643,3029,614,26922,20207,2480,computed,declare4py
+declare_960,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|browser/novinky,0.8314575898984353,0.7505757373152069,,binary,3643,3029,614,26922,20207,2480,computed,declare4py
+declare_961,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser/other browser activity,0.8372220697227559,0.7561102444097764,,binary,3643,3050,593,26922,20356,2480,computed,declare4py
+declare_962,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_963,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_964,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/other browser activity|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_965,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_966,CHOICE,CHOICE,os_core_components/nan|browser/novinky,0.6703266538567115,0.6703266538567115,,binary,3643,2442,1201,3643,2442,2442,computed,declare4py
+declare_967,CHOICE,CHOICE,browser/novinky|os_core_components/nan,0.6703266538567115,0.6703266538567115,,binary,3643,2442,1201,3643,2442,2442,computed,declare4py
+declare_968,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|browser/novinky,0.5006862475981334,0.5006862475981334,,binary,3643,1824,1819,3643,1824,2442,computed,declare4py
+declare_969,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|os_core_components/nan,0.5006862475981334,0.5006862475981334,,binary,3643,1824,1819,3643,1824,2442,computed,declare4py
+declare_970,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|browser/novinky,0.53143013999451,0.32659978308026033,,binary,3643,1936,1707,29504,9636,2325,computed,declare4py
+declare_971,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|os_core_components/nan,0.9678836124073565,0.8986301369863013,,binary,3643,3526,117,2190,1968,735,computed,declare4py
+declare_972,RESPONSE,RESPONSE,browser/novinky|os_core_components/nan,0.9275322536371122,0.7675799086757991,,binary,3643,3379,264,2190,1681,735,computed,declare4py
+declare_973,PRECEDENCE,PRECEDENCE,os_core_components/nan|browser/novinky,0.9066703266538567,0.6853881278538813,,binary,3643,3303,340,2190,1501,735,computed,declare4py
+declare_974,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|browser/novinky,0.8600054899807851,0.8148725596529284,,binary,3643,3133,510,29504,24042,2325,computed,declare4py
+declare_975,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|browser/novinky,0.8600054899807851,0.8148725596529284,,binary,3643,3133,510,29504,24042,2325,computed,declare4py
+declare_976,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|os_core_components/nan,0.8495745264891573,0.7657605748373102,,binary,3643,3095,548,29504,22593,2325,computed,declare4py
+declare_977,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_978,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_979,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,os_core_components/nan|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_980,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_981,CHOICE,CHOICE,browser/Outlook/Email|browser/novinky,0.5437825967609113,0.5437825967609113,,binary,3643,1981,1662,3643,1981,1981,computed,declare4py
+declare_982,CHOICE,CHOICE,browser/novinky|browser/Outlook/Email,0.5437825967609113,0.5437825967609113,,binary,3643,1981,1662,3643,1981,1981,computed,declare4py
+declare_983,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|browser/novinky,0.38429865495470766,0.38429865495470766,,binary,3643,1400,2243,3643,1400,1981,computed,declare4py
+declare_984,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser/Outlook/Email,0.38429865495470766,0.38429865495470766,,binary,3643,1400,2243,3643,1400,1981,computed,declare4py
+declare_985,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|browser/novinky,0.6579741970903101,0.41811784351145037,,binary,3643,2397,1246,16768,7011,1827,computed,declare4py
+declare_986,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser/Outlook/Email,0.9577271479549821,0.8511415525114155,,binary,3643,3489,154,2190,1864,735,computed,declare4py
+declare_987,RESPONSE,RESPONSE,browser/novinky|browser/Outlook/Email,0.9039253362613231,0.693607305936073,,binary,3643,3293,350,2190,1519,735,computed,declare4py
+declare_988,PRECEDENCE,PRECEDENCE,browser/Outlook/Email|browser/novinky,0.9110623112819105,0.7141552511415525,,binary,3643,3319,324,2190,1564,735,computed,declare4py
+declare_989,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|browser/novinky,0.8630249794125721,0.716006679389313,,binary,3643,3144,499,16768,12006,1827,computed,declare4py
+declare_990,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|browser/novinky,0.8630249794125721,0.716006679389313,,binary,3643,3144,499,16768,12006,1827,computed,declare4py
+declare_991,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser/Outlook/Email,0.8643974746088389,0.7104007633587787,,binary,3643,3149,494,16768,11912,1827,computed,declare4py
+declare_992,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_993,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_994,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_995,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_996,CHOICE,CHOICE,browser/seznam|browser/novinky,0.42931649739225913,0.42931649739225913,,binary,3643,1564,2079,3643,1564,1564,computed,declare4py
+declare_997,CHOICE,CHOICE,browser/novinky|browser/seznam,0.42931649739225913,0.42931649739225913,,binary,3643,1564,2079,3643,1564,1564,computed,declare4py
+declare_998,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/seznam|browser/novinky,0.27065605270381554,0.27065605270381554,,binary,3643,986,2657,3643,986,1564,computed,declare4py
+declare_999,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser/seznam,0.27065605270381554,0.27065605270381554,,binary,3643,986,2657,3643,986,1564,computed,declare4py
+declare_1000,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/seznam|browser/novinky,0.7724402964589624,0.633197333067967,,binary,3643,2814,829,10049,6363,1407,computed,declare4py
+declare_1001,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser/seznam,0.9569036508372221,0.85662100456621,,binary,3643,3486,157,2190,1876,735,computed,declare4py
+declare_1002,RESPONSE,RESPONSE,browser/novinky|browser/seznam,0.9225912709305517,0.776255707762557,,binary,3643,3361,282,2190,1700,735,computed,declare4py
+declare_1003,PRECEDENCE,PRECEDENCE,browser/seznam|browser/novinky,0.9302772440296458,0.7794520547945205,,binary,3643,3389,254,2190,1707,735,computed,declare4py
+declare_1004,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/seznam|browser/novinky,0.8536920120779578,0.5539854711911633,,binary,3643,3110,533,10049,5567,1407,computed,declare4py
+declare_1005,NOT_RESPONSE,NOT_RESPONSE,browser/seznam|browser/novinky,0.8536920120779578,0.5539854711911633,,binary,3643,3110,533,10049,5567,1407,computed,declare4py
+declare_1006,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser/seznam,0.8542410101564645,0.5461239924370584,,binary,3643,3112,531,10049,5488,1407,computed,declare4py
+declare_1007,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/seznam|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1008,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1009,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/seznam|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1010,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser/seznam,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1011,CHOICE,CHOICE,browser/searching|browser/novinky,0.5995059017293439,0.5995059017293439,,binary,3643,2184,1459,3643,2184,2184,computed,declare4py
+declare_1012,CHOICE,CHOICE,browser/novinky|browser/searching,0.5995059017293439,0.5995059017293439,,binary,3643,2184,1459,3643,2184,2184,computed,declare4py
+declare_1013,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|browser/novinky,0.4424924512764205,0.4424924512764205,,binary,3643,1612,2031,3643,1612,2184,computed,declare4py
+declare_1014,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser/searching,0.4424924512764205,0.4424924512764205,,binary,3643,1612,2031,3643,1612,2184,computed,declare4py
+declare_1015,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|browser/novinky,0.6022508921218775,0.3281886247208722,,binary,3643,2194,1449,15226,4997,2021,computed,declare4py
+declare_1016,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser/searching,0.9552566566017019,0.8155251141552512,,binary,3643,3480,163,2190,1786,735,computed,declare4py
+declare_1017,RESPONSE,RESPONSE,browser/novinky|browser/searching,0.9009058468295361,0.6488584474885845,,binary,3643,3282,361,2190,1421,735,computed,declare4py
+declare_1018,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|browser/novinky,0.872083447707933,0.7805727045842638,,binary,3643,3177,466,15226,11885,2021,computed,declare4py
+declare_1019,NOT_RESPONSE,NOT_RESPONSE,browser/searching|browser/novinky,0.872083447707933,0.7805727045842638,,binary,3643,3177,466,15226,11885,2021,computed,declare4py
+declare_1020,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser/searching,0.8663189678836124,0.7814921844213845,,binary,3643,3156,487,15226,11899,2021,computed,declare4py
+declare_1021,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1022,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1023,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1024,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1025,CHOICE,CHOICE,browser/novinky|browser/facebook,0.4389239637661268,0.4389239637661268,,binary,3643,1599,2044,3643,1599,1599,computed,declare4py
+declare_1026,CHOICE,CHOICE,browser/facebook|browser/novinky,0.4389239637661268,0.4389239637661268,,binary,3643,1599,2044,3643,1599,1599,computed,declare4py
+declare_1027,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/novinky|browser/facebook,0.31979138073016744,0.31979138073016744,,binary,3643,1165,2478,3643,1165,1599,computed,declare4py
+declare_1028,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/facebook|browser/novinky,0.31979138073016744,0.31979138073016744,,binary,3643,1165,2478,3643,1165,1599,computed,declare4py
+declare_1029,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/novinky|browser/facebook,0.9173757891847378,0.6767123287671233,,binary,3643,3342,301,2190,1482,735,computed,declare4py
+declare_1030,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/facebook|browser/novinky,0.7628328300850947,0.4878601195868817,,binary,3643,2779,864,11038,5385,1298,computed,declare4py
+declare_1031,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/facebook|browser/novinky,0.9107878122426571,0.679470918644682,,binary,3643,3318,325,11038,7500,1298,computed,declare4py
+declare_1032,NOT_RESPONSE,NOT_RESPONSE,browser/facebook|browser/novinky,0.9107878122426571,0.679470918644682,,binary,3643,3318,325,11038,7500,1298,computed,declare4py
+declare_1033,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/novinky|browser/facebook,0.8959648641229756,0.6685087878238811,,binary,3643,3264,379,11038,7379,1298,computed,declare4py
+declare_1034,NOT_PRECEDENCE,NOT_PRECEDENCE,browser/facebook|browser/novinky,0.9107878122426571,0.48812785388127855,,binary,3643,3318,325,2190,1069,735,computed,declare4py
+declare_1035,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/novinky|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1036,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/facebook|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1037,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/novinky|browser/facebook,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1038,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/facebook|browser/novinky,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1039,CHOICE,CHOICE,browser_file/nan|EXCEL.EXE/nan,0.7521273675542136,0.7521273675542136,,binary,3643,2740,903,3643,2740,2740,computed,declare4py
+declare_1040,CHOICE,CHOICE,EXCEL.EXE/nan|browser_file/nan,0.7521273675542136,0.7521273675542136,,binary,3643,2740,903,3643,2740,2740,computed,declare4py
+declare_1041,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|EXCEL.EXE/nan,0.6469942355201757,0.6469942355201757,,binary,3643,2357,1286,3643,2357,2740,computed,declare4py
+declare_1042,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,EXCEL.EXE/nan|browser_file/nan,0.6469942355201757,0.6469942355201757,,binary,3643,2357,1286,3643,2357,2740,computed,declare4py
+declare_1043,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|EXCEL.EXE/nan,0.35300576447982435,0.324544563070591,,binary,3643,1286,2357,72403,23498,2740,computed,declare4py
+declare_1044,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,EXCEL.EXE/nan|browser_file/nan,1.0,1.0,,binary,3643,3643,0,14955,14955,383,computed,declare4py
+declare_1045,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|EXCEL.EXE/nan,0.8967883612407357,0.7604795381406848,,binary,3643,3267,376,72403,55061,2740,computed,declare4py
+declare_1046,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|EXCEL.EXE/nan,0.8967883612407357,0.7604795381406848,,binary,3643,3267,376,72403,55061,2740,computed,declare4py
+declare_1047,NOT_PRECEDENCE,NOT_PRECEDENCE,EXCEL.EXE/nan|browser_file/nan,0.897062860279989,0.7657693741972018,,binary,3643,3268,375,72403,55444,2740,computed,declare4py
+declare_1048,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|EXCEL.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1049,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,EXCEL.EXE/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1050,CHOICE,CHOICE,WINWORD.EXE/nan|browser_file/nan,0.7529508646719737,0.7529508646719737,,binary,3643,2743,900,3643,2743,2743,computed,declare4py
+declare_1051,CHOICE,CHOICE,browser_file/nan|WINWORD.EXE/nan,0.7529508646719737,0.7529508646719737,,binary,3643,2743,900,3643,2743,2743,computed,declare4py
+declare_1052,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,WINWORD.EXE/nan|browser_file/nan,0.6222893219873731,0.6222893219873731,,binary,3643,2267,1376,3643,2267,2743,computed,declare4py
+declare_1053,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser_file/nan|WINWORD.EXE/nan,0.6222893219873731,0.6222893219873731,,binary,3643,2267,1376,3643,2267,2743,computed,declare4py
+declare_1054,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,WINWORD.EXE/nan|browser_file/nan,0.9991765028822399,0.9990446500402252,,binary,3643,3640,3,19888,19869,479,computed,declare4py
+declare_1055,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser_file/nan|WINWORD.EXE/nan,0.37853417513038706,0.4124690965843957,,binary,3643,1379,2264,72403,29864,2740,computed,declare4py
+declare_1056,RESPONSE,RESPONSE,WINWORD.EXE/nan|browser_file/nan,0.9843535547625584,0.9523330651649236,,binary,3643,3586,57,19888,18940,479,computed,declare4py
+declare_1057,PRECEDENCE,PRECEDENCE,browser_file/nan|WINWORD.EXE/nan,0.9903925336261323,0.9876810136765889,,binary,3643,3608,35,19888,19643,479,computed,declare4py
+declare_1058,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser_file/nan|WINWORD.EXE/nan,0.8707109525116662,0.6847644434622875,,binary,3643,3172,471,72403,49579,2740,computed,declare4py
+declare_1059,NOT_RESPONSE,NOT_RESPONSE,browser_file/nan|WINWORD.EXE/nan,0.8707109525116662,0.6847644434622875,,binary,3643,3172,471,72403,49579,2740,computed,declare4py
+declare_1060,NOT_PRECEDENCE,NOT_PRECEDENCE,WINWORD.EXE/nan|browser_file/nan,0.872083447707933,0.733712691463061,,binary,3643,3177,466,72403,53123,2740,computed,declare4py
+declare_1061,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser_file/nan|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1062,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,WINWORD.EXE/nan|browser_file/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1063,CHOICE,CHOICE,WINWORD.EXE/nan|browser/other browser activity,0.6878945923689267,0.6878945923689267,,binary,3643,2506,1137,3643,2506,2506,computed,declare4py
+declare_1064,CHOICE,CHOICE,browser/other browser activity|WINWORD.EXE/nan,0.6878945923689267,0.6878945923689267,,binary,3643,2506,1137,3643,2506,2506,computed,declare4py
+declare_1065,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,WINWORD.EXE/nan|browser/other browser activity,0.5635465275871534,0.5635465275871534,,binary,3643,2053,1590,3643,2053,2506,computed,declare4py
+declare_1066,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/other browser activity|WINWORD.EXE/nan,0.5635465275871534,0.5635465275871534,,binary,3643,2053,1590,3643,2053,2506,computed,declare4py
+declare_1067,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,WINWORD.EXE/nan|browser/other browser activity,0.9928630249794126,0.9379525341914723,,binary,3643,3617,26,19888,18654,479,computed,declare4py
+declare_1068,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/other browser activity|WINWORD.EXE/nan,0.443590447433434,0.2552559245226952,,binary,3643,1616,2027,26922,6872,2480,computed,declare4py
+declare_1069,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/other browser activity|WINWORD.EXE/nan,0.8825144111995608,0.821855731372112,,binary,3643,3215,428,26922,22126,2480,computed,declare4py
+declare_1070,NOT_RESPONSE,NOT_RESPONSE,browser/other browser activity|WINWORD.EXE/nan,0.8825144111995608,0.821855731372112,,binary,3643,3215,428,26922,22126,2480,computed,declare4py
+declare_1071,NOT_PRECEDENCE,NOT_PRECEDENCE,WINWORD.EXE/nan|browser/other browser activity,0.8877298929453747,0.8225986182304436,,binary,3643,3234,409,26922,22146,2480,computed,declare4py
+declare_1072,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/other browser activity|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1073,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,WINWORD.EXE/nan|browser/other browser activity,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1074,CHOICE,CHOICE,WINWORD.EXE/nan|os_core_components/nan,0.6491902278342025,0.6491902278342025,,binary,3643,2365,1278,3643,2365,2365,computed,declare4py
+declare_1075,CHOICE,CHOICE,os_core_components/nan|WINWORD.EXE/nan,0.6491902278342025,0.6491902278342025,,binary,3643,2365,1278,3643,2365,2365,computed,declare4py
+declare_1076,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,WINWORD.EXE/nan|os_core_components/nan,0.5286851496019764,0.5286851496019764,,binary,3643,1926,1717,3643,1926,2365,computed,declare4py
+declare_1077,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,os_core_components/nan|WINWORD.EXE/nan,0.5286851496019764,0.5286851496019764,,binary,3643,1926,1717,3643,1926,2365,computed,declare4py
+declare_1078,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,WINWORD.EXE/nan|os_core_components/nan,0.9890200384298655,0.9522827835880934,,binary,3643,3603,40,19888,18939,479,computed,declare4py
+declare_1079,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,os_core_components/nan|WINWORD.EXE/nan,0.4822948119681581,0.2634896963123644,,binary,3643,1757,1886,29504,7774,2325,computed,declare4py
+declare_1080,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,os_core_components/nan|WINWORD.EXE/nan,0.8945923689267088,0.8181941431670282,,binary,3643,3259,384,29504,24140,2325,computed,declare4py
+declare_1081,NOT_RESPONSE,NOT_RESPONSE,os_core_components/nan|WINWORD.EXE/nan,0.8945923689267088,0.8181941431670282,,binary,3643,3259,384,29504,24140,2325,computed,declare4py
+declare_1082,NOT_PRECEDENCE,NOT_PRECEDENCE,WINWORD.EXE/nan|os_core_components/nan,0.8910238814164151,0.8259219088937093,,binary,3643,3246,397,29504,24368,2325,computed,declare4py
+declare_1083,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,os_core_components/nan|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1084,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,WINWORD.EXE/nan|os_core_components/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1085,CHOICE,CHOICE,WINWORD.EXE/nan|browser/searching,0.5682130112544607,0.5682130112544607,,binary,3643,2070,1573,3643,2070,2070,computed,declare4py
+declare_1086,CHOICE,CHOICE,browser/searching|WINWORD.EXE/nan,0.5682130112544607,0.5682130112544607,,binary,3643,2070,1573,3643,2070,2070,computed,declare4py
+declare_1087,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,WINWORD.EXE/nan|browser/searching,0.4501784243755147,0.4501784243755147,,binary,3643,1640,2003,3643,1640,2070,computed,declare4py
+declare_1088,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/searching|WINWORD.EXE/nan,0.4501784243755147,0.4501784243755147,,binary,3643,1640,2003,3643,1640,2070,computed,declare4py
+declare_1089,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,WINWORD.EXE/nan|browser/searching,0.9865495470765853,0.9263877715205149,,binary,3643,3594,49,19888,18424,479,computed,declare4py
+declare_1090,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/searching|WINWORD.EXE/nan,0.5632720285479,0.29252594246683306,,binary,3643,2052,1591,15226,4454,2021,computed,declare4py
+declare_1091,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/searching|WINWORD.EXE/nan,0.8976118583584958,0.7904242742677,,binary,3643,3270,373,15226,12035,2021,computed,declare4py
+declare_1092,NOT_RESPONSE,NOT_RESPONSE,browser/searching|WINWORD.EXE/nan,0.8976118583584958,0.7904242742677,,binary,3643,3270,373,15226,12035,2021,computed,declare4py
+declare_1093,NOT_PRECEDENCE,NOT_PRECEDENCE,WINWORD.EXE/nan|browser/searching,0.897062860279989,0.7972546959148824,,binary,3643,3268,375,15226,12139,2021,computed,declare4py
+declare_1094,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,WINWORD.EXE/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1095,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/searching|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1096,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,WINWORD.EXE/nan|browser/searching,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1097,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/searching|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1098,CHOICE,CHOICE,WINWORD.EXE/nan|browser/Outlook/Email,0.5297831457589899,0.5297831457589899,,binary,3643,1930,1713,3643,1930,1930,computed,declare4py
+declare_1099,CHOICE,CHOICE,browser/Outlook/Email|WINWORD.EXE/nan,0.5297831457589899,0.5297831457589899,,binary,3643,1930,1713,3643,1930,1930,computed,declare4py
+declare_1100,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,WINWORD.EXE/nan|browser/Outlook/Email,0.4265715069997255,0.4265715069997255,,binary,3643,1554,2089,3643,1554,1930,computed,declare4py
+declare_1101,EXCLUSIVE_CHOICE,EXCLUSIVE_CHOICE,browser/Outlook/Email|WINWORD.EXE/nan,0.4265715069997255,0.4265715069997255,,binary,3643,1554,2089,3643,1554,1930,computed,declare4py
+declare_1102,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,WINWORD.EXE/nan|browser/Outlook/Email,0.9717265989569036,0.8353781174577635,,binary,3643,3540,103,19888,16614,479,computed,declare4py
+declare_1103,RESPONDED_EXISTENCE,RESPONDED_EXISTENCE,browser/Outlook/Email|WINWORD.EXE/nan,0.6017018940433708,0.24779341603053434,,binary,3643,2192,1451,16768,4155,1827,computed,declare4py
+declare_1104,NOT_RESPONDED_EXISTENCE,NOT_RESPONDED_EXISTENCE,browser/Outlook/Email|WINWORD.EXE/nan,0.9063958276146034,0.8300333969465649,,binary,3643,3302,341,16768,13918,1827,computed,declare4py
+declare_1105,NOT_RESPONSE,NOT_RESPONSE,browser/Outlook/Email|WINWORD.EXE/nan,0.9063958276146034,0.8300333969465649,,binary,3643,3302,341,16768,13918,1827,computed,declare4py
+declare_1106,NOT_PRECEDENCE,NOT_PRECEDENCE,WINWORD.EXE/nan|browser/Outlook/Email,0.9080428218501235,0.8424379770992366,,binary,3643,3308,335,16768,14126,1827,computed,declare4py
+declare_1107,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,WINWORD.EXE/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1108,NOT_CHAIN_RESPONSE,NOT_CHAIN_RESPONSE,browser/Outlook/Email|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1109,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,WINWORD.EXE/nan|browser/Outlook/Email,0.1,0.1,,binary,,,,,,,fallback,declare4py
+declare_1110,NOT_CHAIN_PRECEDENCE,NOT_CHAIN_PRECEDENCE,browser/Outlook/Email|WINWORD.EXE/nan,0.1,0.1,,binary,,,,,,,fallback,declare4py
