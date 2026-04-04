@@ -20,9 +20,13 @@ This page is now the modular entry shell that loads:
 - [visualization/js/app.js](js/app.js)
 - [visualization/js/data.js](js/data.js)
 - [visualization/js/filters.js](js/filters.js)
-- [visualization/js/graph.js](js/graph.js)
+- [visualization/js/graph_unary.js](js/graph_unary.js)
 - [visualization/js/ui.js](js/ui.js)
 - [visualization/js/utils.js](js/utils.js)
+
+Alternative/legacy graph modules kept in repo:
+- [visualization/js/graph_clean.js](js/graph_clean.js)
+- [visualization/js/graph.js](js/graph.js)
 
 ## Run Locally
 
@@ -76,7 +80,9 @@ Additional columns (optional but recommended) are parsed when present:
 - [visualization/js/app.js](js/app.js): app state, startup orchestration, event wiring
 - [visualization/js/data.js](js/data.js): manifest loading, CSV fetching/parsing, record normalization
 - [visualization/js/filters.js](js/filters.js): filter state init, UI rendering, filtering logic
-- [visualization/js/graph.js](js/graph.js): element building, Cytoscape rendering, details text
+- [visualization/js/graph_unary.js](js/graph_unary.js): active graph renderer (unary-aware), Cytoscape rendering, details text, legends
+- [visualization/js/graph_clean.js](js/graph_clean.js): simpler fallback graph renderer
+- [visualization/js/graph.js](js/graph.js): legacy/original graph renderer
 - [visualization/js/ui.js](js/ui.js): DOM cache, theme/panel controls, status/empty/error messages
 - [visualization/js/utils.js](js/utils.js): constants and helper utilities
 
@@ -100,7 +106,7 @@ Additional columns (optional but recommended) are parsed when present:
   - [visualization/js/utils.js](js/utils.js)
   - [visualization/js/data.js](js/data.js)
   - [visualization/js/filters.js](js/filters.js)
-  - [visualization/js/graph.js](js/graph.js)
+  - [visualization/js/graph_unary.js](js/graph_unary.js)
 
 - [visualization/js/data.js](js/data.js) imports:
   - [visualization/js/utils.js](js/utils.js)
@@ -108,6 +114,12 @@ Additional columns (optional but recommended) are parsed when present:
 - [visualization/js/filters.js](js/filters.js) imports:
   - [visualization/js/utils.js](js/utils.js)
   - [visualization/js/ui.js](js/ui.js)
+
+- [visualization/js/graph_unary.js](js/graph_unary.js) imports:
+  - [visualization/js/utils.js](js/utils.js)
+
+- [visualization/js/graph_clean.js](js/graph_clean.js) imports:
+  - [visualization/js/utils.js](js/utils.js)
 
 - [visualization/js/graph.js](js/graph.js) imports:
   - [visualization/js/utils.js](js/utils.js)

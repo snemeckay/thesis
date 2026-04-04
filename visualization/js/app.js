@@ -22,7 +22,7 @@ import {
   renderDetails, 
   renderNoSourceState, 
   renderErrorState 
-} from './graph_unary.js';
+} from './graph.js';
 
 // Global state object
 export const state = {

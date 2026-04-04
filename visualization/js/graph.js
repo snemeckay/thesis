@@ -6,11 +6,13 @@ import {
   escapeHtml,
   fmt
 } from './utils.js';
+import { explainConstraintText } from './constraint_explanations.js';
 
 export function buildGraphElements(records) {
   const nodeMap = new Map();
   const edges = [];
-  const connectedByNode = new Map();
+  const unaryByNode = new Map();
+  const unaryLabelNodes = [];
 
   for (const r of records) {
     const names = r.activityList.length ? r.activityList : [r.activities];
@@ -21,7 +23,11 @@ export function buildGraphElements(records) {
             id: nodeId(name),
             label: name,
             originalName: name,
-            degreeHint: 0
+            hasUnary: 'false',
+            u1Color: '#000000', u1Size: 0,
+            u2Color: '#000000', u2Size: 0,
+            u3Color: '#000000', u3Size: 0,
+            u4Color: '#000000', u4Size: 0
           }
         });
       }
@@ -30,6 +36,14 @@ export function buildGraphElements(records) {
     const sourceName = r.activityA || names[0];
     const targetName = r.activityB || names[0];
     if (!sourceName || !targetName) continue;
+
+    if (r.isUnary) {
+      const relationKey = normalizeRelationKey(r.rule_type || r.template || 'unary');
+      if (!unaryByNode.has(sourceName)) unaryByNode.set(sourceName, new Map());
+      const relMap = unaryByNode.get(sourceName);
+      relMap.set(relationKey, (relMap.get(relationKey) || 0) + 1);
+      continue;
+    }
 
     const edgeId = `edge_${r.rule_id}_${edges.length}`;
     const relationKey = String(r.rule_type || r.template || 'unknown').toLowerCase();
@@ -51,22 +65,63 @@ export function buildGraphElements(records) {
         directionUncertain: r.directionUncertain ? 'true' : 'false',
         recordIndex: String(edges.length)
       },
-      classes: `${r.isUnary ? 'unary' : 'binary'} ${edgeClassByStrength(r.support, r.confidence)}`
+      classes: `binary ${edgeClassByStrength(r.support, r.confidence)}`
     });
-
-    if (!connectedByNode.has(sourceName)) connectedByNode.set(sourceName, 0);
-    if (!connectedByNode.has(targetName)) connectedByNode.set(targetName, 0);
-    connectedByNode.set(sourceName, connectedByNode.get(sourceName) + 1);
-    connectedByNode.set(targetName, connectedByNode.get(targetName) + (sourceName === targetName ? 0 : 1));
   }
 
   const nodes = [...nodeMap.values()].map((node) => {
-    const originalName = node.data.originalName;
-    node.data.degreeHint = connectedByNode.get(originalName) || 0;
+    const name = node.data.originalName;
+
+    const unaryMap = unaryByNode.get(name);
+    if (!unaryMap || unaryMap.size === 0) return node;
+
+    const sorted = [...unaryMap.entries()].sort((a, b) => b[1] - a[1]);
+    const total = sorted.reduce((acc, [, c]) => acc + c, 0);
+    const top = sorted.slice(0, 4);
+
+    node.data.hasUnary = 'true';
+
+    sorted.forEach(([rel], idx) => {
+      unaryLabelNodes.push({
+        data: {
+          id: `ulbl_${node.data.id}_${idx}`,
+          label: prettifyRel(rel),
+          labelColor: edgeColorForRelation(rel),
+          parentActivityId: node.data.id,
+          labelOrder: idx,
+          isUnaryLabel: 'true'
+        },
+        selectable: false,
+        grabbable: false,
+        locked: true
+      });
+    });
+
+    const pie = [
+      { color: '#000000', size: 0 },
+      { color: '#000000', size: 0 },
+      { color: '#000000', size: 0 },
+      { color: '#000000', size: 0 }
+    ];
+
+    let used = 0;
+    for (let i = 0; i < top.length && i < 4; i++) {
+      const [rel, count] = top[i];
+      const pct = Math.round((count / total) * 100);
+      pie[i] = { color: edgeColorForRelation(rel), size: pct };
+      used += pct;
+    }
+    if (used > 100) pie[0].size -= (used - 100);
+
+    node.data.u1Color = pie[0].color; node.data.u1Size = pie[0].size;
+    node.data.u2Color = pie[1].color; node.data.u2Size = pie[1].size;
+    node.data.u3Color = pie[2].color; node.data.u3Size = pie[2].size;
+    node.data.u4Color = pie[3].color; node.data.u4Size = pie[3].size;
+
     return node;
   });
 
-  return { nodes, edges };
+  return { nodes: [...nodes, ...unaryLabelNodes], edges };
 }
 
 export function edgeClassByStrength(support, confidence) {
@@ -79,6 +134,7 @@ export function edgeClassByStrength(support, confidence) {
 }
 
 export function renderGraph(state, nodes = [], edges = []) {
+  ensurePositionCache(state);
   const elements = [...nodes, ...edges];
 
   if (!state.cy) {
@@ -87,7 +143,7 @@ export function renderGraph(state, nodes = [], edges = []) {
       elements,
       style: [
         {
-          selector: 'node',
+          selector: "node[isUnaryLabel != 'true']",
           style: {
             'background-color': '#4c5a6d',
             label: 'data(label)',
@@ -98,10 +154,45 @@ export function renderGraph(state, nodes = [], edges = []) {
             'text-halign': 'center',
             'text-margin-y': 8,
             color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
-            width: 'mapData(degreeHint, 0, 24, 18, 36)',
-            height: 'mapData(degreeHint, 0, 24, 18, 36)',
+            width: 24,
+            height: 24,
             'border-width': 1,
-            'border-color': '#ffffff'
+            'border-color': '#ffffff',
+            'pie-size': '0%'
+          }
+        },
+        {
+          selector: "node[hasUnary = 'true']",
+          style: {
+            'border-color': '#ffffff',
+            'border-width': 1,
+            'pie-size': '80%',
+            'pie-1-background-color': 'data(u1Color)',
+            'pie-1-background-size': 'data(u1Size)',
+            'pie-2-background-color': 'data(u2Color)',
+            'pie-2-background-size': 'data(u2Size)',
+            'pie-3-background-color': 'data(u3Color)',
+            'pie-3-background-size': 'data(u3Size)',
+            'pie-4-background-color': 'data(u4Color)',
+            'pie-4-background-size': 'data(u4Size)'
+          }
+        },
+        {
+          selector: "node[isUnaryLabel = 'true']",
+          style: {
+            'background-opacity': 0,
+            'border-width': 0,
+            width: 1,
+            height: 1,
+            label: 'data(label)',
+            color: 'data(labelColor)',
+            'font-size': 8,
+            'text-wrap': 'none',
+            'text-max-width': 160,
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'z-index': 999,
+            events: 'no'
           }
         },
         {
@@ -132,13 +223,6 @@ export function renderGraph(state, nodes = [], edges = []) {
           }
         },
         {
-          selector: 'edge.unary',
-          style: {
-            'loop-direction': '-30deg',
-            'loop-sweep': '35deg'
-          }
-        },
-        {
           selector: 'edge.strong',
           style: { width: 3, 'line-opacity': 0.95 }
         },
@@ -151,7 +235,7 @@ export function renderGraph(state, nodes = [], edges = []) {
           style: { width: 1.4, 'line-opacity': 0.6 }
         },
         {
-          selector: 'node:selected',
+          selector: "node:selected[isUnaryLabel != 'true']",
           style: {
             'background-color': '#0f766e',
             'border-color': '#0f766e',
@@ -171,6 +255,11 @@ export function renderGraph(state, nodes = [], edges = []) {
       layout: layoutOptions(state.dom.layoutSelect.value)
     });
 
+    setTimeout(() => {
+      cacheVisibleNodePositions(state);
+      placeAllUnaryLabels(state);
+    }, 0);
+
     state.cy.on('select', 'node, edge', (event) => {
       state.selectedElement = event.target;
       state.renderDetails();
@@ -181,16 +270,50 @@ export function renderGraph(state, nodes = [], edges = []) {
       state.selectedElement = selected.nonempty() ? selected : null;
       state.renderDetails();
     });
+
+    state.cy.on("position", "node[isUnaryLabel != 'true']", (event) => {
+      cacheNodePosition(state, event.target);
+      placeUnaryLabelsForActivity(state, event.target);
+    });
   } else {
+    cacheVisibleNodePositions(state);
+
     state.cy.elements().remove();
     state.cy.add(elements);
-    runLayout(state, state.dom.layoutSelect.value);
+
+    const activityNodes = state.cy.nodes("[isUnaryLabel != 'true']");
+    const seenNodes = activityNodes.filter((n) => state.nodePositions.has(n.id()));
+    const unseenNodes = activityNodes.filter((n) => !state.nodePositions.has(n.id()));
+
+    seenNodes.forEach((n) => {
+      const pos = state.nodePositions.get(n.id());
+      if (pos) n.position(pos);
+    });
+
+    if (unseenNodes.length > 0) {
+      const anchor = averagePosition(seenNodes) || viewportCenter(state.cy);
+      unseenNodes.forEach((n, idx) => {
+        const ring = Math.floor(idx / 12);
+        const angle = (idx % 12) * (Math.PI / 6);
+        const radius = 30 + ring * 22;
+        n.position({
+          x: anchor.x + Math.cos(angle) * radius,
+          y: anchor.y + Math.sin(angle) * radius
+        });
+      });
+    }
+
+    cacheVisibleNodePositions(state);
+    placeAllUnaryLabels(state);
   }
 }
 
 export function runLayout(state, layoutName = 'cose') {
   if (!state.cy) return;
   const layout = state.cy.layout(layoutOptions(layoutName));
+  layout.on('layoutstop', () => {
+    placeAllUnaryLabels(state);
+  });
   layout.run();
 }
 
@@ -214,7 +337,7 @@ export function renderDetails(state) {
   if (!selected || selected.empty?.()) {
     state.dom.detailsPanel.innerHTML = `
       <div class="note">Select a node or edge to view plain-language explanation and technical metadata.</div>
-      <p class="helper">Dashed edges indicate a relation where direction is uncertain or symmetric based on available metadata.</p>
+      ${detailsLegendHtml(state)}
     `;
     return;
   }
@@ -222,10 +345,29 @@ export function renderDetails(state) {
   if (selected.isNode()) {
     const name = selected.data('originalName') || selected.data('label');
     const related = state.filteredRecords.filter((r) => r.activityList.includes(name));
+    const unary = related.filter((r) => r.isUnary);
+    const binary = related.length - unary.length;
+
+    const unaryCounts = new Map();
+    for (const r of unary) {
+      const key = normalizeRelationKey(r.rule_type || r.template || 'unary');
+      unaryCounts.set(key, (unaryCounts.get(key) || 0) + 1);
+    }
+
+    const unaryRows = [...unaryCounts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([rel, count]) => {
+        const color = edgeColorForRelation(rel);
+        return `<li><span style="color:${color};font-weight:600">${escapeHtml(prettifyRel(rel))}</span>: ${count.toLocaleString()}</li>`;
+      })
+      .join('');
+
     state.dom.detailsPanel.innerHTML = `
       <h4>${escapeHtml(name)}</h4>
-      <p>${related.length.toLocaleString()} connected constraints in current filtered view.</p>
-      <p class="helper">Tip: add activity search text to focus on this activity across all templates.</p>
+      <p>${related.length.toLocaleString()} related constraints in current filtered view.</p>
+      <p class="helper">Unary: ${unary.length.toLocaleString()} • Binary: ${binary.toLocaleString()}</p>
+      ${unaryRows ? `<h5 style="margin:10px 0 6px">Unary relations</h5><ul style="margin:0;padding-left:18px">${unaryRows}</ul>` : ''}
+      ${detailsLegendHtml(state)}
     `;
     return;
   }
@@ -259,52 +401,169 @@ export function renderDetails(state) {
         <dt>Raw activities</dt><dd>${escapeHtml(record.activities)}</dd>
         <dt>Source file</dt><dd>${escapeHtml(record.source_file)}</dd>
       </dl>
+      ${detailsLegendHtml(state)}
     `;
   }
 }
 
 export function explainConstraint(record) {
-  const [a, b] = [record.activityA, record.activityB];
-  const t = String(record.template || '').toLowerCase();
-
-  const map = {
-    existence: () => `${a || 'This activity'} is expected to appear in a case.`,
-    absence: () => `${a || 'This activity'} tends not to appear in a case.`,
-    init: () => `${a || 'This activity'} is often observed at the start of a case.`,
-    end: () => `${a || 'This activity'} is often observed at the end of a case.`,
-    exactly: () => `${a || 'This activity'} is expected to occur an exact number of times (see cardinality if available).`,
-    responded_existence: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} usually appears somewhere as well.`,
-    response: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} usually follows later.`,
-    precedence: () => `${b || 'Activity B'} usually appears only if ${a || 'activity A'} happened before it.`,
-    chain_response: () => `After ${a || 'activity A'}, ${b || 'activity B'} is expected next.`,
-    chain_precedence: () => `${b || 'Activity B'} is expected to be directly preceded by ${a || 'activity A'}.`,
-    choice: () => `${a || 'Activity A'} and ${b || 'activity B'} are connected as an either/or choice pattern.`,
-    exclusive_choice: () => `${a || 'Activity A'} and ${b || 'activity B'} tend to occur as alternatives, not together.`,
-    coexistence: () => `${a || 'Activity A'} and ${b || 'activity B'} tend to occur together.`,
-    not_coexistence: () => `${a || 'Activity A'} and ${b || 'activity B'} usually do not occur together.`,
-    not_response: () => `After ${a || 'activity A'}, ${b || 'activity B'} is usually not expected to follow.`,
-    not_precedence: () => `${b || 'Activity B'} usually occurs without prior ${a || 'activity A'}.`,
-    not_responded_existence: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} is often absent in the same case.`
-  };
-
-  if (map[t]) return map[t]();
-  return `TODO: This rule connects the listed activities under template ${record.template}. Add explanation here.`;
+  return explainConstraintText(record);
 }
 
 export function renderNoSourceState(state) {
   state.showStatus('No built-in sources discovered.');
   renderGraph(state, [], []);
   state.renderGraphMessage('No built-in constraint CSV files were found. Add *_constraints.csv files under output/, update visualization/csv-sources.json, or upload a file.');
-  state.dom.detailsPanel.innerHTML = '<div class="empty">No source selected yet.</div>';
+  state.dom.detailsPanel.innerHTML = `<div class="empty">No source selected yet.</div>${detailsLegendHtml(state)}`;
 }
 
 export function renderErrorState(state, message) {
   state.showStatus('Error state');
   renderGraph(state, [], []);
   state.renderGraphMessage(message, true);
-  state.dom.detailsPanel.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+  state.dom.detailsPanel.innerHTML = `<div class="error">${escapeHtml(message)}</div>${detailsLegendHtml(state)}`;
 }
 
 function nodeId(activityName) {
   return `node_${activityName}`;
+}
+
+function normalizeRelationKey(text) {
+  return String(text || '').trim().toLowerCase();
+}
+
+function prettifyRel(rel) {
+  return String(rel || '').replace(/_/g, ' ');
+}
+
+function placeAllUnaryLabels(state) {
+  if (!state.cy) return;
+  const activityNodes = state.cy.nodes("[isUnaryLabel != 'true']");
+  activityNodes.forEach((n) => placeUnaryLabelsForActivity(state, n));
+}
+
+function placeUnaryLabelsForActivity(state, activityNode) {
+  if (!state.cy || !activityNode || activityNode.empty?.()) return;
+  const activityId = activityNode.id();
+  const labels = state.cy.nodes(`[parentActivityId = '${activityId}']`);
+  if (!labels || labels.length === 0) return;
+
+  const baseX = activityNode.position('x');
+  const baseY = activityNode.position('y');
+  const nodeHalfHeight = (typeof activityNode.height === 'function' ? activityNode.height() : 20) / 2;
+  const startOffset = nodeHalfHeight + 26;
+  const rowGap = 9;
+  labels.forEach((lbl) => {
+    const order = Number(lbl.data('labelOrder') || 0);
+    lbl.unlock();
+    lbl.position({ x: baseX, y: baseY + startOffset + (order * rowGap) });
+    lbl.lock();
+  });
+}
+
+function ensurePositionCache(state) {
+  if (!state.nodePositions) {
+    state.nodePositions = new Map();
+  }
+}
+
+function cacheNodePosition(state, node) {
+  if (!node || node.empty?.()) return;
+  ensurePositionCache(state);
+  state.nodePositions.set(node.id(), { ...node.position() });
+}
+
+function cacheVisibleNodePositions(state) {
+  if (!state.cy) return;
+  ensurePositionCache(state);
+  state.cy.nodes("[isUnaryLabel != 'true']").forEach((n) => {
+    state.nodePositions.set(n.id(), { ...n.position() });
+  });
+}
+
+function averagePosition(nodes) {
+  if (!nodes || nodes.length === 0) return null;
+  let x = 0;
+  let y = 0;
+  nodes.forEach((n) => {
+    x += n.position('x');
+    y += n.position('y');
+  });
+  return { x: x / nodes.length, y: y / nodes.length };
+}
+
+function viewportCenter(cy) {
+  const extent = cy.extent();
+  return {
+    x: (extent.x1 + extent.x2) / 2,
+    y: (extent.y1 + extent.y2) / 2
+  };
+}
+
+function detailsLegendHtml(state) {
+  return `
+    <section class="filter-section" aria-label="Edge legend">
+      <h4>Edge legend</h4>
+      ${buildEdgeStrengthLegendHtml()}
+      ${buildRelationColorLegendSectionHtml(state)}
+    </section>
+  `;
+}
+
+function buildEdgeStrengthLegendHtml() {
+  return `
+    <div style="display:grid;gap:6px;font-size:.84rem;">
+      <div><span style="display:inline-block;width:18px;border-top:3px solid currentColor;vertical-align:middle;margin-right:8px;"></span>Strong relation</div>
+      <div><span style="display:inline-block;width:18px;border-top:2.2px solid currentColor;vertical-align:middle;margin-right:8px;"></span>Medium relation</div>
+      <div><span style="display:inline-block;width:18px;border-top:1.4px solid currentColor;vertical-align:middle;margin-right:8px;"></span>Weak relation</div>
+      <div><span style="display:inline-block;width:18px;border-top:2px dashed currentColor;vertical-align:middle;margin-right:8px;"></span>Dashed: uncertain or symmetric direction</div>
+    </div>
+  `;
+}
+
+function buildRelationColorLegendSectionHtml(state) {
+  return `
+    <h4 style="margin-top:10px;">Relation color legend</h4>
+    <div style="display:grid;gap:5px;font-size:.84rem;">${buildRelationColorLegendRowsHtml(state)}</div>
+  `;
+}
+
+function getLegendRecords(state) {
+  if (Array.isArray(state?.filteredRecords) && state.filteredRecords.length) {
+    return state.filteredRecords;
+  }
+  if (Array.isArray(state?.records)) {
+    return state.records;
+  }
+  return [];
+}
+
+function buildRelationColorLegendRowsHtml(state) {
+  const records = getLegendRecords(state);
+
+  if (!records.length) {
+    return '<div class="helper">Load a source to see relation colors.</div>';
+  }
+
+  const counts = new Map();
+  records.forEach((r) => {
+    const key = normalizeRelationKey(r.rule_type || r.template || 'unknown');
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  const totalRows = records.length || 1;
+
+  const rows = sorted.map(([rel, count]) => {
+    const color = edgeColorForRelation(rel);
+    const label = escapeHtml(prettifyRel(rel));
+    const pct = ((count / totalRows) * 100).toFixed(1);
+    return `<div>
+      <span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:${color};margin-right:8px;vertical-align:middle;border:1px solid rgba(127,127,127,.4)"></span>
+      ${label}
+      <span class="helper">(count: ${count.toLocaleString()}, ${pct}%)</span>
+    </div>`;
+  });
+
+  return rows.join('');
 }
