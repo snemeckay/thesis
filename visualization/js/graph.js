@@ -23,6 +23,7 @@ export function buildGraphElements(records) {
             id: nodeId(name),
             label: name,
             originalName: name,
+            isUnaryLabel: 'false',
             hasUnary: 'false',
             u1Color: '#000000', u1Size: 0,
             u2Color: '#000000', u2Size: 0,
@@ -136,12 +137,26 @@ export function edgeClassByStrength(support, confidence) {
 export function renderGraph(state, nodes = [], edges = []) {
   ensurePositionCache(state);
   const elements = [...nodes, ...edges];
+  const graphLabelBg = '#1f2937';
+  const graphLabelText = '#edf3fb';
 
   if (!state.cy) {
     state.cy = cytoscape({
       container: state.dom.cyContainer,
       elements,
       style: [
+        {
+          selector: "node[isUnaryLabel != 'true']",
+          style: {
+            color: graphLabelText,
+            'text-outline-width': 0,
+            'text-outline-color': 'transparent',
+            'text-background-color': graphLabelBg,
+            'text-background-opacity': 1,
+            'text-background-padding': 2,
+            'text-background-shape': 'roundrectangle'
+          }
+        },
         {
           selector: "node[isUnaryLabel != 'true']",
           style: {
@@ -153,7 +168,6 @@ export function renderGraph(state, nodes = [], edges = []) {
             'text-valign': 'bottom',
             'text-halign': 'center',
             'text-margin-y': 8,
-            color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
             width: 24,
             height: 24,
             'border-width': 1,
@@ -191,6 +205,8 @@ export function renderGraph(state, nodes = [], edges = []) {
             'text-max-width': 160,
             'text-valign': 'center',
             'text-halign': 'center',
+            'text-background-opacity': 0,
+            'text-background-padding': 0,
             'z-index': 999,
             events: 'no'
           }
@@ -206,11 +222,11 @@ export function renderGraph(state, nodes = [], edges = []) {
             label: 'data(label)',
             'font-size': 8,
             'text-rotation': 'autorotate',
-            'text-background-color': getComputedStyle(document.documentElement).getPropertyValue('--surface').trim(),
+            'text-background-color': graphLabelBg,
             'text-background-opacity': 0.82,
             'text-background-padding': 2,
             'text-wrap': 'none',
-            color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim(),
+            color: graphLabelText,
             width: 1.6,
             'line-opacity': 0.75
           }
