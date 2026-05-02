@@ -110,6 +110,9 @@ def compute_metrics_for_template(
         "notrespondedexistence": compute_not_response,
         "notprecedence": compute_not_precedence,
         "notsuccession": compute_not_succession,
+        "notchainresponse": compute_not_chain_response,
+        "notchainprecedence": compute_not_chain_precedence,
+        "notchainsuccession": compute_not_chain_succession,
         "choice": compute_choice,
         "exclusivechoice": compute_exclusive_choice,
         "coexistence": compute_coexistence,
@@ -619,21 +622,53 @@ def compute_not_precedence(a, b, trace_cache):
 
 
 def compute_not_succession(a, b, trace_cache):
-    """NotSuccession(A,B): combination of NotResponse and NotPrecedence."""
-    not_response = compute_not_response(a, b, trace_cache)
-    not_precedence = compute_not_precedence(a, b, trace_cache)
+    """NotSuccession(A,B): NotResponse and NotPrecedence together.
 
+    A trace satisfies NotSuccession(A,B) only if it satisfies both
+    NotResponse(A,B) (no B after any A) and NotPrecedence(A,B) (no A before
+    any B).  Iterates over each trace once to compute per-trace satisfaction
+    for both sub-constraints simultaneously.
+
+    ``activation_trace_count`` counts traces where A or B occurs because
+    NotResponse is activated by A and NotPrecedence is activated by B;
+    either sub-constraint can be activated independently.
+    """
     trace_count = len(trace_cache)
     support_count = 0
+    activation_count = 0
+    fulfillment_count = 0
+    activation_trace_count = 0
 
-    for i in range(trace_count):
-        response_ok = (i < not_response["support_count"])
-        precedence_ok = (i < not_precedence["support_count"])
-        if response_ok and precedence_ok:
+    for trace in trace_cache:
+        positions_a = trace["positions"].get(a, [])
+        positions_b = trace["positions"].get(b, [])
+        last_b = trace["last"].get(b)
+        first_a = trace["first"].get(a)
+
+        # NotResponse: for each A, no B may occur after.
+        nr_acts = len(positions_a)
+        nr_fulfilled = sum(
+            1 for pos_a in positions_a
+            if last_b is None or last_b <= pos_a
+        )
+        nr_satisfied = (nr_fulfilled == nr_acts)
+
+        # NotPrecedence: for each B, no A may have occurred before.
+        np_acts = len(positions_b)
+        np_fulfilled = sum(
+            1 for pos_b in positions_b
+            if first_a is None or first_a >= pos_b
+        )
+        np_satisfied = (np_fulfilled == np_acts)
+
+        if nr_acts > 0 or np_acts > 0:
+            activation_trace_count += 1
+
+        activation_count += nr_acts + np_acts
+        fulfillment_count += nr_fulfilled + np_fulfilled
+
+        if nr_satisfied and np_satisfied:
             support_count += 1
-
-    activation_count = not_response["activation_count"] + not_precedence["activation_count"]
-    fulfillment_count = not_response["fulfillment_count"] + not_precedence["fulfillment_count"]
 
     support = support_count / trace_count if trace_count > 0 else 0.0
     confidence = fulfillment_count / activation_count if activation_count > 0 else 1.0
@@ -646,8 +681,153 @@ def compute_not_succession(a, b, trace_cache):
         "violation_count": trace_count - support_count,
         "activation_count": activation_count,
         "fulfillment_count": fulfillment_count,
-        "activation_trace_count": max(not_response["activation_trace_count"],
-                                      not_precedence["activation_trace_count"]),
+        "activation_trace_count": activation_trace_count,
+    }
+
+
+def compute_not_chain_response(a, b, trace_cache):
+    """NotChainResponse(A,B): if A occurs, B must not immediately follow."""
+    trace_count = len(trace_cache)
+    support_count = 0
+    activation_count = 0
+    fulfillment_count = 0
+    activation_trace_count = 0
+
+    for trace in trace_cache:
+        acts = trace["activities"]
+        positions_a = trace["positions"].get(a, [])
+
+        if positions_a:
+            activation_trace_count += 1
+        activation_count += len(positions_a)
+
+        fulfilled_a = 0
+        for pos_a in positions_a:
+            if not (pos_a + 1 < len(acts) and acts[pos_a + 1] == b):
+                fulfilled_a += 1
+
+        trace_satisfied = (fulfilled_a == len(positions_a)) if positions_a else True
+        if trace_satisfied:
+            support_count += 1
+        fulfillment_count += fulfilled_a
+
+    support = support_count / trace_count if trace_count > 0 else 0.0
+    confidence = fulfillment_count / activation_count if activation_count > 0 else 1.0
+
+    return {
+        "support": support,
+        "confidence": confidence,
+        "trace_count": trace_count,
+        "support_count": support_count,
+        "violation_count": trace_count - support_count,
+        "activation_count": activation_count,
+        "fulfillment_count": fulfillment_count,
+        "activation_trace_count": activation_trace_count,
+    }
+
+
+def compute_not_chain_precedence(a, b, trace_cache):
+    """NotChainPrecedence(A,B): if B occurs, A must not immediately precede."""
+    trace_count = len(trace_cache)
+    support_count = 0
+    activation_count = 0
+    fulfillment_count = 0
+    activation_trace_count = 0
+
+    for trace in trace_cache:
+        acts = trace["activities"]
+        positions_b = trace["positions"].get(b, [])
+
+        if positions_b:
+            activation_trace_count += 1
+        activation_count += len(positions_b)
+
+        fulfilled_b = 0
+        for pos_b in positions_b:
+            if not (pos_b - 1 >= 0 and acts[pos_b - 1] == a):
+                fulfilled_b += 1
+
+        trace_satisfied = (fulfilled_b == len(positions_b)) if positions_b else True
+        if trace_satisfied:
+            support_count += 1
+        fulfillment_count += fulfilled_b
+
+    support = support_count / trace_count if trace_count > 0 else 0.0
+    confidence = fulfillment_count / activation_count if activation_count > 0 else 1.0
+
+    return {
+        "support": support,
+        "confidence": confidence,
+        "trace_count": trace_count,
+        "support_count": support_count,
+        "violation_count": trace_count - support_count,
+        "activation_count": activation_count,
+        "fulfillment_count": fulfillment_count,
+        "activation_trace_count": activation_trace_count,
+    }
+
+
+def compute_not_chain_succession(a, b, trace_cache):
+    """NotChainSuccession(A,B): NotChainResponse and NotChainPrecedence together.
+
+    A trace satisfies NotChainSuccession(A,B) only if it satisfies both
+    NotChainResponse(A,B) (B does not immediately follow any A) and
+    NotChainPrecedence(A,B) (A does not immediately precede any B).
+    Iterates over each trace once to compute per-trace satisfaction for both
+    sub-constraints simultaneously.
+
+    ``activation_trace_count`` counts traces where A or B occurs because
+    NotChainResponse is activated by A and NotChainPrecedence is activated by B;
+    either sub-constraint can be activated independently.
+    """
+    trace_count = len(trace_cache)
+    support_count = 0
+    activation_count = 0
+    fulfillment_count = 0
+    activation_trace_count = 0
+
+    for trace in trace_cache:
+        acts = trace["activities"]
+        positions_a = trace["positions"].get(a, [])
+        positions_b = trace["positions"].get(b, [])
+
+        # NotChainResponse: for each A, the immediately following event is not B.
+        ncr_acts = len(positions_a)
+        ncr_fulfilled = sum(
+            1 for pos_a in positions_a
+            if not (pos_a + 1 < len(acts) and acts[pos_a + 1] == b)
+        )
+        ncr_satisfied = (ncr_fulfilled == ncr_acts)
+
+        # NotChainPrecedence: for each B, the immediately preceding event is not A.
+        ncp_acts = len(positions_b)
+        ncp_fulfilled = sum(
+            1 for pos_b in positions_b
+            if not (pos_b - 1 >= 0 and acts[pos_b - 1] == a)
+        )
+        ncp_satisfied = (ncp_fulfilled == ncp_acts)
+
+        if ncr_acts > 0 or ncp_acts > 0:
+            activation_trace_count += 1
+
+        activation_count += ncr_acts + ncp_acts
+        fulfillment_count += ncr_fulfilled + ncp_fulfilled
+
+        if ncr_satisfied and ncp_satisfied:
+            support_count += 1
+
+    support = support_count / trace_count if trace_count > 0 else 0.0
+    confidence = fulfillment_count / activation_count if activation_count > 0 else 1.0
+
+    return {
+        "support": support,
+        "confidence": confidence,
+        "trace_count": trace_count,
+        "support_count": support_count,
+        "violation_count": trace_count - support_count,
+        "activation_count": activation_count,
+        "fulfillment_count": fulfillment_count,
+        "activation_trace_count": activation_trace_count,
     }
 
 

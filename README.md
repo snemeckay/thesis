@@ -96,10 +96,9 @@ Both are implemented as classes that share common CSV loading, column-renaming, 
 
 **How it works:**
 1. Loads the CSV (column renaming handled by `BasePipeline`).
-2. Optionally filters to the N most-frequent activities to control runtime — binary template checking scales as O(n²) in the number of activities.
-3. Runs `pm4py.discover_declare()`, which evaluates all DECLARE templates in a single efficient pass using automata-based conformance checking.
-4. Converts pm4py's raw activation/fulfillment counts to support and confidence ratios.
-5. Saves unified JSON + CSV output.
+2. Runs `pm4py.discover_declare()`, which evaluates all DECLARE templates in a single efficient pass using automata-based conformance checking.
+3. Converts pm4py's raw activation/fulfillment counts to support and confidence ratios.
+4. Saves unified JSON + CSV output.
 
 **When to use:**
 - For large datasets: DisCoveR is significantly faster than DeclareMiner on high-activity logs.
@@ -109,7 +108,6 @@ Both are implemented as classes that share common CSV loading, column-renaming, 
 **Key parameters:**
 - `--min-support` — minimum support ratio (0.0 = no filter)
 - `--min-confidence` — minimum confidence ratio (0.0 = no filter)
-- `--top-activities N` — restrict discovery to the N most-frequent activities; strongly recommended for logs with > 200 distinct activities
 
 **Output files** (stem taken from input CSV):
 - `{stem}_dcr_constraints.json` / `.csv` — unified rules
@@ -123,6 +121,14 @@ Both are implemented as classes that share common CSV loading, column-renaming, 
 
 **Output format:**
 Both pipelines write JSON + CSV in a unified schema with support, confidence, cardinality, category, and auxiliary counts for filtering and visualisation.  See [UNIFIED_OUTPUT_FORMAT.md](UNIFIED_OUTPUT_FORMAT.md) for full field definitions.
+
+**Recent pipeline updates (April 2026):**
+- Unified schema now uses only `rule_type` (canonical `UPPERCASE_SNAKE_CASE`).
+- Legacy `template` and `metrics_source` fields were removed from outputs and visualization parsing.
+- Symmetric binary templates are deduplicated by normalized activity order (e.g., `CHOICE(A,B)` = `CHOICE(B,A)`).
+- Deduplication now includes cardinality in the key, so unary constraints with different bounds are preserved (e.g., `EXISTENCE(A,1)` vs `EXISTENCE(A,2)`).
+- Missing `NOT_CHAIN_*` metric handlers were implemented; uncomputed constraints are no longer expected in normal runs.
+- `--top-activities` pre-filtering was removed from both pipelines to avoid semantic distortion of temporal constraints.
 
 **Entry points:**
 ```bash
@@ -139,8 +145,7 @@ python discover_pipeline.py \
   --csv data/preprocessed.csv \
   --out-dir output \
   --min-support 0.4 \
-  --min-confidence 0.8 \
-  --top-activities 50
+  --min-confidence 0.8
 ```
 
 ---

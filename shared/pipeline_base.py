@@ -90,6 +90,12 @@ class BasePipeline:
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
         return log_converter.apply(df, variant=log_converter.Variants.TO_EVENT_LOG)
 
+    @staticmethod
+    def dataframe_to_event_log(df):
+        """Convert a pm4py-formatted DataFrame to a pm4py EventLog."""
+        work_df = dataframe_utils.convert_timestamp_columns_in_df(df.copy())
+        return log_converter.apply(work_df, variant=log_converter.Variants.TO_EVENT_LOG)
+
     # ------------------------------------------------------------------
     # Output path helpers
     # ------------------------------------------------------------------
@@ -141,6 +147,17 @@ class BasePipeline:
         n_traces = df["case:concept:name"].nunique()
         n_events = len(df)
         n_activities = df["concept:name"].nunique()
+        print(f">> Log: {n_traces} traces, {n_events} events, {n_activities} unique activities")
+
+    def print_event_log_stats(self, log) -> None:
+        """Print trace, event, and unique-activity counts for a pm4py EventLog.
+
+        Args:
+            log: A pm4py ``EventLog`` (list of traces).
+        """
+        n_traces = len(log)
+        n_events = sum(len(t) for t in log)
+        n_activities = len({e["concept:name"] for t in log for e in t})
         print(f">> Log: {n_traces} traces, {n_events} events, {n_activities} unique activities")
 
     # ------------------------------------------------------------------

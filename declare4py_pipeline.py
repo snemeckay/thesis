@@ -21,14 +21,12 @@ Usage:
 
 Output files (all in ``--out-dir``, stem taken from the input CSV):
     {stem}.xes                          -- intermediate XES log
-    {stem}_declare_model.decl           -- raw Declare4Py model
     {stem}_declare4py_constraints.json  -- unified rules (JSON)
     {stem}_declare4py_constraints.csv   -- unified rules (CSV)
 """
 
 import argparse
 import re
-import logging
 from pathlib import Path
 
 from Declare4Py.D4PyEventLog import D4PyEventLog
@@ -38,8 +36,6 @@ from shared.pipeline_base import BasePipeline
 from shared.pipeline_io import export_xes
 from shared.pipeline_metrics import build_trace_cache, compute_metrics_for_template
 from shared.pipeline_schema import create_rule, normalize_activities
-
-logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
 
 class Declare4PyPipeline(BasePipeline):
@@ -88,6 +84,7 @@ class Declare4PyPipeline(BasePipeline):
             ``EventLog`` and ``xes_path`` is the ``Path`` to the written file.
         """
         log = self.load_event_log()
+
         xes_path = self.output_path(".xes")
         export_xes(log, xes_path)
         return log, xes_path
@@ -116,7 +113,6 @@ class Declare4PyPipeline(BasePipeline):
             max_declare_cardinality=self.max_cardinality,
         )
 
-        print(">> Running DeclareMiner discovery...")
         return miner.run()
 
     # ------------------------------------------------------------------
@@ -128,9 +124,8 @@ class Declare4PyPipeline(BasePipeline):
 
         Iterates over all constraints in the discovered model, normalises
         template names and activities, and delegates metric computation to
-        ``compute_metrics_for_template``.  When metrics cannot be computed
-        (e.g. unsupported template), the miner's own thresholds are used as
-        fallback values.
+        ``compute_metrics_for_template``. Constraints whose metrics cannot be
+        computed are skipped to keep the output fully populated and consistent.
 
         Args:
             model:       ``DeclareModel`` returned by ``discover_model()``.
@@ -157,71 +152,40 @@ class Declare4PyPipeline(BasePipeline):
             cardinality = self._extract_cardinality(template, n_value)
             activities = normalize_activities(activities_raw)
 
-            constraint_key = (template, tuple(activities))
-            if constraint_key in seen:
-                continue
-            seen.add(constraint_key)
-
             template_norm = self._normalize_template_name(template)
+            constraint_key = self._canonical_constraint_key(template_norm, activities, cardinality)
+            is_duplicate = constraint_key in seen
+
+            if is_duplicate:
+                continue
+
+            seen.add(constraint_key)
             metrics = compute_metrics_for_template(template_norm, activities, trace_cache, cardinality)
 
-            if metrics:
-                rule = create_rule(
-                    rule_id=f"declare_{len(rules)}",
-                    rule_type=template,
-                    template=template,
-                    activities=activities,
-                    support=float(metrics["support"]),
-                    confidence=float(metrics["confidence"]),
-                    cardinality=cardinality,
-                    trace_count=metrics["trace_count"],
-                    support_count=metrics["support_count"],
-                    violation_count=metrics["violation_count"],
-                    activation_count=metrics["activation_count"],
-                    fulfillment_count=metrics["fulfillment_count"],
-                    activation_trace_count=metrics["activation_trace_count"],
-                    metrics_source="computed",
-                    source="declare4py",
-                )
-            else:
-                rule = create_rule(
-                    rule_id=f"declare_{len(rules)}",
-                    rule_type=template,
-                    template=template,
-                    activities=activities,
-                    support=float(self.min_support),
-                    confidence=float(self.itemsets_support),
-                    cardinality=cardinality,
-                    metrics_source="fallback",
-                    source="declare4py",
-                )
+            if not metrics:
+                continue
+
+            rule = create_rule(
+                rule_id=f"declare_{len(rules)}",
+                rule_type=template,
+                template=template,
+                activities=activities,
+                support=float(metrics["support"]),
+                confidence=float(metrics["confidence"]),
+                cardinality=cardinality,
+                trace_count=metrics["trace_count"],
+                support_count=metrics["support_count"],
+                violation_count=metrics["violation_count"],
+                activation_count=metrics["activation_count"],
+                fulfillment_count=metrics["fulfillment_count"],
+                activation_trace_count=metrics["activation_trace_count"],
+                metrics_source="computed",
+                source="declare4py",
+            )
 
             rules.append(rule)
 
         return rules
-
-    # ------------------------------------------------------------------
-    # Step 4 – model persistence
-    # ------------------------------------------------------------------
-
-    def save_declare_model(self, model) -> Path:
-        """Write the raw DECLARE model to a .decl text file.
-
-        Args:
-            model: ``DeclareModel`` returned by ``discover_model()``.
-
-        Returns:
-            Path to the written .decl file.
-        """
-        model_path = self.output_path("_declare_model.decl")
-        model_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(model_path, "w", encoding="utf-8") as f:
-            if hasattr(model, "serialized_constraints"):
-                f.write("\n".join(model.serialized_constraints))
-            else:
-                f.write("# DECLARE Model\n")
-                f.write(f"# Constraints: {len(getattr(model, 'constraints', []))}\n")
-        return model_path
 
     # ------------------------------------------------------------------
     # Orchestration
@@ -242,23 +206,19 @@ class Declare4PyPipeline(BasePipeline):
         """
         print(f">> Loading CSV from {self.csv_path}")
         log, xes_path = self.prepare_xes()
-        print(f">> Log: {len(log)} traces, {sum(len(t) for t in log)} events")
-        print(f">> Exported XES to {xes_path}")
+        self.print_event_log_stats(log)
 
+        print(">> Running DeclareMiner (Declare4Py)...")
         model = self.discover_model(xes_path)
         n_constraints = len(model.constraints) if hasattr(model, "constraints") else 0
         print(f">> Discovered {n_constraints} raw constraints")
 
-        model_path = self.save_declare_model(model)
-        print(f">> Saved DECLARE model to {model_path}")
-
-        print(">> Recomputing metrics via trace cache...")
         trace_cache = build_trace_cache(log)
         rules = self.extract_rules(model, trace_cache)
-        print(f">> Extracted {len(rules)} constraints with metrics")
+        print(f">> Extracted {len(rules)} constraints after deduplication and metric computation")
 
         json_path, csv_path = self.save_results(rules, "declare4py_constraints")
-        print(f">> Saved constraints to {json_path} and {csv_path}")
+        print(f">> Saved to {json_path} and {csv_path}")
 
         return rules
 
@@ -304,7 +264,8 @@ class Declare4PyPipeline(BasePipeline):
         Returns:
             Integer cardinality, or ``None`` for binary templates.
         """
-        if n_value is not None and any(t in template for t in ("Existence", "Absence", "Exactly")):
+        template_l = str(template or "").lower()
+        if n_value is not None and any(t in template_l for t in ("existence", "absence", "exactly")):
             return n_value
 
         match = re.search(r"\d+", template)
@@ -330,6 +291,18 @@ class Declare4PyPipeline(BasePipeline):
         base = re.sub(r"\d+", "", template)
         base = re.sub(r"[^A-Za-z]", "", base)
         return base.lower()
+
+    @staticmethod
+    def _canonical_constraint_key(template_norm: str, activities: list[str], cardinality) -> tuple:
+        """Build a deduplication key. Symmetric binary templates are order-normalised.
+        Cardinality is included so EXISTENCE(A,1) and EXISTENCE(A,2) are kept separately."""
+        symmetric_templates = {"choice", "exclusivechoice", "coexistence", "notcoexistence"}
+
+        if len(activities) == 2 and template_norm in symmetric_templates:
+            a, b = sorted(activities)
+            return template_norm, (a, b), cardinality
+
+        return template_norm, tuple(activities), cardinality
 
 
 # ---------------------------------------------------------------------------

@@ -2,6 +2,19 @@
 
 ## Completed Work
 
+### April 2026 Pipeline Consolidation Update
+
+Implemented a unification pass across both DECLARE discovery pipelines and the visualization layer:
+
+- Standardized output schema to a single canonical rule identifier field (`rule_type`, uppercase snake case).
+- Removed legacy/ambiguous fields (`template`, `metrics_source`) from exported datasets.
+- Added symmetric-template deduplication for pair-order invariance (e.g., `CHOICE(A,B)` and `CHOICE(B,A)` are treated as the same discovered relation).
+- Fixed deduplication for unary cardinality templates by including cardinality in the key, preserving distinct constraints such as `EXISTENCE(A,1)` vs `EXISTENCE(A,2)`.
+- Completed metric handlers for missing negative chain templates (`NOT_CHAIN_RESPONSE`, `NOT_CHAIN_PRECEDENCE`, `NOT_CHAIN_SUCCESSION`).
+- Removed pre-discovery activity filtering (`--top-activities`) from both pipelines to avoid altering temporal semantics before mining.
+
+This update improved cross-pipeline comparability, reduced duplicate noise, and ensured semantically consistent export data for downstream analysis and visualization.
+
 ### 1. Assessing Impact of Removing Anonymized Data
 
 Analyzed the raw logs to understand what data would be lost by filtering out redacted/anonymized entries. Found that:
@@ -57,12 +70,12 @@ Implemented automated constraint discovery that scans activity logs for behavior
 
 **Output format - CSV:**
 ```
-rule_id,rule_type,template,activities,support,confidence,cardinality,category,trace_count,support_count,violation_count
-declare_0,EXISTENCE,EXISTENCE,browser/youtube,0.4107,0.4107,,unary,3643,1496,2147
-declare_1,ABSENCE,ABSENCE,browser/youtube,0.5893,0.5893,,unary,3643,2147,1496
-declare_2,EXISTENCE,EXISTENCE,browser/facebook,0.3563,0.3563,,unary,3643,1298,2345
-declare_39,CHOICE,CHOICE,browser/youtube|browser_file/nan,0.8765,0.8765,,binary,3643,3193,450
-declare_45,RESPONSE,RESPONSE,browser/youtube|browser_file/nan,0.7963,0.3710,,binary,3643,2901,742
+rule_id,rule_type,activities,support,confidence,cardinality,category,trace_count,support_count,violation_count
+declare_0,EXISTENCE,browser/youtube,0.4107,0.4107,,unary,3643,1496,2147
+declare_1,ABSENCE,browser/youtube,0.5893,0.5893,,unary,3643,2147,1496
+declare_2,EXISTENCE,browser/facebook,0.3563,0.3563,,unary,3643,1298,2345
+declare_39,CHOICE,browser/youtube|browser_file/nan,0.8765,0.8765,,binary,3643,3193,450
+declare_45,RESPONSE,browser/youtube|browser_file/nan,0.7963,0.3710,,binary,3643,2901,742
 ```
 
 **Output format - JSON:**
@@ -70,7 +83,6 @@ declare_45,RESPONSE,RESPONSE,browser/youtube|browser_file/nan,0.7963,0.3710,,bin
 {
   "rule_id": "declare_0",
   "rule_type": "EXISTENCE",
-  "template": "EXISTENCE",
   "activities": ["browser/youtube"],
   "support": 0.41065056272303047,
   "confidence": 0.41065056272303047,
@@ -81,7 +93,6 @@ declare_45,RESPONSE,RESPONSE,browser/youtube|browser_file/nan,0.7963,0.3710,,bin
   "violation_count": 2147,
   "activation_count": 3643,
   "fulfillment_count": 1496,
-  "metrics_source": "computed",
   "source": "declare4py"
 }
 ```
