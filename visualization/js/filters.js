@@ -13,9 +13,11 @@ export function initializeFilterState(records, state) {
   state.dom.activitySearch.value = "";
 
   state.filters.categorical = {};
+  state.filters.categoricalAllValues = {};
   for (const field of CATEGORICAL_FIELDS) {
     const values = [...new Set(records.map((r) => r[field] || "unknown"))].sort((a, b) => a.localeCompare(b));
     state.filters.categorical[field] = new Set(values);
+    state.filters.categoricalAllValues[field] = values;
   }
 
   state.filters.numeric = {};
@@ -36,6 +38,7 @@ export function resetFiltersState(state) {
   state.filters = {
     activityQuery: "",
     categorical: {},
+    categoricalAllValues: {},
     numeric: {}
   };
   state.selectedElement = null;

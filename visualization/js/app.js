@@ -15,6 +15,7 @@ import {
   renderActiveChips,
   applyFilters
 } from './filters.js';
+import { readUrlState, applyInitialUrlFilters, persistUrlState } from './url_state.js';
 import { 
   buildGraphElements, 
   renderGraph, 
@@ -45,6 +46,7 @@ export const state = {
     filtersCollapsed: false,
     detailsCollapsed: false
   },
+  initialUrlState: null,
   dom: {}
 };
 
@@ -58,6 +60,10 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
   cacheDom();
   state.dom = dom;
+  state.initialUrlState = readUrlState();
+  if (state.initialUrlState?.s) {
+    state.activeSourceId = state.initialUrlState.s;
+  }
 
   state._onFilterChange = invokeApplyFiltersAndRender;
 
@@ -229,6 +235,7 @@ async function loadSelectedSource() {
   }
 
   initializeFilterState(state.records, state);
+  applyInitialUrlFilters(state);
   renderFilters(state, parsed.warnings || []);
   invokeApplyFiltersAndRender();
   showStatus(state.loadedSummaryText);
@@ -279,6 +286,7 @@ function invokeApplyFiltersAndRender() {
     renderGraphMessage("No constraints match current filters. Try broadening the selected values.");
     renderDetails(state);
     showStatus(state.loadedSummaryText || "No source loaded.");
+    persistUrlState(state);
     return;
   }
 
@@ -295,6 +303,8 @@ function invokeApplyFiltersAndRender() {
       clearGraphMessage();
     }
   }
+
+  persistUrlState(state);
 }
 
 function getActiveSourceBaseName() {
