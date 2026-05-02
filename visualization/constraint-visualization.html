@@ -64,8 +64,8 @@
                 <input id="uploadInput" type="file" accept=".csv,text/csv" />
               </div>
 
-              <div class="control-group">
-                <button id="reloadBuiltins" type="button" class="btn-subtle" aria-label="Reload built-in source list">
+              <div class="control-group" style="display:none">
+                <button id="reloadBuiltins" type="button" class="btn-subtle" aria-label="Reload built-in source list" tabindex="-1">
                   <i data-lucide="refresh-cw"></i>
                   Refresh sources
                 </button>
@@ -119,6 +119,8 @@
           <button id="zoomInBtn" type="button" aria-label="Zoom in"><i data-lucide="zoom-in"></i></button>
           <button id="zoomOutBtn" type="button" aria-label="Zoom out"><i data-lucide="zoom-out"></i></button>
           <button id="resetSelectionBtn" type="button"><i data-lucide="x-circle"></i>Reset selection</button>
+          <button id="exportPngBtn" type="button" aria-label="Export graph as PNG"><i data-lucide="image-down"></i>Export PNG</button>
+          <button id="downloadFilteredBtn" type="button" aria-label="Download filtered constraints as CSV"><i data-lucide="download"></i>Download filtered CSV</button>
         </div>
 
         <div class="graph-wrap">

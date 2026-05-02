@@ -43,6 +43,8 @@ export const DOM_BINDINGS = {
   zoomInBtn: "zoomInBtn",
   zoomOutBtn: "zoomOutBtn",
   resetSelectionBtn: "resetSelectionBtn",
+  exportPngBtn: "exportPngBtn",
+  downloadFilteredBtn: "downloadFilteredBtn",
   resetFilters: "resetFilters",
   activitySearch: "activitySearch",
   filterMetrics: "filterMetrics",

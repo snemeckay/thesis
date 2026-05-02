@@ -139,6 +139,12 @@ function bindStaticEvents() {
     state.cy?.elements().unselect();
     renderDetails(state);
   });
+  dom.exportPngBtn.addEventListener("click", async () => {
+    await exportGraphPng();
+  });
+  dom.downloadFilteredBtn.addEventListener("click", () => {
+    downloadFilteredConstraintsCsv();
+  });
 
   syncPanelToggleUI(state);
 }
@@ -289,4 +295,85 @@ function invokeApplyFiltersAndRender() {
       clearGraphMessage();
     }
   }
+}
+
+function getActiveSourceBaseName() {
+  const source = state.allSources.find((s) => s.id === state.activeSourceId);
+  if (!source?.filename) return "constraints";
+  return source.filename.replace(/\.csv$/i, "");
+}
+
+async function exportGraphPng() {
+  if (!state.cy) {
+    showStatus("No graph available to export.");
+    return;
+  }
+
+  try {
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    const bg = isDark ? "#1e1e2e" : "#ffffff";
+    const blob = await state.cy.png({ output: "blob-promise", scale: 2, full: true, bg });
+    const fileName = `${getActiveSourceBaseName()}-graph.png`;
+    const url = URL.createObjectURL(blob);
+    triggerDownload(url, fileName);
+    URL.revokeObjectURL(url);
+    showStatus(`Graph exported as ${fileName}.`);
+  } catch (err) {
+    console.error("[exportGraphPng] Export failed:", err);
+    showStatus("Graph export failed.");
+  }
+}
+
+function downloadFilteredConstraintsCsv() {
+  const rows = state.filteredRecords || [];
+  if (rows.length === 0) {
+    showStatus("No filtered constraints to download.");
+    return;
+  }
+
+  const columns = getCsvColumns(rows);
+  const csv = toCsv(rows, columns);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const fileName = `${getActiveSourceBaseName()}-filtered-constraints.csv`;
+  const url = URL.createObjectURL(blob);
+  triggerDownload(url, fileName);
+  URL.revokeObjectURL(url);
+  showStatus(`Filtered constraints exported (${rows.length.toLocaleString()} rows).`);
+}
+
+function getCsvColumns(rows) {
+  const seen = new Set();
+  const ordered = [];
+
+  for (const row of rows) {
+    for (const key of Object.keys(row)) {
+      if (seen.has(key)) continue;
+      seen.add(key);
+      ordered.push(key);
+    }
+  }
+
+  return ordered;
+}
+
+function toCsv(rows, columns) {
+  const escapeCell = (value) => {
+    if (value === null || value === undefined) return "";
+    const text = String(value);
+    if (!/[",\n\r]/.test(text)) return text;
+    return `"${text.replace(/"/g, '""')}"`;
+  };
+
+  const header = columns.map(escapeCell).join(",");
+  const body = rows.map((row) => columns.map((key) => escapeCell(row[key])).join(",")).join("\r\n");
+  return `${header}\r\n${body}`;
+}
+
+function triggerDownload(url, fileName) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
