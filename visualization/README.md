@@ -45,7 +45,7 @@ Open:
 Built-in source discovery:
 - [visualization/csv-sources.json](csv-sources.json)
 - default fallback paths in `app`/`data` module point to:
-  - `output/preprocessed_declare_constraints.csv`
+  - `output/preprocessed_declare4py_constraints.csv`
   - `output/preprocessed_dcr_constraints.csv`
 
 Custom sources:
@@ -56,11 +56,15 @@ Custom sources:
 Required columns:
 - `rule_id`
 - `rule_type`
-- `template`
 - `activities`
 
+Notes:
+- `rule_type` is the only template identifier used by the dashboard.
+- Legacy columns `template` and `metrics_source` are no longer required or consumed.
+- `rule_type` values are expected in canonical uppercase snake case (e.g., `CHAIN_RESPONSE`).
+
 Additional columns (optional but recommended) are parsed when present:
-- `support`, `confidence`, `category`, `source`, `metrics_source`, counts, etc.
+- `support`, `confidence`, `category`, `source`, counts, etc.
 
 ## Features
 

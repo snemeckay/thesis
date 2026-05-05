@@ -53,15 +53,35 @@
           <div class="filter-section">
             <h4>Data source</h4>
             <div class="data-source-stack" aria-label="Data source controls">
-              <div class="control-group">
-                <label for="sourceSelect">Dataset file</label>
-                <select id="sourceSelect"></select>
-                <p class="helper">Sample files from output are listed here. Choose one dataset at a time.</p>
-              </div>
+              <fieldset class="control-group">
+                <legend>Visualization mode</legend>
+                <div class="radio-group">
+                  <label>
+                    <input id="modeRadioSingle" type="radio" name="vizMode" value="single" checked />
+                    Single model
+                  </label>
+                  <label>
+                    <input id="modeRadioCompare" type="radio" name="vizMode" value="compare" />
+                    Side-by-side comparison
+                  </label>
+                  <label>
+                    <input id="modeRadioMerged" type="radio" name="vizMode" value="merged" />
+                    Combined comparison
+                  </label>
+                </div>
+              </fieldset>
+              <p class="helper">
+                <span><strong>Single:</strong> One source at a time.</span><br>
+                <span><strong>Side-by-side comparison:</strong> Model A (top) and Model B (bottom).</span><br>
+                <span><strong>Combined comparison:</strong> One graph showing what's common and what differs.</span>
+              </p>
+
+
 
               <div class="control-group">
                 <label for="uploadInput">Upload custom CSV</label>
                 <input id="uploadInput" type="file" accept=".csv,text/csv" />
+                <p class="helper">Uploaded files are added to the dataset selectors and can be selected for any view mode.</p>
               </div>
 
               <div class="control-group" style="display:none">
@@ -75,7 +95,7 @@
 
           <div class="helper">Use filters to narrow visible constraints and inspect model behavior in context.</div>
 
-          <div class="filter-section">
+          <div id="sourceFilterSection" class="filter-section">
             <h4>Source</h4>
             <div id="sourceChoiceGroup" class="source-choice" role="radiogroup" aria-label="Choose source"></div>
             <div class="helper">Narrow results to constraints from a specific miner/export source.</div>
@@ -106,7 +126,7 @@
           <div id="statusText" class="muted" aria-live="polite">Preparing data…</div>
         </div>
 
-        <div class="graph-toolbar" role="toolbar" aria-label="Graph controls">
+        <div id="graphToolbar" class="graph-toolbar" role="toolbar" aria-label="Graph controls">
           <label for="layoutSelect" class="sr-only">Graph layout</label>
           <select id="layoutSelect" aria-label="Graph layout">
             <option value="cose">cose</option>
@@ -125,7 +145,34 @@
 
         <div class="graph-wrap">
           <div id="graphMessage" class="empty" hidden></div>
+          <div id="mergedLegend" class="merged-legend" hidden>
+            <div class="legend-title">Legend</div>
+            <div class="legend-item">
+              <div class="legend-sample both"></div>
+              <span>In both models</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-sample only-a"></div>
+              <span>Only in Model A</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-sample only-b"></div>
+              <span>Only in Model B</span>
+            </div>
+          </div>
           <div id="cy" role="img" aria-label="Network graph of activities and constraints"></div>
+          <div id="compareGraphShell" class="compare-graph-shell" hidden aria-label="Comparison model shells">
+            <div class="compare-graph-card">
+              <div class="compare-graph-title">Model A</div>
+              <div id="compareGraphLabelA" class="compare-graph-label muted">No dataset selected.</div>
+              <div id="cyCompareA" class="compare-graph-cy" role="img" aria-label="Model A constraint graph preview"></div>
+            </div>
+            <div class="compare-graph-card">
+              <div class="compare-graph-title">Model B</div>
+              <div id="compareGraphLabelB" class="compare-graph-label muted">No dataset selected.</div>
+              <div id="cyCompareB" class="compare-graph-cy" role="img" aria-label="Model B constraint graph preview"></div>
+            </div>
+          </div>
         </div>
       </section>
 

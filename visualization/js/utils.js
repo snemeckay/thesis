@@ -3,31 +3,34 @@
 // ============================================================================
 
 export const EXPECTED_COLUMNS = [
-  "rule_id", "rule_type", "template", "activities", "support", "confidence", "cardinality", "category",
+  "rule_id", "rule_type", "activities", "support", "confidence", "cardinality", "category",
   "trace_count", "support_count", "violation_count", "activation_count", "fulfillment_count", "activation_trace_count",
-  "metrics_source", "source"
+  "source"
 ];
 
-export const REQUIRED_COLUMNS = ["rule_id", "rule_type", "template", "activities"];
+export const REQUIRED_COLUMNS = ["rule_id", "rule_type", "activities"];
 
 export const NUMERIC_FIELDS = [
   "support", "confidence", "support_count", "violation_count",
   "activation_count", "fulfillment_count", "activation_trace_count"
 ];
 
-export const CATEGORICAL_FIELDS = ["source", "rule_type", "category"];
+export const CATEGORICAL_FIELDS = ["rule_type", "category"];
 
 export const EDGE_COLOR_PALETTE = [
   "#2f6f9f", "#3b7f6f", "#8b6f47", "#7a5c91", "#9a5a5a", "#5e7f3f", "#6f6f8e", "#7f5b3f"
 ];
 
 export const DEFAULT_BUILTIN_CSV_PATHS = [
-  "../output/preprocessed_declare_constraints.csv",
+  "../output/preprocessed_declare4py_constraints.csv",
   "../output/preprocessed_dcr_constraints.csv"
 ];
 
 export const DOM_BINDINGS = {
-  sourceSelect: "sourceSelect",
+  modeRadioSingle: "modeRadioSingle",
+  modeRadioCompare: "modeRadioCompare",
+  modeRadioMerged: "modeRadioMerged",
+  sourceFilterSection: "sourceFilterSection",
   sourceChoiceGroup: "sourceChoiceGroup",
   mainLayout: "main-content",
   filtersPanel: "filtersPanel",
@@ -53,6 +56,12 @@ export const DOM_BINDINGS = {
   activeChips: "activeChips",
   statusText: "statusText",
   graphMessage: "graphMessage",
+  mergedLegend: "mergedLegend",
+  compareGraphShell: "compareGraphShell",
+  compareGraphLabelA: "compareGraphLabelA",
+  compareGraphLabelB: "compareGraphLabelB",
+  cyCompareA: "cyCompareA",
+  cyCompareB: "cyCompareB",
   detailsPanel: "detailsPanel",
   cyContainer: "cy"
 };

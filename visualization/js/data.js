@@ -15,8 +15,14 @@ export async function discoverAvailableCsvFiles(state) {
 
   for (const relativePath of unique) {
     const text = await loadCsvText(relativePath, true);
-    if (!text || !text.includes("rule_id") || !text.includes("template")) continue;
-    discovered.push(createSourceDescriptor(relativePath, "builtin", text));
+    if (text && text.includes("rule_id") && text.includes("rule_type")) {
+      discovered.push(createSourceDescriptor(relativePath, "builtin", text));
+      continue;
+    }
+
+    // Keep built-in entries visible in selectors even when prefetch fails
+    // (e.g., app opened without local HTTP server). Actual loading is validated later.
+    discovered.push(createSourceDescriptor(relativePath, "builtin", null));
   }
 
   state.builtInSources = dedupeSources(discovered);
@@ -48,7 +54,6 @@ export function createSourceDescriptor(path, kind, csvText) {
     .join(" ");
 
   let sourceHint = "";
-  let metricsHint = "";
   if (csvText) {
     const lines = csvText.split(/\r?\n/);
     const headerLine = lines[0] || "";
@@ -57,9 +62,7 @@ export function createSourceDescriptor(path, kind, csvText) {
       const headers = headerLine.split(",").map((h) => h.trim());
       const values = firstDataLine.split(",");
       const sourceIdx = headers.indexOf("source");
-      const metricsIdx = headers.indexOf("metrics_source");
       if (sourceIdx !== -1) sourceHint = (values[sourceIdx] || "").trim();
-      if (metricsIdx !== -1) metricsHint = (values[metricsIdx] || "").trim();
     }
   }
 
@@ -68,12 +71,20 @@ export function createSourceDescriptor(path, kind, csvText) {
 
   const sourceNorm = String(sourceHint || "").trim().toLowerCase();
   let label;
-  if (kind === "builtin" && sourceNorm === "declare4py") {
+  const normalizedPath = String(path || '').replace(/\\/g, '/').toLowerCase();
+  const isDefaultDeclare =
+    normalizedPath.endsWith('/preprocessed_declare4py_constraints.csv') ||
+    normalizedPath.endsWith('preprocessed_declare4py_constraints.csv') ||
+    normalizedPath.endsWith('/preprocessed_declare_constraints.csv') ||
+    normalizedPath.endsWith('preprocessed_declare_constraints.csv');
+  const isDefaultDiscover = normalizedPath.endsWith('/preprocessed_dcr_constraints.csv') || normalizedPath.endsWith('preprocessed_dcr_constraints.csv');
+
+  if (kind === "builtin" && (sourceNorm === "declare4py" || isDefaultDeclare)) {
     label = "Sample data - Declare4Py";
-  } else if (kind === "builtin" && sourceNorm === "discover") {
+  } else if (kind === "builtin" && (sourceNorm === "discover" || isDefaultDiscover)) {
     label = "Sample data - DisCoveR";
   } else {
-    const secondary = [sourceHint, metricsHint].filter(Boolean).join(" • ");
+    const secondary = [sourceHint].filter(Boolean).join(" • ");
     label = secondary
       ? `${kindPrefix} — ${modelName} (${filename}) · ${secondary}`
       : `${kindPrefix} — ${modelName} (${filename})`;
@@ -164,7 +175,7 @@ export function normalizeConstraintRecord(rawRecord, sourceName) {
     record[key] = typeof value === "string" ? value.trim() : (value ?? "");
   }
 
-  if (!record.rule_id || !record.template || !record.activities) return null;
+  if (!record.rule_id || !record.rule_type || !record.activities) return null;
 
   for (const field of NUMERIC_FIELDS) {
     const value = rawRecord[field];
@@ -176,7 +187,7 @@ export function normalizeConstraintRecord(rawRecord, sourceName) {
     record[field] = typeof value === "string" && value.trim() ? value.trim() : "unknown";
   }
 
-  const activityInfo = extractActivities(record.activities, record.category, record.template);
+  const activityInfo = extractActivities(record.activities, record.category, record.rule_type);
   record.activityList = activityInfo.activityList;
   record.activityA = activityInfo.activityA;
   record.activityB = activityInfo.activityB;

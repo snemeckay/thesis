@@ -61,49 +61,81 @@ export function renderFilters(state, warnings = []) {
 }
 
 export function renderSourceChoice(state) {
-  const field = "source";
-  const allValues = getAllCategoricalValues(state, field);
-  const selected = state.filters.categorical[field] || new Set(allValues);
+  const allSources = Array.isArray(state.allSources) ? state.allSources : [];
+  const compare = state.mode === 'compare';
+  const merged = state.mode === 'merged';
 
   state.dom.sourceChoiceGroup.innerHTML = "";
+  state.dom.sourceChoiceGroup.setAttribute('role', (compare || merged) ? 'group' : 'radiogroup');
 
-  const makeBtn = (label, isActive, onClick, valueKey) => {
+  const makeBtn = (label, isActive, onClick, valueKey, ariaRole = null) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = isActive ? "active" : "";
-    btn.setAttribute("role", "radio");
-    btn.setAttribute("aria-checked", String(isActive));
+    if (ariaRole) btn.setAttribute("role", ariaRole);
+    btn.setAttribute(ariaRole === 'radio' ? "aria-checked" : "aria-pressed", String(isActive));
     btn.dataset.value = valueKey;
     btn.textContent = label;
     btn.addEventListener("click", onClick);
     return btn;
   };
 
-  const allActive = selected.size === allValues.length;
-  state.dom.sourceChoiceGroup.appendChild(
-    makeBtn("All sources", allActive, () => {
-      state.filters.categorical[field] = new Set(allValues);
-      renderSourceChoice(state);
-      if (state._onFilterChange) state._onFilterChange();
-    }, "__all__")
-  );
-
-  allValues.forEach((value) => {
-    const isActive = selected.size === 1 && selected.has(value);
+  if (!compare && !merged) {
+    const allActive = !state.activeSourceId;
     state.dom.sourceChoiceGroup.appendChild(
-      makeBtn(value, isActive, () => {
-        state.filters.categorical[field] = new Set([value]);
-        renderSourceChoice(state);
-        if (state._onFilterChange) state._onFilterChange();
-      }, value)
+      makeBtn("All sources", allActive, () => {
+        if (state._onSourceChoiceChange) state._onSourceChoiceChange("__all__");
+      }, "__all__", 'radio')
     );
-  });
+
+    allSources.forEach((source) => {
+      const isActive = source.id === state.activeSourceId;
+      state.dom.sourceChoiceGroup.appendChild(
+        makeBtn(source.label, isActive, () => {
+          if (state._onSourceChoiceChange) state._onSourceChoiceChange(source.id);
+        }, source.id, 'radio')
+      );
+    });
+    return;
+  }
+
+  const makeCompareBlock = (label, slotKey, activeSourceId) => {
+    const block = document.createElement('div');
+    block.className = 'source-choice-block';
+
+    const title = document.createElement('div');
+    title.className = 'source-choice-title';
+    title.textContent = label;
+
+    const row = document.createElement('div');
+    row.className = 'source-choice-row';
+    row.setAttribute('role', 'radiogroup');
+    row.setAttribute('aria-label', `${label} source selector`);
+
+    allSources.forEach((source) => {
+      const isActive = source.id === activeSourceId;
+      row.appendChild(
+        makeBtn(source.label, isActive, () => {
+          if (state._onSourceChoiceChange) state._onSourceChoiceChange({ slot: slotKey, value: source.id });
+        }, source.id, 'radio')
+      );
+    });
+
+    block.append(title, row);
+    return block;
+  };
+
+  state.dom.sourceChoiceGroup.appendChild(
+    makeCompareBlock('Model A source', 'a', state.compareSelection?.aSourceId)
+  );
+  state.dom.sourceChoiceGroup.appendChild(
+    makeCompareBlock('Model B source', 'b', state.compareSelection?.bSourceId)
+  );
 }
 
 export function renderCategoricalFilters(state) {
   state.dom.categoricalFilters.innerHTML = "";
   for (const field of CATEGORICAL_FIELDS) {
-    if (field === "source") continue;
     const section = document.createElement("section");
     section.className = "filter-section";
 
@@ -383,7 +415,6 @@ export function clearChipFilter(state, key) {
     state.dom.activitySearch.value = "";
   } else if (CATEGORICAL_FIELDS.includes(key)) {
     state.filters.categorical[key] = new Set(getAllCategoricalValues(state, key));
-    if (key === "source") renderSourceChoice(state);
     renderCategoricalFilters(state);
   } else if (NUMERIC_FIELDS.includes(key)) {
     const cfg = state.filters.numeric[key];

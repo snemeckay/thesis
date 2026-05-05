@@ -9,9 +9,11 @@ import {
 import { explainConstraintText } from './constraint_explanations.js';
 
 export function buildGraphElements(records) {
+  const mergedComparisonMode = records.some((r) => isComparisonStatus(r?.comparisonStatus));
   const nodeMap = new Map();
   const edges = [];
   const unaryByNode = new Map();
+  const nodeStatuses = new Map();
   const unaryLabelNodes = [];
 
   for (const r of records) {
@@ -25,6 +27,9 @@ export function buildGraphElements(records) {
             originalName: name,
             isUnaryLabel: 'false',
             hasUnary: 'false',
+            showUnaryPie: 'false',
+            nodeColor: '#4c5a6d',
+            comparisonStatus: 'normal',
             u1Color: '#000000', u1Size: 0,
             u2Color: '#000000', u2Size: 0,
             u3Color: '#000000', u3Size: 0,
@@ -38,24 +43,36 @@ export function buildGraphElements(records) {
     const targetName = r.activityB || names[0];
     if (!sourceName || !targetName) continue;
 
+    if (mergedComparisonMode && isComparisonStatus(r.comparisonStatus)) {
+      addNodeStatus(nodeStatuses, sourceName, r.comparisonStatus);
+      addNodeStatus(nodeStatuses, targetName, r.comparisonStatus);
+    }
+
     if (r.isUnary) {
-      const relationKey = normalizeRelationKey(r.rule_type || r.template || 'unary');
+      const relationKey = normalizeRelationKey(r.rule_type || 'unary');
       if (!unaryByNode.has(sourceName)) unaryByNode.set(sourceName, new Map());
       const relMap = unaryByNode.get(sourceName);
-      relMap.set(relationKey, (relMap.get(relationKey) || 0) + 1);
+      if (!relMap.has(relationKey)) {
+        relMap.set(relationKey, { count: 0, statuses: new Set() });
+      }
+      const relInfo = relMap.get(relationKey);
+      relInfo.count += 1;
+      if (mergedComparisonMode && isComparisonStatus(r.comparisonStatus)) {
+        relInfo.statuses.add(r.comparisonStatus);
+      }
       continue;
     }
 
     const edgeId = `edge_${r.rule_id}_${edges.length}`;
-    const relationKey = String(r.rule_type || r.template || 'unknown').toLowerCase();
+    const relationKey = String(r.rule_type || 'unknown').toLowerCase();
     const baseEdgeColor = edgeColorForRelation(relationKey);
     edges.push({
       data: {
         id: edgeId,
         source: nodeId(sourceName),
         target: nodeId(targetName),
-        label: shortTemplateLabel(r.rule_type || r.template),
-        template: r.template,
+        label: shortTemplateLabel(r.rule_type),
+        template: r.rule_type,
         ruleType: r.rule_type,
         support: r.support,
         confidence: r.confidence,
@@ -64,6 +81,7 @@ export function buildGraphElements(records) {
         edgeColor: baseEdgeColor,
         edgeSelectedColor: brightenHexColor(baseEdgeColor, 0.22),
         directionUncertain: r.directionUncertain ? 'true' : 'false',
+        comparisonStatus: r.comparisonStatus || 'normal',
         recordIndex: String(edges.length)
       },
       classes: `binary ${edgeClassByStrength(r.support, r.confidence)}`
@@ -72,22 +90,29 @@ export function buildGraphElements(records) {
 
   const nodes = [...nodeMap.values()].map((node) => {
     const name = node.data.originalName;
+    const nodeStatus = resolveStatus(nodeStatuses.get(name));
+    node.data.comparisonStatus = nodeStatus;
+    node.data.nodeColor = statusColor(nodeStatus, '#4c5a6d');
 
     const unaryMap = unaryByNode.get(name);
     if (!unaryMap || unaryMap.size === 0) return node;
 
-    const sorted = [...unaryMap.entries()].sort((a, b) => b[1] - a[1]);
-    const total = sorted.reduce((acc, [, c]) => acc + c, 0);
+    const sorted = [...unaryMap.entries()].sort((a, b) => b[1].count - a[1].count);
+    const total = sorted.reduce((acc, [, info]) => acc + info.count, 0);
     const top = sorted.slice(0, 4);
 
     node.data.hasUnary = 'true';
+    node.data.showUnaryPie = mergedComparisonMode ? 'false' : 'true';
 
-    sorted.forEach(([rel], idx) => {
+    sorted.forEach(([rel, info], idx) => {
+      const relStatus = resolveStatus(info.statuses);
       unaryLabelNodes.push({
         data: {
           id: `ulbl_${node.data.id}_${idx}`,
           label: prettifyRel(rel),
-          labelColor: edgeColorForRelation(rel),
+          labelColor: mergedComparisonMode
+            ? statusColor(relStatus, edgeColorForRelation(rel))
+            : edgeColorForRelation(rel),
           parentActivityId: node.data.id,
           labelOrder: idx,
           isUnaryLabel: 'true'
@@ -107,7 +132,8 @@ export function buildGraphElements(records) {
 
     let used = 0;
     for (let i = 0; i < top.length && i < 4; i++) {
-      const [rel, count] = top[i];
+      const [rel, info] = top[i];
+      const count = info.count;
       const pct = Math.round((count / total) * 100);
       pie[i] = { color: edgeColorForRelation(rel), size: pct };
       used += pct;
@@ -160,7 +186,7 @@ export function renderGraph(state, nodes = [], edges = []) {
         {
           selector: "node[isUnaryLabel != 'true']",
           style: {
-            'background-color': '#4c5a6d',
+            'background-color': 'data(nodeColor)',
             label: 'data(label)',
             'font-size': 10,
             'text-wrap': 'ellipsis',
@@ -176,7 +202,7 @@ export function renderGraph(state, nodes = [], edges = []) {
           }
         },
         {
-          selector: "node[hasUnary = 'true']",
+          selector: "node[showUnaryPie = 'true']",
           style: {
             'border-color': '#ffffff',
             'border-width': 1,
@@ -249,6 +275,27 @@ export function renderGraph(state, nodes = [], edges = []) {
         {
           selector: 'edge.weak',
           style: { width: 1.4, 'line-opacity': 0.6 }
+        },
+        {
+          selector: "edge[comparisonStatus = 'both']",
+          style: {
+            'line-color': '#0f766e',
+            'target-arrow-color': '#0f766e'
+          }
+        },
+        {
+          selector: "edge[comparisonStatus = 'only_a']",
+          style: {
+            'line-color': '#2563eb',
+            'target-arrow-color': '#2563eb'
+          }
+        },
+        {
+          selector: "edge[comparisonStatus = 'only_b']",
+          style: {
+            'line-color': '#dc2626',
+            'target-arrow-color': '#dc2626'
+          }
         },
         {
           selector: "node:selected[isUnaryLabel != 'true']",
@@ -366,7 +413,7 @@ export function renderDetails(state) {
 
     const unaryCounts = new Map();
     for (const r of unary) {
-      const key = normalizeRelationKey(r.rule_type || r.template || 'unary');
+      const key = normalizeRelationKey(r.rule_type || 'unary');
       unaryCounts.set(key, (unaryCounts.get(key) || 0) + 1);
     }
 
@@ -398,9 +445,32 @@ export function renderDetails(state) {
 
     const explanation = explainConstraint(record);
     const involved = record.activityList.join(' → ') || record.activities;
+    const comparisonStatus = record.comparisonStatus;
+    
+    let comparisonHtml = '';
+    if (comparisonStatus) {
+      const statusLabel = {
+        'both': 'Present in both models',
+        'only_a': 'Only in Model A',
+        'only_b': 'Only in Model B'
+      }[comparisonStatus] || 'Unknown';
+      
+      const statusColor = {
+        'both': '#0f766e',
+        'only_a': '#2563eb',
+        'only_b': '#dc2626'
+      }[comparisonStatus] || '#666';
+      
+      comparisonHtml = `
+        <div style="background:${statusColor}20;border-left:3px solid ${statusColor};padding:8px;margin-bottom:12px;border-radius:4px;">
+          <strong style="color:${statusColor}">${statusLabel}</strong>
+        </div>
+      `;
+    }
 
     state.dom.detailsPanel.innerHTML = `
       <h4>Constraint ${escapeHtml(record.rule_id)}</h4>
+      ${comparisonHtml}
       <p><strong>Plain-language explanation:</strong><br>${escapeHtml(explanation)}</p>
       <dl class="kv">
         <dt>Activities</dt><dd>${escapeHtml(involved)}</dd>
@@ -442,6 +512,31 @@ export function renderErrorState(state, message) {
 
 function nodeId(activityName) {
   return `node_${activityName}`;
+}
+
+function isComparisonStatus(status) {
+  return status === 'both' || status === 'only_a' || status === 'only_b';
+}
+
+function addNodeStatus(nodeStatuses, nodeName, status) {
+  if (!nodeStatuses.has(nodeName)) nodeStatuses.set(nodeName, new Set());
+  nodeStatuses.get(nodeName).add(status);
+}
+
+function resolveStatus(statusSet) {
+  if (!statusSet || statusSet.size === 0) return 'normal';
+  if (statusSet.has('both')) return 'both';
+  if (statusSet.has('only_a') && statusSet.has('only_b')) return 'both';
+  if (statusSet.has('only_a')) return 'only_a';
+  if (statusSet.has('only_b')) return 'only_b';
+  return 'normal';
+}
+
+function statusColor(status, fallback = '#4c5a6d') {
+  if (status === 'both') return '#0f766e';
+  if (status === 'only_a') return '#2563eb';
+  if (status === 'only_b') return '#dc2626';
+  return fallback;
 }
 
 function normalizeRelationKey(text) {
@@ -563,7 +658,7 @@ function buildRelationColorLegendRowsHtml(state) {
 
   const counts = new Map();
   records.forEach((r) => {
-    const key = normalizeRelationKey(r.rule_type || r.template || 'unknown');
+    const key = normalizeRelationKey(r.rule_type || 'unknown');
     counts.set(key, (counts.get(key) || 0) + 1);
   });
 
