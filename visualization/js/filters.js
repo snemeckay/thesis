@@ -7,6 +7,8 @@ import {
   fmt
 } from './utils.js';
 import { safeCreateIcons } from './ui.js';
+import { RULE_TYPE_HIERARCHY, getHierarchyForRendering, normalizeRuleTypeKey } from './ruleTypeHierarchy.js';
+import { createTooltipIcon } from './tooltipManager.js';
 
 export function initializeFilterState(records, state) {
   state.filters.activityQuery = "";
@@ -15,7 +17,9 @@ export function initializeFilterState(records, state) {
   state.filters.categorical = {};
   state.filters.categoricalAllValues = {};
   for (const field of CATEGORICAL_FIELDS) {
-    const values = [...new Set(records.map((r) => r[field] || "unknown"))].sort((a, b) => a.localeCompare(b));
+    const values = field === "rule_type"
+      ? [...new Set(records.map((r) => normalizeRuleTypeKey(r[field])).filter(Boolean))].sort((a, b) => a.localeCompare(b))
+      : [...new Set(records.map((r) => r[field] || "unknown"))].sort((a, b) => a.localeCompare(b));
     state.filters.categorical[field] = new Set(values);
     state.filters.categoricalAllValues[field] = values;
   }
@@ -136,11 +140,21 @@ export function renderSourceChoice(state) {
 export function renderCategoricalFilters(state) {
   state.dom.categoricalFilters.innerHTML = "";
   for (const field of CATEGORICAL_FIELDS) {
+    if (field === "rule_type") {
+      renderRuleTypeTree(state, field);
+      continue;
+    }
+
     const section = document.createElement("section");
     section.className = "filter-section";
 
+    const header = document.createElement("div");
+    header.className = "filter-section-header";
+
     const title = document.createElement("h4");
     title.textContent = prettifyFieldName(field);
+
+    const titleInfo = createTooltipIcon("info", describeFilterField(field));
 
     const list = document.createElement("div");
     list.className = "checkbox-list";
@@ -179,9 +193,135 @@ export function renderCategoricalFilters(state) {
     hint.className = "helper";
     hint.textContent = `${describeFilterField(field)}`;
 
-    section.append(title, list, hint);
+    header.append(title, titleInfo);
+    section.append(header, list, hint);
     state.dom.categoricalFilters.appendChild(section);
   }
+}
+
+function renderRuleTypeTree(state, field) {
+  const section = document.createElement("section");
+  section.className = "filter-section";
+
+  const header = document.createElement("div");
+  header.className = "filter-section-header";
+
+  const title = document.createElement("h4");
+  title.textContent = "Rule types";
+
+  const titleInfo = createTooltipIcon(
+    "info",
+    "Grouped by meaning so you can browse constraint families more easily."
+  );
+
+  header.append(title, titleInfo);
+
+  const tree = document.createElement("div");
+  tree.className = "rule-type-tree";
+
+  const selectedSet = state.filters.categorical[field];
+  const presentValues = new Set(state.filters.categoricalAllValues[field] || []);
+  const hierarchy = getHierarchyForRendering([...presentValues]);
+
+  hierarchy.forEach((category) => {
+    category.children = category.children.filter((ruleType) => presentValues.has(ruleType.key));
+    if (category.children.length === 0) return;
+
+    const categoryWrap = document.createElement("div");
+    categoryWrap.className = "tree-category expanded";
+
+    const categoryHeader = document.createElement("div");
+    categoryHeader.className = "tree-category-header";
+
+    const expandIcon = document.createElement("span");
+    expandIcon.className = "tree-expand-icon";
+    expandIcon.textContent = "▾";
+
+    const categoryCheckbox = document.createElement("input");
+    categoryCheckbox.type = "checkbox";
+
+    const categoryLabel = document.createElement("span");
+    categoryLabel.className = "tree-category-title";
+    categoryLabel.textContent = category.label;
+
+    const categoryInfo = createTooltipIcon("info", category.description);
+
+    const categoryTitleWrap = document.createElement("div");
+    categoryTitleWrap.className = "tree-category-label";
+    categoryTitleWrap.append(categoryCheckbox, categoryLabel, categoryInfo);
+
+    categoryHeader.append(expandIcon, categoryTitleWrap);
+
+    const childrenWrap = document.createElement("div");
+    childrenWrap.className = "tree-children";
+
+    const childCheckboxes = [];
+
+    category.children.forEach((ruleType) => {
+      const item = document.createElement("label");
+      item.className = "tree-item";
+      item.setAttribute("title", ruleType.description);
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = selectedSet.has(ruleType.key);
+
+      const itemTitle = document.createElement("span");
+      itemTitle.className = "tree-item-title";
+      itemTitle.textContent = ruleType.label;
+
+      const itemInfo = createTooltipIcon("info", ruleType.info);
+
+      item.append(checkbox, itemTitle, itemInfo);
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          selectedSet.add(ruleType.key);
+        } else {
+          selectedSet.delete(ruleType.key);
+        }
+        updateTreeCategoryCheckbox(categoryCheckbox, childCheckboxes);
+        if (state._onFilterChange) state._onFilterChange();
+      });
+
+      childCheckboxes.push(checkbox);
+      childrenWrap.append(item);
+    });
+
+    updateTreeCategoryCheckbox(categoryCheckbox, childCheckboxes);
+
+    categoryCheckbox.addEventListener("change", () => {
+      childCheckboxes.forEach((checkbox, index) => {
+        const ruleTypeKey = category.children[index].key;
+        checkbox.checked = categoryCheckbox.checked;
+        if (categoryCheckbox.checked) {
+          selectedSet.add(ruleTypeKey);
+        } else {
+          selectedSet.delete(ruleTypeKey);
+        }
+      });
+      updateTreeCategoryCheckbox(categoryCheckbox, childCheckboxes);
+      if (state._onFilterChange) state._onFilterChange();
+    });
+
+    categoryHeader.addEventListener("click", (event) => {
+      if (event.target.closest("input, label, button")) return;
+      const expanded = categoryWrap.classList.toggle("expanded");
+      categoryHeader.setAttribute("aria-expanded", String(expanded));
+    });
+
+    categoryWrap.append(categoryHeader, childrenWrap);
+    tree.append(categoryWrap);
+  });
+
+  section.append(header, tree);
+  state.dom.categoricalFilters.appendChild(section);
+}
+
+function updateTreeCategoryCheckbox(categoryCheckbox, childCheckboxes) {
+  const checkedCount = childCheckboxes.filter((checkbox) => checkbox.checked).length;
+  categoryCheckbox.checked = checkedCount === childCheckboxes.length && childCheckboxes.length > 0;
+  categoryCheckbox.indeterminate = checkedCount > 0 && checkedCount < childCheckboxes.length;
 }
 
 export function renderNumericFilters(state) {
@@ -330,7 +470,7 @@ export function applyFilters(records, filters) {
 
     for (const [field, selected] of Object.entries(filters.categorical)) {
       if (!selected || selected.size === 0) return false;
-      const value = r[field] || "unknown";
+      const value = field === "rule_type" ? normalizeRuleTypeKey(r[field]) : (r[field] || "unknown");
       if (!selected.has(value)) return false;
     }
 
@@ -414,7 +554,9 @@ export function clearChipFilter(state, key) {
     state.filters.activityQuery = "";
     state.dom.activitySearch.value = "";
   } else if (CATEGORICAL_FIELDS.includes(key)) {
-    state.filters.categorical[key] = new Set(getAllCategoricalValues(state, key));
+    state.filters.categorical[key] = key === "rule_type"
+      ? new Set(getAllCategoricalValues(state, key).map((value) => normalizeRuleTypeKey(value)))
+      : new Set(getAllCategoricalValues(state, key));
     renderCategoricalFilters(state);
   } else if (NUMERIC_FIELDS.includes(key)) {
     const cfg = state.filters.numeric[key];

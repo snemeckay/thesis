@@ -1,23 +1,18 @@
+import { getDetailedRuleTypeInfo, normalizeRuleTypeKey } from './ruleTypeHierarchy.js';
+
 export function explainConstraintText(record) {
   const [a, b] = [record.activityA, record.activityB];
   const rawTemplate = String(record.template || record.rule_type || '').trim();
-  const t = rawTemplate.toLowerCase().replace(/[\s-]+/g, '_');
+  const t = normalizeRuleTypeKey(rawTemplate) || rawTemplate.toLowerCase().replace(/[\s-]+/g, '_');
   const compact = t.replace(/_/g, '');
-  const cardinality = Number.isFinite(record.cardinality) ? record.cardinality : null;
 
   const map = {
-    existence: () => cardinality
-      ? `${a || 'This activity'} is expected to appear at least ${cardinality} time${cardinality === 1 ? '' : 's'} in a case.`
-      : `${a || 'This activity'} is expected to appear in a case.`,
-    absence: () => cardinality
-      ? `${a || 'This activity'} is expected to appear at most ${Math.max(cardinality - 1, 0)} time${Math.max(cardinality - 1, 0) === 1 ? '' : 's'} in a case.`
-      : `${a || 'This activity'} tends not to appear in a case.`,
+    existence: () => `${a || 'This activity'} is expected to appear in a case.`,
+    absence: () => `${a || 'This activity'} is expected not to appear in a case.`,
     init: () => `${a || 'This activity'} is often observed at the start of a case.`,
     end: () => `${a || 'This activity'} is often observed at the end of a case.`,
-    exactly: () => cardinality
-      ? `${a || 'This activity'} is expected to occur exactly ${cardinality} time${cardinality === 1 ? '' : 's'} in a case.`
-      : `${a || 'This activity'} is expected to occur an exact number of times in a case.`,
-    exactlyone: () => `${a || 'This activity'} is expected to occur exactly once in a case.`,
+    exactly_one: () => `${a || 'This activity'} is expected to occur once in a case.`,
+    exactlyone: () => `${a || 'This activity'} is expected to occur once in a case.`,
     responded_existence: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} usually appears somewhere as well.`,
     response: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} usually follows later.`,
     precedence: () => `${b || 'Activity B'} usually appears only if ${a || 'activity A'} happened before it.`,
@@ -62,5 +57,8 @@ export function explainConstraintText(record) {
 
   if (map[t]) return map[t]();
   if (map[compact]) return map[compact]();
+  // Fallback: include brief info if available from hierarchy
+  const detailed = getDetailedRuleTypeInfo(rawTemplate);
+  if (detailed) return `${a || 'This activity'} and ${b || 'the related activity'} are connected by the ${rawTemplate} constraint. ${detailed}`;
   return `${a || 'This activity'} and ${b || 'the related activity'} are connected by the ${rawTemplate || 'selected'} constraint template.`;
 }

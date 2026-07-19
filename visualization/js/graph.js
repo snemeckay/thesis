@@ -7,6 +7,7 @@ import {
   fmt
 } from './utils.js';
 import { explainConstraintText } from './constraint_explanations.js';
+import { normalizeRuleTypeKey } from './ruleTypeHierarchy.js';
 
 export function buildGraphElements(records) {
   const mergedComparisonMode = records.some((r) => isComparisonStatus(r?.comparisonStatus));
@@ -64,7 +65,7 @@ export function buildGraphElements(records) {
     }
 
     const edgeId = `edge_${r.rule_id}_${edges.length}`;
-    const relationKey = String(r.rule_type || 'unknown').toLowerCase();
+    const relationKey = normalizeRelationKey(r.rule_type || 'unknown');
     const baseEdgeColor = edgeColorForRelation(relationKey);
     edges.push({
       data: {
@@ -408,28 +409,31 @@ export function renderDetails(state) {
   if (selected.isNode()) {
     const name = selected.data('originalName') || selected.data('label');
     const related = state.filteredRecords.filter((r) => r.activityList.includes(name));
-    const unary = related.filter((r) => r.isUnary);
-    const binary = related.length - unary.length;
+    const visibleRelated = related;
+    const unary = visibleRelated.filter((r) => r.isUnary);
+    const binary = visibleRelated.length - unary.length;
 
-    const unaryCounts = new Map();
-    for (const r of unary) {
-      const key = normalizeRelationKey(r.rule_type || 'unary');
-      unaryCounts.set(key, (unaryCounts.get(key) || 0) + 1);
-    }
-
-    const unaryRows = [...unaryCounts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([rel, count]) => {
-        const color = edgeColorForRelation(rel);
-        return `<li><span style="color:${color};font-weight:600">${escapeHtml(prettifyRel(rel))}</span>: ${count.toLocaleString()}</li>`;
+    const unaryRows = unary
+      .slice()
+      .sort((a, b) => (b.support ?? 0) - (a.support ?? 0) || (b.confidence ?? 0) - (a.confidence ?? 0))
+      .map((record) => {
+        const ruleLabel = escapeHtml(prettifyRel(normalizeRelationKey(record.rule_type || 'unary')));
+        const explanation = escapeHtml(explainConstraint(record));
+        return `
+          <li style="margin-bottom:10px;">
+            <div style="font-weight:600; color:${edgeColorForRelation(normalizeRelationKey(record.rule_type || 'unary'))};">${ruleLabel}</div>
+            <div style="margin-top:4px;">${explanation}</div>
+            <div class="helper" style="margin-top:4px;">Support: ${fmt(record.support)} • Confidence: ${fmt(record.confidence)} • Rule: ${escapeHtml(record.rule_id)}</div>
+          </li>
+        `;
       })
       .join('');
 
     state.dom.detailsPanel.innerHTML = `
       <h4>${escapeHtml(name)}</h4>
-      <p>${related.length.toLocaleString()} related constraints in current filtered view.</p>
+      <p>${visibleRelated.length.toLocaleString()} related constraints in current filtered view.</p>
       <p class="helper">Unary: ${unary.length.toLocaleString()} • Binary: ${binary.toLocaleString()}</p>
-      ${unaryRows ? `<h5 style="margin:10px 0 6px">Unary relations</h5><ul style="margin:0;padding-left:18px">${unaryRows}</ul>` : ''}
+      ${unaryRows ? `<h5 style="margin:10px 0 6px">Unary rules on this node</h5><ul style="margin:0;padding-left:18px">${unaryRows}</ul>` : '<div class="helper">No unary rules matched the current filters for this node.</div>'}
       ${detailsLegendHtml(state)}
     `;
     return;
@@ -540,7 +544,7 @@ function statusColor(status, fallback = '#4c5a6d') {
 }
 
 function normalizeRelationKey(text) {
-  return String(text || '').trim().toLowerCase();
+  return normalizeRuleTypeKey(text) || String(text || '').trim().toLowerCase();
 }
 
 function prettifyRel(rel) {

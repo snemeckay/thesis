@@ -11,7 +11,7 @@ export const EXPECTED_COLUMNS = [
 export const REQUIRED_COLUMNS = ["rule_id", "rule_type", "activities"];
 
 export const NUMERIC_FIELDS = [
-  "support", "confidence", "support_count", "violation_count",
+  "support", "confidence", "cardinality", "support_count", "violation_count",
   "activation_count", "fulfillment_count", "activation_trace_count"
 ];
 
@@ -140,7 +140,6 @@ export function edgeColorForRelation(relationKey, palette = EDGE_COLOR_PALETTE) 
     absence: "#8b6f47",
     init: "#5e7f3f",
     end: "#6f6f8e",
-    exactly: "#7a5c91",
     response: "#3b7f6f",
     precedence: "#9a5a5a",
     responded_existence: "#2f6f9f",

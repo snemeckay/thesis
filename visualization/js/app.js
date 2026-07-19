@@ -24,6 +24,7 @@ import {
   renderNoSourceState, 
   renderErrorState 
 } from './graph.js';
+import { initializeTooltips } from './tooltipManager.js';
 
 // Global state object
 export const state = {
@@ -79,6 +80,8 @@ async function init() {
     applyInitialTheme();
     bindStaticEvents();
     safeCreateIcons();
+    // Initialize tooltips and helper UI
+    initializeTooltips();
   } catch (err) {
     console.error("[init] UI setup error (non-fatal):", err);
   }
