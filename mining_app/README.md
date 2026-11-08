@@ -1,6 +1,9 @@
 # Local research preparation and mining
 
-The application connects **Prepare & mine** and **Explore results**. It runs
+The application connects **Prepare & mine** and **Visualize** using a compact
+top switcher. These are two full-page screens, not a graph embedded below the
+preparation controls. Both use the existing visualization's colors, components,
+and theme. It runs
 only on this computer and retains normalized events so a population filter can
 run a new mining job on **complete cases**, rather than filter aggregate rules.
 The existing command-line preprocessing/mining and standalone CSV viewer remain
@@ -123,6 +126,29 @@ matches the current dataset, population, settings, and pending mapping edits.
 The graph's own rule/support/activity filters only narrow the displayed mined
 model; they do not define a new population.
 
+Enter a **Mined CSV file name** before mining. Use letters, digits, spaces,
+hyphens, or underscores, optionally followed by `.csv`; do not enter a path or
+a Windows-reserved name. A single-level run downloads exactly that CSV name.
+For both levels, `my-study.csv` produces `my-study_activity.csv` and
+`my-study_category.csv`. The name is recorded with the saved run and in model
+metadata, and distinguishes named cache entries.
+
+Completed files are available directly in the **Mined files** section. Choosing
+**Visualize** passes the selected run, label level, dataset, and CSV source in
+URL parameters; the viewer automatically loads the mined CSV. No export and
+manual re-upload step is necessary. The full-page graph has only the compact
+switcher, optional activity/category selector, original-file download link, and
+theme control above it. Its existing toolbar can also download the currently
+filtered constraints. The original-file link works even when rule filters
+produce no displayed rows.
+
+Switching back restores the prepared dataset, mapping/preview, population
+controls, settings, selected file, and any in-progress job for that browser tab.
+This draft context is held in local `sessionStorage`; original uploaded CSVs and
+completed runs remain on the local backend. Theme choice also survives screen
+switching. The visualization does not need to contain the preparation controls;
+it shares the same existing graph implementation and local data API.
+
 Advanced settings choose DisCoveR or Declare4Py. Declare4Py itemset support must
 be positive (default 0.1); the library rejects zero. DisCoveR's minimum support
 is an engine activation-support threshold, not the exported rule satisfaction
@@ -146,9 +172,10 @@ and cohort metadata, never fictitious demographic fields on aggregate rules.
 The existing viewer retains its per-source node-level AND and comparison
 semantics, including isolated qualifying nodes and intentionally empty rule-type
 selection. New model selection is connected through the local app; legacy CSV
-uploads still work. The embedded graph is restricted to the selected mined
-artifact so switching its source cannot invalidate the surrounding population
-metadata. The separate legacy viewer still supports uploads and comparisons.
+uploads still work. A parameter-bound graph is restricted to the selected mined
+artifact so it cannot silently substitute sample data. Opening Visualize without
+a selected mined model still offers the standalone viewer's uploads and
+comparisons. Old embedded-model URLs remain readable for compatibility.
 
 ## Persistence, exports, and errors
 
@@ -169,7 +196,7 @@ Treat exports as study data and do not commit them. Profile JSON may contain
 study-specific column names and exclusions.
 
 Cache identities include dataset content/preparation, label level, engine and
-installed engine versions, thresholds, and the exact cohort. Different cohorts
+installed engine versions, thresholds, output name, and the exact cohort. Different cohorts
 are mined separately. Only complete results are reused; failed jobs can be
 retried. Models persist across normal restarts. Interrupted queued/running jobs
 are marked failed on startup. One job runs at a time, with a one-hour limit and
@@ -198,4 +225,6 @@ Tests use synthetic temporary data, exercise both real engines, complete-case
 filtering, conflicts/missingness, profiles, persistence, cache separation,
 exports, empty results, string identifiers, and local API boundaries. Browser
 verification should cover upload/mapping, invalid case selection, demographic
-re-mining, activity/category switching, current/stale state, and graph loading.
+re-mining, required output naming, full-page automatic CSV loading,
+activity/category switching, downloads from either screen, restored preparation
+context, current/stale state, and graph loading.

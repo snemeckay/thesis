@@ -1,3 +1,6 @@
+import { dom, applyInitialTheme, toggleTheme, safeCreateIcons } from '/visualization/js/ui.js';
+import { modelDownloadName, modelFileUrl, modelViewerUrl } from '/visualization/js/workspace.js';
+
 const $ = (id) => document.getElementById(id);
 let uploaded = null;
 let columns = [];
@@ -7,6 +10,9 @@ let models = [];
 let selectedJob = null;
 let pollToken = 0;
 let preparationDirty = false;
+let activeJobId = null;
+let restoring = true;
+const workspaceKey = 'research-mining-workspace';
 
 function notice(message, error = false) {
   $('notice').textContent = message;
@@ -34,11 +40,25 @@ function options(select, values, placeholder) {
   for (const [value, label] of values) select.add(new Option(label, value));
 }
 
-function showScreen(explore) {
-  $('prepareScreen').hidden = explore;
-  $('exploreScreen').hidden = !explore;
-  $('prepareTab').classList.toggle('active', !explore);
-  $('exploreTab').classList.toggle('active', explore);
+function cohortDraft() {
+  return [...$('cohort').children].map((row) => ({
+    column: row.querySelector('.column').value, op: row.querySelector('.operator').value,
+    raw_values: [...row.querySelectorAll('.value input, .value select')].map((i) => i.value),
+    quantifier: row.querySelector('.quantifier').value
+  }));
+}
+
+function saveWorkspace() {
+  if (restoring) return;
+  sessionStorage.setItem(workspaceKey, JSON.stringify({
+    dataset_id: currentDataset()?.id, model_id: selectedJob?.id, model_level: $('modelLevel').value,
+    configuration: configuration(), cohort: cohortDraft(), output_name: $('outputName').value,
+    uploaded, profile: uploaded ? profile() : null, preparation_dirty: preparationDirty, active_job_id: activeJobId
+  }));
+}
+
+function saveWorkspaceSafely() {
+  try { saveWorkspace(); } catch (error) { notice(`Could not retain this tab's preparation settings: ${error.message}`, true); }
 }
 
 function currentDataset() { return datasets.find((d) => d.id === $('dataset').value); }
@@ -169,12 +189,13 @@ async function datasetChanged() {
   } else {
     $('datasetExplanation').textContent = 'Prepare an event log to enable complete-case population filtering and mining.';
   }
-  selectedJob = null; $('viewer').hidden = true;
+  selectedJob = null;
   await refreshModels();
   updateStale();
+  saveWorkspaceSafely();
 }
 
-function addFilter() {
+function addFilter(draft = null) {
   const dataset = currentDataset();
   if (!dataset?.schema.length) return;
   const row = document.createElement('div'); row.className = 'filter-row';
@@ -219,6 +240,15 @@ function addFilter() {
   row.append(column, op, value, quantifier, remove);
   row.addEventListener('change', updateStale); row.addEventListener('input', updateStale);
   $('cohort').append(row); renderOperators();
+  if (draft) {
+    column.value = draft.column; renderOperators();
+    op.value = draft.op; renderValue();
+    for (const [index, input] of [...value.querySelectorAll('input, select')].entries()) {
+      input.value = draft.raw_values?.[index] ?? '';
+    }
+    quantifier.value = draft.quantifier || 'any';
+    updateStale();
+  }
 }
 
 function cohort() {
@@ -255,10 +285,11 @@ function updateStale() {
   try {
     matches = signature(currentDataset()?.id, configuration(), cohort()) === signature(selectedJob.dataset_id, selectedJob.configuration, selectedJob.cohort);
   } catch { /* An incomplete filter cannot match a saved run. */ }
-  const stale = !matches || preparationDirty;
+  const stale = !matches || preparationDirty || (selectedJob.output_name &&
+    $('outputName').value.trim().replace(/\.csv$/i, '') !== selectedJob.output_name);
   $('resultState').classList.toggle('stale', stale);
   $('resultState').textContent = stale
-    ? 'Saved result - not current for the edited mapping, population, or engine settings. Prepare changed mappings, then Apply cohort and mine. The graph below still shows the saved run.'
+    ? 'Saved result - not current for the edited mapping, population, engine settings or file name. Prepare changed mappings, then Apply cohort and mine. Downloads and Visualize still use the selected saved run.'
     : 'Current result - matches the selected prepared dataset, population and mining settings.';
 }
 
@@ -266,8 +297,9 @@ async function refreshModels(preferred) {
   const dataset = currentDataset();
   models = dataset ? await api(`/api/models?dataset_id=${dataset.id}`) : [];
   const previous = preferred || $('model').value;
-  options($('model'), models.map((m) => [m.id, `${m.configuration.engine} / ${m.configuration.label_level} / ${m.population.cases} cases / ${m.id.slice(0, 8)}`]), 'Choose a saved mining run');
+  options($('model'), models.map((m) => [m.id, `${m.output_name || m.id.slice(0, 8)} / ${m.configuration.engine} / ${m.configuration.label_level} / ${m.population.cases} cases`]), 'Choose a saved mining run');
   if (models.some((m) => m.id === previous)) { $('model').value = previous; selectModel(); }
+  else renderModel();
 }
 
 function selectModel() {
@@ -277,35 +309,41 @@ function selectModel() {
 }
 
 function renderModel() {
-  $('downloads').replaceChildren(); $('modelDetails').replaceChildren(); $('viewer').hidden = true;
+  $('downloads').replaceChildren(); $('modelDetails').replaceChildren();
+  $('exploreTab').href = '/visualization/constraint-visualization.html?workspace=1';
   if (!selectedJob) { updateStale(); return; }
   const artifact = selectedJob.artifacts.find((a) => a.level === $('modelLevel').value);
   if (!artifact) return;
-  const prefix = `/api/models/${selectedJob.id}/file/`;
-  for (const [name, label] of [[artifact.csv, 'Model CSV'], [artifact.json, 'Model JSON'], ['metadata.json', 'Model & preparation metadata']]) {
-    const link = document.createElement('a'); link.href = prefix + name; link.textContent = label; $('downloads').append(link);
+  for (const [extension, label] of [['csv', 'Download mined CSV'], ['json', 'Model JSON']]) {
+    const link = document.createElement('a'); link.href = modelFileUrl(selectedJob, artifact, extension);
+    link.textContent = `${label} (${modelDownloadName(selectedJob, artifact, extension)})`; $('downloads').append(link);
   }
+  const metadata = document.createElement('a');
+  metadata.href = `/api/models/${selectedJob.id}/file/metadata.json`;
+  metadata.textContent = 'Model & preparation metadata'; $('downloads').append(metadata);
   const detail = document.createElement('p');
   detail.textContent = `Complete cases: ${selectedJob.population.cases}; events: ${selectedJob.population.events}; rules: ${artifact.rule_count}. ${selectedJob.metadata.metrics}. Population: ${JSON.stringify(selectedJob.cohort)}.`;
   $('modelDetails').append(detail);
-  const params = new URLSearchParams({ mine_model: selectedJob.id, label_level: artifact.level, embedded: '1', s: `builtin:${prefix}${artifact.csv}` });
-  $('viewer').src = `/visualization/constraint-visualization.html?${params}`;
-  $('viewer').hidden = false;
+  $('exploreTab').href = modelViewerUrl(selectedJob, artifact.level);
   updateStale();
+  saveWorkspaceSafely();
 }
 
 async function pollJob(job, token) {
   while (token === pollToken) {
     $('jobStatus').textContent = `${job.status}: ${job.progress || job.error || ''}`;
     if (job.status === 'failed') {
+      activeJobId = null; saveWorkspaceSafely();
       const link = document.createElement('a'); link.href = job.log_url; link.textContent = 'Read local engine error log';
       $('jobStatus').append(' ', link);
       throw new Error(job.error);
     }
     if (job.status === 'complete') {
+      activeJobId = null;
       await refreshModels(job.id);
-      showScreen(true);
-      notice(job.cached ? 'Using the exact cached mining run.' : 'Mining complete. Both label levels, when requested, used the same complete-case population.');
+      saveWorkspaceSafely();
+      notice(job.cached ? 'Using the exact cached mining run. Download below or switch to Visualize.' : 'Mining complete. Download below or switch to Visualize; your selected CSV loads automatically.');
+      $('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -313,8 +351,8 @@ async function pollJob(job, token) {
   }
 }
 
-bind('prepareTab', 'click', () => showScreen(false));
-bind('exploreTab', 'click', () => showScreen(true));
+bind('themeToggle', 'click', toggleTheme);
+bind('exploreTab', 'click', saveWorkspace);
 bind('preview', 'click', async () => {
   const file = $('csvFile').files[0];
   if (!file) throw new Error('Choose an event-log CSV.');
@@ -323,7 +361,8 @@ bind('preview', 'click', async () => {
   const response = await fetch(`/api/preview${delimiter ? `?delimiter=${encodeURIComponent(delimiter)}` : ''}`, { method: 'POST', body });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'CSV preview failed.');
-  uploaded = result; renderMapping(result); preparationDirty = true; updateStale();
+  uploaded = result; renderMapping(result); preparationDirty = true; updateStale(); saveWorkspaceSafely();
+  $('uploadHint').textContent = '';
   notice('Preview ready. Choose case columns and event roles explicitly.');
 });
 bind('prepare', 'click', async () => {
@@ -351,13 +390,15 @@ bind('importProfile', 'change', async (event) => {
   applyProfile(JSON.parse(await file.text())); notice('Imported mapping applied. Validate by preparing the CSV.');
 });
 bind('dataset', 'change', datasetChanged);
-bind('addFilter', 'click', addFilter);
+bind('addFilter', 'click', () => addFilter());
 bind('mine', 'click', async () => {
   if (!currentDataset()) throw new Error('Choose a prepared dataset.');
+  if (!$('outputName').reportValidity()) return;
   $('mine').disabled = true; const token = ++pollToken;
   $('jobStatus').textContent = 'Validating the selected population and engine...';
   try {
-    const job = await api('/api/mine', { dataset_id: currentDataset().id, configuration: configuration(), cohort: cohort() });
+    const job = await api('/api/mine', { dataset_id: currentDataset().id, configuration: configuration(), cohort: cohort(), output_name: $('outputName').value });
+    activeJobId = job.id; saveWorkspaceSafely();
     notice(`Mining ${job.population.cases} complete cases (${job.population.events} events).`);
     await pollJob(job, token);
   } catch (error) {
@@ -368,5 +409,64 @@ bind('mine', 'click', async () => {
 bind('model', 'change', selectModel);
 bind('modelLevel', 'change', renderModel);
 $('mappingCard').addEventListener('input', () => { preparationDirty = true; updateStale(); });
-for (const id of ['level', 'engine', 'support', 'confidence', 'itemsets', 'cardinality']) bind(id, 'input', updateStale);
-Promise.all([refreshDatasets(), refreshProfiles()]).catch((error) => notice(`Local backend unavailable: ${error.message}`, true));
+for (const id of ['level', 'engine', 'support', 'confidence', 'itemsets', 'cardinality', 'outputName']) bind(id, 'input', updateStale);
+document.addEventListener('input', saveWorkspaceSafely);
+document.addEventListener('change', saveWorkspaceSafely);
+
+function applyConfiguration(config) {
+  const controls = { engine: 'engine', level: 'label_level', support: 'min_support',
+    confidence: 'min_confidence', itemsets: 'itemsets_support', cardinality: 'max_cardinality' };
+  for (const [id, key] of Object.entries(controls)) if (config[key] !== undefined) $(id).value = config[key];
+}
+
+async function initialize() {
+  dom.themeToggle = $('themeToggle');
+  applyInitialTheme(); safeCreateIcons();
+  let saved = null;
+  const stored = sessionStorage.getItem(workspaceKey);
+  if (stored) {
+    try { saved = JSON.parse(stored); } catch (error) {
+      notice(`Saved tab settings are unreadable: ${error.message}. Choose your dataset again.`, true);
+      sessionStorage.removeItem(workspaceKey);
+    }
+  }
+  const params = new URLSearchParams(location.search);
+  const datasetId = params.get('dataset') || saved?.dataset_id;
+  const matchingSaved = saved && saved.dataset_id === datasetId ? saved : null;
+  await Promise.all([refreshDatasets(datasetId), refreshProfiles()]);
+  if (matchingSaved?.uploaded) {
+    uploaded = matchingSaved.uploaded; renderMapping(uploaded);
+    if (matchingSaved.profile) applyProfile(matchingSaved.profile);
+    preparationDirty = matchingSaved.preparation_dirty;
+    $('uploadHint').textContent = 'Your previous preview and mapping are restored. Choose a new CSV only to replace that upload.';
+  }
+  const modelId = params.get('model') || matchingSaved?.model_id;
+  const job = models.find((m) => m.id === modelId);
+  if (matchingSaved?.configuration) applyConfiguration(matchingSaved.configuration);
+  else if (job) applyConfiguration(job.configuration);
+  const drafts = matchingSaved?.cohort || job?.cohort.map((c) => ({
+    ...c, raw_values: c.op === 'range' ? c.value.map(String) : c.op === 'eq' ? [JSON.stringify(c.value)] : []
+  })) || [];
+  for (const draft of drafts) addFilter(draft);
+  $('outputName').value = matchingSaved?.output_name ?? job?.output_name ?? '';
+  if (job) {
+    $('model').value = job.id; selectModel();
+    $('modelLevel').value = params.get('label_level') || matchingSaved?.model_level || job.artifacts[0].level;
+    renderModel();
+  }
+  restoring = false; updateStale(); saveWorkspaceSafely();
+  if (matchingSaved?.active_job_id) {
+    const running = await api(`/api/jobs/${matchingSaved.active_job_id}`);
+    if (running.dataset_id === currentDataset()?.id) {
+      activeJobId = running.id; $('mine').disabled = true;
+      const token = ++pollToken;
+      try { await pollJob(running, token); }
+      finally { if (token === pollToken) $('mine').disabled = !currentDataset(); }
+    }
+  }
+}
+
+initialize().catch((error) => {
+  restoring = false;
+  notice(`Could not restore the local workspace: ${error.message}`, true);
+});

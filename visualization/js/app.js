@@ -26,6 +26,7 @@ import {
   renderErrorState 
 } from './graph.js';
 import { initializeTooltips } from './tooltipManager.js';
+import { initializeWorkspaceNavigation } from './workspace.js';
 
 // Global state object
 export const state = {
@@ -99,6 +100,9 @@ async function init() {
   try {
     const hasSources = await refreshBuiltInSources("Discovering available CSV sources...");
     if (!hasSources) return;
+    if (state.miningJob && new URLSearchParams(location.search).get('workspace') === '1') {
+      initializeWorkspaceNavigation(state);
+    }
     await loadSelectedSourcesSingleMode();
   } catch (err) {
     console.error("[init] Data load error:", err);

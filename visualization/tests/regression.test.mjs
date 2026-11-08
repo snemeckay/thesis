@@ -6,6 +6,8 @@ import { explainConstraintText } from '../js/constraint_explanations.js';
 import { discoverAvailableCsvFiles, normalizeConstraintRecord } from '../js/data.js';
 import { buildGraphElements, renderDetails } from '../js/graph.js';
 import { readUrlState, applyInitialUrlFilters, persistUrlState } from '../js/url_state.js';
+import { isBoundModelView, modelDownloadName, modelViewerUrl } from '../js/workspace.js';
+import { dom as uiDom, applyInitialTheme, toggleTheme } from '../js/ui.js';
 
 const filters = (activityQuery = '') => ({ activityQuery, categorical: {}, numeric: {} });
 const record = (rule_id, activity, overrides = {}) => ({
@@ -279,6 +281,43 @@ test('embedded mining viewer uses only the selected artifact, never sample subst
   }
 });
 
+test('full-page switcher carries the selected model, label and automatic CSV source', () => {
+  const job = { id: 'a'.repeat(64), dataset_id: 'b'.repeat(64), output_name: 'Study',
+    artifacts: [{ level: 'activity', csv: 'activity_dcr_constraints.csv' },
+      { level: 'category', csv: 'category_dcr_constraints.csv' }] };
+  const url = new URL(modelViewerUrl(job, 'category'), 'http://127.0.0.1');
+  assert.equal(url.searchParams.get('mine_model'), job.id);
+  assert.equal(url.searchParams.get('dataset'), job.dataset_id);
+  assert.equal(url.searchParams.get('label_level'), 'category');
+  assert.equal(url.searchParams.get('embedded'), null);
+  assert.equal(isBoundModelView(url.searchParams), true);
+  assert.equal(url.searchParams.get('s'), `builtin:/api/models/${job.id}/file/category_dcr_constraints.csv`);
+  assert.equal(modelDownloadName(job, job.artifacts[1]), 'Study_category.csv');
+  assert.throws(() => modelViewerUrl(job, 'missing'), /not available/);
+});
+
+test('workspace model URLs select a single source without loading sample files', async () => {
+  const oldLocation = globalThis.location;
+  const oldFetch = globalThis.fetch;
+  const job = { id: 'a'.repeat(64), dataset_id: 'b'.repeat(64), output_name: 'My study',
+    status: 'complete', configuration: { engine: 'discover' }, population: { cases: 2 },
+    artifacts: [{ level: 'activity', csv: 'activity_dcr_constraints.csv' },
+      { level: 'category', csv: 'category_dcr_constraints.csv' }] };
+  try {
+    globalThis.location = { search: new URL(modelViewerUrl(job, 'category'), 'http://127.0.0.1').search };
+    const calls = [];
+    globalThis.fetch = async (path) => { calls.push(path); return { ok: true, json: async () => job }; };
+    const state = { uploadedSources: [] };
+    await discoverAvailableCsvFiles(state);
+    assert.deepEqual(calls, [`/api/jobs/${job.id}`]);
+    assert.equal(state.allSources.length, 1);
+    assert.equal(state.allSources[0].filename, 'My study_category.csv');
+    assert.equal(state.miningJob, job);
+  } finally {
+    globalThis.location = oldLocation;
+    globalThis.fetch = oldFetch;
+  }
+});
 test('node details show all selected-model category metadata with escaping', () => {
   const normalized = normalizeConstraintRecord({
     rule_id: 'a', rule_type: 'EXISTENCE', activities: 'Pay', category: 'unary',
@@ -294,6 +333,44 @@ test('node details show all selected-model category metadata with escaping', () 
   assert.match(state.dom.detailsPanel.innerHTML, /Work/);
 });
 
+test('theme survives screen switching and updates already-rendered SVG icons', () => {
+  const previous = {
+    document: globalThis.document, window: globalThis.window, storage: globalThis.sessionStorage,
+    lucide: globalThis.lucide, themeToggle: uiDom.themeToggle
+  };
+  const attributes = new Map();
+  const storage = new Map();
+  const iconAttributes = new Map();
+  try {
+    globalThis.document = { documentElement: {
+      setAttribute: (key, value) => attributes.set(key, value),
+      getAttribute: (key) => attributes.get(key)
+    } };
+    globalThis.window = { matchMedia: () => ({ matches: false }) };
+    globalThis.sessionStorage = { getItem: (key) => storage.get(key) || null,
+      setItem: (key, value) => storage.set(key, value) };
+    globalThis.lucide = { createIcons: () => {} };
+    uiDom.themeToggle = { querySelector: (selector) => {
+      assert.equal(selector, 'i, svg');
+      return { setAttribute: (key, value) => iconAttributes.set(key, value) };
+    } };
+    applyInitialTheme();
+    toggleTheme();
+    assert.equal(attributes.get('data-theme'), 'dark');
+    assert.equal(iconAttributes.get('data-lucide'), 'sun');
+    applyInitialTheme();
+    assert.equal(attributes.get('data-theme'), 'dark');
+    toggleTheme();
+    assert.equal(attributes.get('data-theme'), 'light');
+    assert.equal(storage.get('research-mining-theme'), 'light');
+  } finally {
+    globalThis.document = previous.document;
+    globalThis.window = previous.window;
+    globalThis.sessionStorage = previous.storage;
+    globalThis.lucide = previous.lucide;
+    uiDom.themeToggle = previous.themeToggle;
+  }
+});
 test('comparison details use only the selected model records and escape their contents', () => {
   const a = record('same-id', 'Pay', { support: 0.1, source_file: 'A.csv' });
   const b = record('same-id', 'Pay', { support: 0.8, source_file: '<B>.csv' });

@@ -7,6 +7,7 @@ import {
   DEFAULT_BUILTIN_CSV_PATHS,
   toNumberOrNull
 } from './utils.js';
+import { isBoundModelView } from './workspace.js';
 
 export async function discoverAvailableCsvFiles(state) {
   const discovered = [];
@@ -19,16 +20,18 @@ export async function discoverAvailableCsvFiles(state) {
     if (!response.ok) throw new Error("Local mining model is unavailable. Start the local mining app.");
     const job = await response.json();
     if (job.status !== "complete") throw new Error("This mining run has not completed.");
-    const artifacts = params.get("embedded") === "1"
+    state.miningJob = job;
+    const artifacts = isBoundModelView(params)
       ? job.artifacts.filter((a) => a.level === params.get("label_level")) : job.artifacts;
     if (!artifacts.length) throw new Error("The selected label model is not available in this mining run.");
     for (const artifact of artifacts) {
       const path = `/api/models/${modelId}/file/${artifact.csv}`;
       const descriptor = createSourceDescriptor(path, "builtin", null);
+      if (job.output_name) descriptor.filename = `${job.output_name}${job.artifacts.length > 1 ? `_${artifact.level}` : ''}.csv`;
       descriptor.label = `Local model - ${artifact.level} - ${job.configuration.engine} - ${job.population.cases} cases`;
       discovered.push(descriptor);
     }
-    if (params.get("embedded") === "1") {
+    if (isBoundModelView(params)) {
       state.builtInSources = dedupeSources(discovered);
       state.allSources = [...state.builtInSources, ...state.uploadedSources];
       return;

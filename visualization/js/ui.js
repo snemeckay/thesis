@@ -29,19 +29,21 @@ export function safeCreateIcons() {
 
 export function applyInitialTheme() {
   const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  const saved = sessionStorage.getItem("research-mining-theme");
+  document.documentElement.setAttribute("data-theme", saved === "light" || saved === "dark" ? saved : prefersDark ? "dark" : "light");
   updateThemeIcon();
 }
 
 export function toggleTheme() {
   const current = document.documentElement.getAttribute("data-theme");
   document.documentElement.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+  sessionStorage.setItem("research-mining-theme", document.documentElement.getAttribute("data-theme"));
   updateThemeIcon();
 }
 
 export function updateThemeIcon() {
   const dark = document.documentElement.getAttribute("data-theme") === "dark";
-  const icon = dom.themeToggle.querySelector("i");
+  const icon = dom.themeToggle.querySelector("i, svg");
   icon.setAttribute("data-lucide", dark ? "sun" : "moon");
   safeCreateIcons();
 }
@@ -74,10 +76,10 @@ export function syncPanelToggleUI(state) {
     state.ui.detailsCollapsed ? "Expand details panel" : "Collapse details panel"
   );
 
-  const filterIcon = dom.toggleFiltersPanel.querySelector("i");
+  const filterIcon = dom.toggleFiltersPanel.querySelector("i, svg");
   filterIcon.setAttribute("data-lucide", state.ui.filtersCollapsed ? "chevrons-right" : "chevrons-left");
 
-  const detailsIcon = dom.toggleDetailsPanel.querySelector("i");
+  const detailsIcon = dom.toggleDetailsPanel.querySelector("i, svg");
   detailsIcon.setAttribute("data-lucide", state.ui.detailsCollapsed ? "chevrons-left" : "chevrons-right");
 
   safeCreateIcons();

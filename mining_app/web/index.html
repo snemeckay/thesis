@@ -4,19 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Research process mining</title>
+  <link rel="stylesheet" href="/visualization/styles/main.css">
+  <link rel="stylesheet" href="/visualization/styles/workspace.css">
   <link rel="stylesheet" href="/app/style.css">
+  <script src="/visualization/vendor/lucide.min.js"></script>
   <script type="module" src="/app/app.js"></script>
 </head>
 <body>
-  <header><div><p class="eyebrow">LOCAL RESEARCH WORKSPACE</p><h1>From event logs to behavioral patterns</h1>
-    <p>Your data stays on this computer. Define a case, prepare the events, then explore rules for a population.</p></div>
-    <span class="badge">Private &middot; loopback only</span></header>
-  <nav aria-label="Workspace screens">
-    <button id="prepareTab" class="active" type="button">1. Prepare &amp; mine</button>
-    <button id="exploreTab" type="button">2. Explore results</button>
-    <a href="/visualization/constraint-visualization.html" target="_blank" rel="noopener">Open legacy CSV viewer</a>
-  </nav>
-  <main>
+  <header class="workspace-header"><div class="header-top">
+    <h1 class="sr-only">Prepare and mine event logs</h1>
+    <nav class="workspace-switcher" aria-label="Workspace screens">
+      <a id="prepareTab" class="workspace-tab" href="/" aria-current="page">Prepare &amp; mine</a>
+      <a id="exploreTab" class="workspace-tab" href="/visualization/constraint-visualization.html?workspace=1">Visualize</a>
+    </nav>
+    <div class="header-controls"><button id="themeToggle" type="button" aria-label="Toggle light and dark mode"><i data-lucide="moon"></i><span class="theme-label">Theme</span></button></div>
+  </div></header>
+  <main class="mining-main">
     <div id="notice" role="status" aria-live="polite"></div>
     <section id="prepareScreen">
       <section class="card">
@@ -28,6 +31,7 @@
           <button id="preview" type="button">Preview CSV</button>
         </div>
         <p id="previewSummary"></p><div id="previewTable" class="scroll"></div>
+        <p id="uploadHint" class="help"></p>
       </section>
       <section id="mappingCard" class="card" hidden>
         <h2>Define what the events mean</h2>
@@ -71,7 +75,9 @@
       <div id="cohort"></div><button id="addFilter" type="button" disabled>Add population filter</button>
       <div class="grid">
         <label>Mine relationships between <select id="level"><option value="activity">Activities</option><option value="category">Activity categories</option><option value="both">Both (two separately mined models)</option></select></label>
+        <label>Mined CSV file name (required) <input id="outputName" type="text" required maxlength="84" placeholder="e.g. my-study.csv" aria-describedby="filenameHelp"></label>
       </div>
+      <p id="filenameHelp" class="help">Choose a file name, not a folder path. When mining both levels, downloads use your name with _activity.csv and _category.csv suffixes.</p>
       <details><summary>Advanced engine settings</summary><div class="grid">
         <label>Mining engine <select id="engine"><option value="discover">DisCoveR (pm4py)</option><option value="declare4py">Declare4Py</option></select></label>
         <label>Engine minimum activation support / discovery support <input id="support" type="number" min="0" max="1" step=".05" value="0"></label>
@@ -81,15 +87,14 @@
       </div><p class="help">Exported support = cases without a violation / cases. DisCoveR confidence is fulfilled activated traces / activated traces; Declare4Py confidence is fulfilled event activations / event activations. Engine discovery thresholds are not interchangeable with exported support. Zero DisCoveR thresholds discover all rules and may be expensive for large activity vocabularies. Declare4Py requires positive itemset support; its default here is 0.1.</p></details>
       <div class="actions"><button id="mine" type="button" class="primary" disabled>Apply cohort and mine</button><span id="jobStatus" role="status" aria-live="polite"></span></div>
     </section>
-    <section id="exploreScreen" hidden>
+    <section id="resultsCard">
       <section class="card">
-        <h2>Explore a reproducible model</h2>
-        <p>Activity and category models are mined separately from the same complete cases. “Category” in legacy constraint rows still means unary/binary arity, not an activity category. Standalone rule CSVs cannot support population re-mining without retained events.</p>
+        <h2>Mined files</h2>
+        <p>Download here or use the Visualize switcher above. The selected CSV loads automatically in the full-page graph; no manual re-upload is needed.</p>
         <div class="grid"><label>Saved mining run <select id="model"><option value="">No results yet</option></select></label>
           <label>Label model <select id="modelLevel"></select></label></div>
         <p id="resultState" role="status"></p><div id="modelDetails"></div><div id="downloads" class="actions"></div>
       </section>
-      <iframe id="viewer" title="Constraint graph and rule filters" hidden></iframe>
     </section>
   </main>
   <footer>Local-only research tool. Results describe the selected cases, not causal effects. Close the terminal to stop the server.</footer>

@@ -184,11 +184,20 @@ node --test .\visualization\tests\regression.test.mjs
   - Lucide
 # Connected local research workspace
 
-The [local preparation/mining app](../mining_app/README.md) launches this viewer
-with a selected persisted model and provides dataset selection, real complete-case
+The [local preparation/mining app](../mining_app/README.md) uses a compact
+**Prepare & mine / Visualize** top switcher. It opens this viewer as a full page,
+not an iframe inside the preparation screen. The selected persisted model CSV
+loads automatically via URL parameters. The app provides dataset selection, real complete-case
 population re-mining, and switching between separately mined activity/category
 models. Rule filters in this viewer only narrow displayed constraints.
 Standalone aggregate CSVs cannot perform demographic re-mining without events.
+
+The full-page model view offers an activity/category selector (for runs mined at
+both levels) and **Download mined CSV**, using the researcher's chosen filename.
+The graph toolbar separately downloads filtered constraints. The preparation
+screen also has original CSV/JSON/metadata downloads; switching back restores
+that tab's preview/mapping/population context. Both screens share the existing
+visualization theme and avoid large decorative headers.
 
 Additional exported model metadata is retained on upload, including
 `activity_categories` (JSON endpoint category sets), `label_level`, `dataset_id`,
