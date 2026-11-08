@@ -60,7 +60,10 @@ the checks below.
    gap threshold for inactivity sessions (default 60 minutes, measured from
    the latest preceding event end). Behavioural days require mapped end times.
    The page includes contextual explanations, hover tooltips and expandable help.
-4. Choose attributes to retain and assign their types and scopes. String IDs
+4. Under **Choose columns for population filters**, select the attributes that
+   should be available for later filtering and assign their types and scopes.
+   Applying population filters selects complete cases and re-mines their rules,
+   rather than filtering previously aggregated rule rows. String IDs
    retain leading zeros. Numbers must be finite; booleans accept true/false or
    1/0. Case attributes must be constant in a case; event attributes may change.
 5. Explicitly choose missing/conflict handling and optional event exclusions or

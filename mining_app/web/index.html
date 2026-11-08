@@ -59,9 +59,12 @@
           <p>Selecting age + gender alone would pool everybody sharing those values into one timeline; that is usually not a valid individual event sequence. Retain those columns as attributes to filter the population instead.</p>
           <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>
         </details>
-        <h3>Keep only the attributes your study needs</h3>
-        <p>Unselected columns are removed. Case attributes must be constant in a case, including missingness. Changing measurements belong at event scope; their cohort filters explicitly match any or all events.</p>
-        <div class="scroll"><table><thead><tr><th>Keep</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
+        <h3>Choose columns for population filters</h3>
+        <p>Select the columns you want to filter by later, such as gender or age. Population filters let you mine and compare rules for selected groups, for example a particular age range. Applying a filter selects complete cases and re-mines their rules. Unselected attributes will not be available for filtering.</p>
+        <div class="scroll"><table><thead><tr><th>Use for filters</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
+        <details><summary>What does attribute scope mean?</summary>
+          <p>Choose Case for a value that describes the whole sequence, such as a participant's gender or age. It must stay the same throughout that case, including whether it is missing. Choose Event for a value that can change between events. Its population filter can match any event or all events, but still keeps the complete case for mining.</p>
+        </details>
         <div class="grid">
           <label>Missing or invalid values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="keep_attributes">Keep missing attributes as missing; stop for invalid events</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
           <label>Conflicting case attributes <select id="conflicts"><option value="error">Stop and explain (recommended)</option><option value="exclude_case">Exclude conflicting complete cases</option></select></label>

@@ -103,7 +103,7 @@ function renderMapping(result) {
     $('caseColumns').append(label);
     const tr = document.createElement('tr');
     const keep = document.createElement('input'); keep.type = 'checkbox'; keep.dataset.column = column.name;
-    keep.setAttribute('aria-label', `Keep ${column.name}`);
+    keep.setAttribute('aria-label', `Use ${column.name} for population filters`);
     const type = document.createElement('select');
     options(type, ['string', 'number', 'boolean'].map((v) => [v, v]));
     type.value = column.suggested_type; type.setAttribute('aria-label', `${column.name} type`);
