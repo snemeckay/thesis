@@ -52,7 +52,8 @@ the checks below.
    missing/distinct counts over the entire file. Malformed records are rejected.
 2. Explicitly select one or more participant/group columns, an activity label, and a
    start timestamp. Optionally map an end time and an activity-category column.
-   No semantic case/session identifier is guessed.
+   Grouping uses full-width, wrapping checkbox tiles; selected columns are
+   highlighted and can be combined. No semantic case/session identifier is guessed.
 3. Choose how to split **each participant/group** into sequences: all events
    together, calendar days, inactivity sessions, or original behavioural days.
    Only the relevant settings are shown: a start hour for calendar days, or a

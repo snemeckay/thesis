@@ -3,7 +3,8 @@
 h2 { margin-top: 0; font-size: 1.15rem; }
 h3 { font-size: 1rem; margin-top: 1.5rem; }
 p { font-size: .9rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: end; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 1rem; align-items: end; }
+.grid > * { min-width: 0; }
 .mining-main label { display: flex; flex-direction: column; gap: .35rem; }
 .mining-main input, .mining-main select, .mining-main textarea { max-width: 100%; font: inherit; }
 textarea { border: 1px solid var(--border); border-radius: var(--radius-md); padding: .55rem; color: var(--text); background: var(--surface); }
@@ -12,6 +13,15 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 fieldset { border: 1px solid var(--border); border-radius: var(--radius-md); }
 fieldset label { flex-direction: row !important; align-items: center; margin: .4rem 0; }
 input[type=checkbox] { width: 1.1rem; height: 1.1rem; }
+.group-selection { min-inline-size: 0; margin: 1rem 0; padding: .8rem 1rem; }
+.group-selection legend { max-width: 100%; padding: 0 .35rem; overflow-wrap: anywhere; }
+.group-selection .help { margin: .5rem 0; }
+#caseColumns { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0; }
+#caseColumns label { display: inline-flex; flex-direction: row; align-items: center; gap: .5rem; max-width: 100%; margin: 0; padding: .55rem .75rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; }
+#caseColumns label:has(input:checked) { background: var(--accent-soft); border-color: var(--accent); }
+#caseColumns label:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+#caseColumns input { flex: 0 0 1.1rem; margin: 0; }
+#caseColumns span { min-width: 0; overflow-wrap: anywhere; }
 table { width: 100%; border-collapse: collapse; font-size: .85rem; }
 td, th { text-align: left; padding: .6rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
 th { background: var(--surface-2); }

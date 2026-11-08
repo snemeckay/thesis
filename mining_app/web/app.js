@@ -101,7 +101,8 @@ function renderMapping(result) {
     const input = document.createElement('input');
     input.type = 'checkbox'; input.value = column.name;
     input.title = `Group events by ${column.name}. Tick additional columns to group by their combination.`;
-    label.append(input, document.createTextNode(column.name));
+    const name = document.createElement('span'); name.textContent = column.name;
+    label.append(input, name);
     $('caseColumns').append(label);
     const tr = document.createElement('tr');
     const keep = document.createElement('input'); keep.type = 'checkbox'; keep.dataset.column = column.name;

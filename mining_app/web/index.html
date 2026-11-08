@@ -36,8 +36,13 @@
       <section id="mappingCard" class="card" hidden>
         <h2>Define what the events mean</h2>
         <p><strong>A case is a sequence of events analysed together.</strong> First choose whose events belong together, then choose whether to split their timeline into days or sessions. Different participants should normally stay separate.</p>
+        <fieldset class="group-selection" aria-describedby="groupHelp">
+          <legend title="Every distinct combination of selected values has its own timeline.">Participant/group columns (required)</legend>
+          <p class="help">Select one or more columns. Selected columns are highlighted.</p>
+          <div id="caseColumns"></div>
+          <p id="groupHelp" class="help">Normally select the participant ID (for example user_id). Add an existing session ID only to keep those sessions separate. Keep age and gender as attributes below for population filtering; selecting them alone here would combine different people's events into one timeline.</p>
+        </fieldset>
         <div class="grid">
-          <fieldset aria-describedby="groupHelp"><legend title="Tick one or more checkboxes. Every distinct combination of selected values has its own timeline.">Participant/group columns (required)</legend><div id="caseColumns"></div></fieldset>
           <label>Activity label (required) <select id="activity"></select></label>
           <label>Activity category (optional) <select id="category"></select></label>
           <label>Event start time (required) <select id="timestamp"></select></label>
@@ -46,7 +51,6 @@
           <label id="gapSettings" hidden>Inactivity gap (minutes) <input id="gapMinutes" type="number" value="60" min="1" disabled title="Start a new session when inactivity exceeds this many minutes, measured from the latest preceding event end."></label>
           <label id="daySettings" hidden>Calendar day starts at hour <input id="dayHour" type="number" value="0" min="0" max="23" disabled title="0 means midnight. For example, 4 keeps events before 04:00 in the previous calendar day."></label>
         </div>
-        <p id="groupHelp" class="help">Normally tick the participant ID (for example user_id). Tick an existing session ID as well only to keep those sessions separate. Keep age and gender as attributes below for population filtering; selecting them alone here would combine different people's events into one timeline.</p>
         <p id="caseMethodHelp" class="help" aria-live="polite"></p>
         <p id="behaviouralHelp" class="help" hidden>Uses your original behavioural-day algorithm: inactivity gaps of at least 4 hours, prioritising gaps ending between 04:00 and noon; otherwise nighttime (20:00-04:00) and late-sleep (03:00-10:00) fallbacks. The longest candidate per date defines a boundary. This is an inactivity-based estimate, not measured sleep. No qualifying boundary means all events remain in one sequence. An event spanning the night (such as Screen off) is not itself an inactivity gap.</p>
         <details><summary title="Examples of grouping and splitting, and how time zones affect day boundaries.">Help: participants, days and sessions</summary>
