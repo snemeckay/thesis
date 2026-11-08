@@ -66,11 +66,12 @@
           <label>Exclude exact activity labels (one per line) <textarea id="excluded" rows="3" placeholder="No event exclusions by default"></textarea></label>
         </div>
         <p class="help">Merging only combines consecutive non-overlapping events with identical activity and category. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
-        <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button>
+        <div class="actions">
           <label>Saved profile <select id="profiles"><option value="">Choose a mapping profile</option></select></label>
           <button id="loadProfile" type="button">Load profile</button>
           <label>Profile name <input id="profileName" placeholder="Study mapping"></label><button id="saveProfile" type="button">Save profile locally</button>
           <button id="exportProfile" type="button">Export profile JSON</button><label>Import profile JSON <input id="importProfile" type="file" accept=".json,application/json"></label></div>
+        <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button></div>
       </section>
     </section>
     <section id="studyCard" class="card">
