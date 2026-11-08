@@ -65,6 +65,7 @@ def run_job(path):
         "preparation": dataset["metadata"], "configuration": cfg,
         "cohort": job["cohort"], "population": {"cases": case_count, "events": len(events)},
         "versions": job["versions"], "workflow_version": job.get("workflow_version", 1), "artifacts": artifacts,
+        "output_name": job.get("output_name"),
         "metrics": "Trace-based activation confidence" if cfg["engine"] == "discover" else "Event-activation confidence",
     }
     write_json(path / "metadata.json", metadata)

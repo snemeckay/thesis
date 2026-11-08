@@ -16,6 +16,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from mining_app.preparation import ValidationError, fingerprint, normalize, preview, select_cohort
 from mining_app.storage import Store, read_json, write_json
+from mining_app.naming import artifact_download_name, output_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -174,13 +175,14 @@ def create_app(data_dir=None):
         body = await json_body(request)
         if not isinstance(body, dict) or not isinstance(body.get("configuration", {}), dict):
             raise ValidationError("Provide a dataset, cohort, and mining configuration.")
+        name = output_name(body.get("output_name"))
         dataset = store.dataset(body.get("dataset_id", ""))
         cfg = configuration(body.get("configuration", {}), dataset)
         cohort = body.get("cohort", [])
         events, count = select_cohort(dataset, cohort)
         versions = engine_versions(cfg["engine"])
         identity = {"dataset_id": dataset["id"], "configuration": cfg, "cohort": cohort,
-                    "versions": versions, "workflow_version": 1}
+                    "versions": versions, "workflow_version": 1, "output_name": name}
         identifier = fingerprint(identity)
         path = store.path("models", identifier)
         with store.lock:
@@ -215,7 +217,14 @@ def create_app(data_dir=None):
         path = store.path("models", identifier) / filename
         if not path.is_file():
             raise ValidationError("Artifact has not been written yet.")
-        return FileResponse(path, filename=filename)
+        download_name = filename
+        for artifact in job.get("artifacts", []):
+            for extension in ("csv", "json"):
+                if filename == artifact[extension]:
+                    download_name = artifact_download_name(job, artifact, extension)
+        if filename == "metadata.json" and job.get("output_name"):
+            download_name = f"{job['output_name']}_metadata.json"
+        return FileResponse(path, filename=download_name)
 
     @app.get("/api/datasets/{identifier}/bundle")
     def bundle(identifier: str):

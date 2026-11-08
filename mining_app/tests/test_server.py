@@ -37,7 +37,7 @@ class ServerTests(unittest.TestCase):
 
     def test_real_job_cache_exports_and_persistence(self):
         dataset = self.prepare()
-        request = {"dataset_id": dataset["id"], "configuration": {"label_level": "both"},
+        request = {"dataset_id": dataset["id"], "configuration": {"label_level": "both"}, "output_name": "study-results.csv",
                    "cohort": [{"column": "age", "op": "range", "value": [19, 21]}]}
         job_response = self.client.post("/api/mine", json=request)
         self.assertEqual(job_response.status_code, 200, job_response.text)
@@ -63,6 +63,11 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(metadata["configuration"]["label_level"], "both")
         model_csv = self.client.get(url + "category_dcr_constraints.csv").text
         self.assertIn("label_level", model_csv)
+        self.assertIn('filename="study-results_category.csv"',
+                      self.client.get(url + "category_dcr_constraints.csv").headers["content-disposition"])
+        self.assertIn('filename="study-results_activity.csv"',
+                      self.client.get(url + "activity_dcr_constraints.csv").headers["content-disposition"])
+        self.assertEqual(metadata["output_name"], "study-results")
         bundle = self.client.get(f"/api/datasets/{dataset['id']}/bundle")
         with zipfile.ZipFile(io.BytesIO(bundle.content)) as archive:
             self.assertIn("dataset.json", archive.namelist())
@@ -88,9 +93,15 @@ class ServerTests(unittest.TestCase):
         dataset = self.prepare()
         import importlib.metadata
         with patch("mining_app.server.importlib.metadata.version", side_effect=importlib.metadata.PackageNotFoundError):
-            result = self.client.post("/api/mine", json={"dataset_id": dataset["id"]})
+            result = self.client.post("/api/mine", json={"dataset_id": dataset["id"], "output_name": "study"})
         self.assertEqual(result.status_code, 422)
         self.assertIn("no engine has run", result.json()["error"])
+
+    def test_filename_is_required_and_validated_before_mining(self):
+        dataset = self.prepare()
+        for name in (None, "", "../private", "folder\\file.csv", "CON.csv", "name.json"):
+            result = self.client.post("/api/mine", json={"dataset_id": dataset["id"], "output_name": name})
+            self.assertEqual(result.status_code, 422, result.text)
 
 
 if __name__ == "__main__":
