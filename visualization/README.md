@@ -194,8 +194,17 @@ their downloaded models. Rule filters in this viewer only narrow displayed
 constraints and do not trigger mining. Standalone aggregate CSVs cannot
 recalculate population-specific metrics from demographic case IDs.
 
-The full-page model view offers an activity/category selector (for runs mined at
-both levels) and **Download mined CSV**, using the researcher's chosen filename.
+The same Visualize panel always retains CSV upload, the original datasets and
+comparison modes; no separate viewer is needed. Opening a mining result selects
+that CSV initially without mixing other available datasets into its graph.
+Uploads become the selected single model or comparison model B; uploading the
+same filename again replaces its previous uploaded contents.
+
+The full-page view offers an activity/category selector when viewing a local
+run mined at both levels, and **Download CSV** follows the selected original
+file (including uploaded CSVs). Those model-specific controls do not point to
+an unrelated mining artifact after switching sources; the download is hidden
+for combined/all-source views.
 The graph toolbar separately downloads filtered constraints. The preparation
 screen also has original CSV/JSON/metadata downloads; switching back restores
 that tab's preview/mapping/settings context. Both screens share the existing

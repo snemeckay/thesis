@@ -181,6 +181,12 @@ switcher, optional activity/category selector, original-file download link, and
 theme control above it. Its existing toolbar can also download the currently
 filtered constraints. The original-file link works even when rule filters
 produce no displayed rows.
+The same Visualize panel also offers the original Declare4Py/DisCoveR datasets,
+CSV upload and comparison modes, even when opened from a mining run. The newly
+mined CSV is selected initially; other available sources are not automatically
+mixed into that graph. Uploading a CSV selects it in single-model mode, or as
+model B in comparison mode. The header download follows the selected original
+CSV and is hidden when viewing multiple sources.
 
 Switching back restores the prepared dataset, mapping/preview,
 settings, selected file, and any in-progress job for that browser tab.
@@ -213,10 +219,9 @@ and cohort metadata, never fictitious demographic fields on aggregate rules.
 The existing viewer retains its per-source node-level AND and comparison
 semantics, including isolated qualifying nodes and intentionally empty rule-type
 selection. New model selection is connected through the local app; legacy CSV
-uploads still work. A parameter-bound graph is restricted to the selected mined
-artifact so it cannot silently substitute sample data. Opening Visualize without
-a selected mined model still offers the standalone viewer's uploads and
-comparisons. Old embedded-model URLs remain readable for compatibility.
+uploads and comparisons are always available in the workspace viewer. A
+missing mining run still produces an explicit error, never a sample-data
+substitute. Old embedded-model URLs remain readable for compatibility.
 
 ## Persistence, exports, and errors
 

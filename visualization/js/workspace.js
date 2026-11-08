@@ -1,6 +1,6 @@
 // Shared full-page navigation for preparation and the existing graph viewer.
 export function isBoundModelView(params) {
-  return params.has('mine_model') && (params.get('workspace') === '1' || params.get('embedded') === '1');
+  return params.has('mine_model') && params.get('embedded') === '1';
 }
 
 export function modelFileUrl(job, artifact, extension = 'csv') {
@@ -25,27 +25,47 @@ export function modelDownloadName(job, artifact, extension = 'csv') {
 
 export function initializeWorkspaceNavigation(state) {
   const job = state.miningJob;
-  if (!job) return;
   const params = new URLSearchParams(location.search);
-  const artifact = job.artifacts.find((a) => a.level === params.get('label_level'));
-  if (!artifact) throw new Error('Choose an available activity or category model.');
-  const prepare = document.getElementById('prepareTab');
-  prepare.href = `/?${new URLSearchParams({ dataset: job.dataset_id, model: job.id, label_level: artifact.level })}`;
-  document.getElementById('exploreTab').href = modelViewerUrl(job, artifact.level);
-  const download = document.getElementById('downloadModel');
-  download.href = modelFileUrl(job, artifact);
-  download.textContent = 'Download CSV';
-  download.setAttribute('aria-label', 'Download original mined CSV');
-  download.title = modelDownloadName(job, artifact);
-  download.hidden = false;
+  if (job && !job.artifacts.some((a) => a.level === params.get('label_level'))) {
+    throw new Error('Choose an available activity or category model.');
+  }
   const levels = document.getElementById('workspaceLevel');
   levels.replaceChildren();
-  for (const item of job.artifacts) {
+  for (const item of job?.artifacts || []) {
     levels.add(new Option(item.level === 'activity' ? 'Activities' : 'Categories', item.level));
   }
-  levels.value = artifact.level;
-  levels.parentElement.hidden = job.artifacts.length < 2;
-  levels.addEventListener('change', () => location.assign(modelViewerUrl(job, levels.value)));
-  // Bound views cannot switch to unrelated sources beneath the model download link.
-  if (isBoundModelView(params)) state.dom.uploadInput.closest('.filter-section').hidden = true;
+  if (job) levels.addEventListener('change', () => location.assign(modelViewerUrl(job, levels.value)));
+  state.workspaceNavigationReady = true;
+  updateWorkspaceSelection(state);
+}
+
+export function updateWorkspaceSelection(state) {
+  if (!state.workspaceNavigationReady) return;
+  const source = state.mode === 'single' ? state.allSources.find((s) => s.id === state.activeSourceId) : null;
+  const job = state.miningJob;
+  const artifact = source && job?.artifacts.find((a) => source.path === modelFileUrl(job, a));
+  const levels = document.getElementById('workspaceLevel');
+  levels.parentElement.hidden = !artifact || job.artifacts.length < 2;
+  if (artifact) levels.value = artifact.level;
+  if (job) {
+    const level = artifact?.level || new URLSearchParams(location.search).get('label_level');
+    document.getElementById('prepareTab').href = `/?${new URLSearchParams({ dataset: job.dataset_id, model: job.id, label_level: level })}`;
+  }
+  document.getElementById('exploreTab').href = `${location.pathname}${location.search}`;
+  const download = document.getElementById('downloadModel');
+  if (state.workspaceDownloadSource !== source || state.workspaceDownloadText !== source?.uploadText) {
+    if (state.workspaceDownloadBlob) URL.revokeObjectURL(state.workspaceDownloadBlob);
+    state.workspaceDownloadBlob = source?.kind === 'upload'
+      ? URL.createObjectURL(new Blob([source.uploadText], { type: 'text/csv' })) : null;
+    state.workspaceDownloadSource = source;
+    state.workspaceDownloadText = source?.uploadText;
+  }
+  download.hidden = !source;
+  if (source) {
+    download.href = state.workspaceDownloadBlob || source.path;
+    download.download = source.filename;
+    download.textContent = 'Download CSV';
+    download.setAttribute('aria-label', `Download original CSV: ${source.filename}`);
+    download.title = source.filename;
+  }
 }

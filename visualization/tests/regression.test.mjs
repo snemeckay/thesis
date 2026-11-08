@@ -6,7 +6,7 @@ import { explainConstraintText } from '../js/constraint_explanations.js';
 import { discoverAvailableCsvFiles, normalizeConstraintRecord } from '../js/data.js';
 import { buildGraphElements, renderDetails } from '../js/graph.js';
 import { readUrlState, applyInitialUrlFilters, persistUrlState } from '../js/url_state.js';
-import { isBoundModelView, modelDownloadName, modelViewerUrl } from '../js/workspace.js';
+import { isBoundModelView, modelDownloadName, modelViewerUrl, updateWorkspaceSelection } from '../js/workspace.js';
 import { dom as uiDom, applyInitialTheme, toggleTheme } from '../js/ui.js';
 
 const filters = (activityQuery = '') => ({ activityQuery, categorical: {}, numeric: {} });
@@ -290,13 +290,13 @@ test('full-page switcher carries the selected model, label and automatic CSV sou
   assert.equal(url.searchParams.get('dataset'), job.dataset_id);
   assert.equal(url.searchParams.get('label_level'), 'category');
   assert.equal(url.searchParams.get('embedded'), null);
-  assert.equal(isBoundModelView(url.searchParams), true);
+  assert.equal(isBoundModelView(url.searchParams), false);
   assert.equal(url.searchParams.get('s'), `builtin:/api/models/${job.id}/file/category_dcr_constraints.csv`);
   assert.equal(modelDownloadName(job, job.artifacts[1]), 'Study_category.csv');
   assert.throws(() => modelViewerUrl(job, 'missing'), /not available/);
 });
 
-test('workspace model URLs select a single source without loading sample files', async () => {
+test('workspace URLs select the mined source while keeping original datasets and other label models available', async () => {
   const oldLocation = globalThis.location;
   const oldFetch = globalThis.fetch;
   const job = { id: 'a'.repeat(64), dataset_id: 'b'.repeat(64), output_name: 'My study',
@@ -306,16 +306,72 @@ test('workspace model URLs select a single source without loading sample files',
   try {
     globalThis.location = { search: new URL(modelViewerUrl(job, 'category'), 'http://127.0.0.1').search };
     const calls = [];
-    globalThis.fetch = async (path) => { calls.push(path); return { ok: true, json: async () => job }; };
+    globalThis.fetch = async (path) => {
+      calls.push(path);
+      if (path.startsWith('/api/jobs/')) return { ok: true, json: async () => job };
+      if (path.endsWith('.json')) return { ok: true, json: async () => ({ sources: [] }) };
+      return { ok: true, text: async () => 'rule_id,rule_type,activities,source\ns,EXISTENCE,A,discover\n' };
+    };
     const state = { uploadedSources: [] };
     await discoverAvailableCsvFiles(state);
-    assert.deepEqual(calls, [`/api/jobs/${job.id}`]);
-    assert.equal(state.allSources.length, 1);
-    assert.equal(state.allSources[0].filename, 'My study_category.csv');
+    assert.equal(calls[0], `/api/jobs/${job.id}`);
+    assert.ok(calls.includes('../output/preprocessed_declare4py_constraints.csv'));
+    assert.ok(calls.includes('../output/preprocessed_dcr_constraints.csv'));
+    assert.equal(state.allSources.length, 4);
+    const selectedId = new URLSearchParams(globalThis.location.search).get('s');
+    assert.equal(state.allSources.find(s => s.id === selectedId).filename, 'My study_category.csv');
     assert.equal(state.miningJob, job);
+    globalThis.fetch = async () => ({ ok: false });
+    await assert.rejects(discoverAvailableCsvFiles({ uploadedSources: [] }), /unavailable/);
   } finally {
     globalThis.location = oldLocation;
     globalThis.fetch = oldFetch;
+  }
+});
+
+test('workspace download and label controls follow the selected source, including uploaded CSVs', async () => {
+  const oldLocation = globalThis.location;
+  const oldDocument = globalThis.document;
+  const job = { id: 'a'.repeat(64), dataset_id: 'b'.repeat(64),
+    artifacts: [{ level: 'activity', csv: 'activity.csv' }, { level: 'category', csv: 'category.csv' }] };
+  const local = { id: 'local', path: `/api/models/${job.id}/file/category.csv`, filename: 'Study_category.csv', kind: 'builtin' };
+  const sample = { id: 'sample', path: '../output/sample.csv', filename: 'sample.csv', kind: 'builtin' };
+  const uploaded = { id: 'uploaded', path: 'uploaded/already-mined.csv', filename: 'already-mined.csv',
+    kind: 'upload', uploadText: 'rule_id,rule_type,activities\nu,EXISTENCE,A\n' };
+  const elements = {
+    workspaceLevel: { parentElement: {}, value: '' }, prepareTab: {}, exploreTab: {},
+    downloadModel: { setAttribute(name, value) { this[name] = value; } }
+  };
+  const state = { workspaceNavigationReady: true, miningJob: job, mode: 'single',
+    activeSourceId: local.id, allSources: [local, sample, uploaded] };
+  try {
+    globalThis.location = { pathname: '/visualization/constraint-visualization.html',
+      search: `?workspace=1&mine_model=${job.id}&label_level=activity` };
+    globalThis.document = { getElementById: id => elements[id] };
+    updateWorkspaceSelection(state);
+    assert.equal(elements.downloadModel.href, local.path);
+    assert.equal(elements.downloadModel.download, local.filename);
+    assert.equal(elements.workspaceLevel.value, 'category');
+    assert.equal(elements.workspaceLevel.parentElement.hidden, false);
+    assert.match(elements.prepareTab.href, /label_level=category/);
+    state.activeSourceId = sample.id;
+    updateWorkspaceSelection(state);
+    assert.equal(elements.downloadModel.href, sample.path);
+    assert.equal(elements.workspaceLevel.parentElement.hidden, true);
+    state.activeSourceId = uploaded.id;
+    updateWorkspaceSelection(state);
+    const blobUrl = elements.downloadModel.href;
+    assert.equal(await (await fetch(blobUrl)).text(), uploaded.uploadText);
+    assert.equal(elements.downloadModel.download, uploaded.filename);
+    state.mode = 'compare';
+    updateWorkspaceSelection(state);
+    assert.equal(elements.downloadModel.hidden, true);
+    assert.equal(state.workspaceDownloadBlob, null);
+    await assert.rejects(fetch(blobUrl));
+  } finally {
+    if (state.workspaceDownloadBlob) URL.revokeObjectURL(state.workspaceDownloadBlob);
+    globalThis.location = oldLocation;
+    globalThis.document = oldDocument;
   }
 });
 test('node details show all selected-model category metadata with escaping', () => {
