@@ -50,12 +50,15 @@ the checks below.
 1. Upload a UTF-8 CSV, up to 20 MiB. Comma, semicolon, tab, and pipe delimiters
    are supported. Preview suggests a delimiter and attribute types and reports
    missing/distinct counts over the entire file. Malformed records are rejected.
-2. Explicitly select one or more case/group columns, an activity label, and a
+2. Explicitly select one or more participant/group columns, an activity label, and a
    start timestamp. Optionally map an end time and an activity-category column.
    No semantic case/session identifier is guessed.
-3. Select a case construction preset: one case per group, group/calendar day
-   (with a configurable start hour), or group/inactivity-gap sessions. Inactivity
-   is measured from the latest preceding event end; the default gap is 60 minutes.
+3. Choose how to split **each participant/group** into sequences: all events
+   together, calendar days, inactivity sessions, or original behavioural days.
+   Only the relevant settings are shown: a start hour for calendar days, or a
+   gap threshold for inactivity sessions (default 60 minutes, measured from
+   the latest preceding event end). Behavioural days require mapped end times.
+   The page includes contextual explanations, hover tooltips and expandable help.
 4. Choose attributes to retain and assign their types and scopes. String IDs
    retain leading zeros. Numbers must be finite; booleans accept true/false or
    1/0. Case attributes must be constant in a case; event attributes may change.
@@ -80,6 +83,13 @@ column is intrinsically a case identifier; a wakefulness ID may repeat between
 participants. This sample is a format illustration, not a recommended study
 definition.
 
+Normally group by participant ID. Add a session ID only if existing sessions
+should remain separate; each distinct combination then has its own timeline.
+Calendar and behavioural days split **within** those timelines, never across
+participants. Age and gender usually belong under retained attributes for
+cohort selection: grouping by them alone would pool different people's events
+into an artificial sequence, not simply select a population.
+
 ### Preparation semantics
 
 - Original activity labels and optional category labels are both retained.
@@ -100,10 +110,21 @@ definition.
   sessions. Merging is disabled by default and only merges consecutive
   non-overlapping events with identical activity, category, and **all retained
   attributes**. Intervening activities and differing metadata are never lost.
-- The new explicit calendar/gap presets do **not** invoke the legacy
-  heuristic behavioral-day splitter or app-plus-URL label builder.
-  Researchers who need those transformations can run the legacy preprocessing
-  CLI first, then explicitly map its output in this application.
+- **Behavioural days (original algorithm)** directly reuses
+  `preprocessing.day_split.assign_day_counter` separately for each selected
+  participant/group. It considers gaps of at least 4 hours, prioritises gaps
+  ending at 04:00-12:00, then uses nighttime (20:00-04:00, including 04:00
+  boundaries within a gap) and late-sleep (03:00-10:00) fallbacks. It selects
+  the longest candidate per date. Without a boundary, the timeline stays in one
+  case. This estimates behavioural boundaries from gaps; it does not measure
+  sleep, and a long event such as Screen off is not itself an inactivity gap.
+  The app applies this algorithm after exclusions and before optional safe
+  merging; it preserves attributes and creates unique group/segment IDs instead
+  of using the legacy date-based case-ID builder. Algorithm settings/stage are
+  saved in dataset metadata and exports. Both day methods use the normalized clock.
+- Calendar/inactivity presets remain separate from the behavioural algorithm.
+  The legacy preprocessing CLI is unchanged; its app-plus-URL activity-label
+  builder is not automatically applied by this application.
 
 ## Mine and explore populations
 

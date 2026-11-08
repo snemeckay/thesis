@@ -63,6 +63,33 @@ function saveWorkspaceSafely() {
 
 function currentDataset() { return datasets.find((d) => d.id === $('dataset').value); }
 
+const caseMethods = {
+  group: 'one sequence with all events together',
+  calendar_day: 'calendar days',
+  gap: 'inactivity sessions',
+  behavioural_day: 'behavioural days (original algorithm)'
+};
+
+function updateCaseSettings() {
+  const mode = $('caseMode').value;
+  $('gapSettings').hidden = mode !== 'gap';
+  $('gapMinutes').disabled = mode !== 'gap';
+  $('daySettings').hidden = mode !== 'calendar_day';
+  $('dayHour').disabled = mode !== 'calendar_day';
+  $('behaviouralHelp').hidden = mode !== 'behavioural_day';
+  $('endTimestamp').required = mode === 'behavioural_day';
+  $('endTimestampRequirement').textContent = mode === 'behavioural_day' ? '(required for behavioural days)' : '(optional)';
+  const selected = [...$('caseColumns').querySelectorAll('input:checked')].map((i) => i.value);
+  const owner = selected.length ? selected.join(' + ') : 'the participant/group columns you select';
+  const explanation = {
+    group: 'All events for each distinct combination stay in one sequence, even across multiple days.',
+    calendar_day: 'A separate sequence for each day within each participant/group, split at the hour below.',
+    gap: 'A new sequence starts when inactivity exceeds the threshold below, separately within each participant/group.',
+    behavioural_day: 'Each participant/group is split using the original behavioural-day boundaries described below.'
+  };
+  $('caseMethodHelp').textContent = `Events belong together by ${owner}. ${explanation[mode]}`;
+}
+
 function renderMapping(result) {
   columns = result.columns;
   $('delimiter').value = result.delimiter;
@@ -73,6 +100,7 @@ function renderMapping(result) {
     const label = document.createElement('label');
     const input = document.createElement('input');
     input.type = 'checkbox'; input.value = column.name;
+    input.title = `Group events by ${column.name}. Tick additional columns to group by their combination.`;
     label.append(input, document.createTextNode(column.name));
     $('caseColumns').append(label);
     const tr = document.createElement('tr');
@@ -105,6 +133,7 @@ function renderMapping(result) {
     table.append(tr);
   }
   $('previewTable').replaceChildren(table);
+  updateCaseSettings();
 }
 
 function profile() {
@@ -144,6 +173,7 @@ function applyProfile(p) {
     if (attr) { tr.querySelectorAll('select')[0].value = attr.type; tr.querySelectorAll('select')[1].value = attr.scope; }
   }
   preparationDirty = true;
+  updateCaseSettings();
   updateStale();
 }
 
@@ -183,7 +213,7 @@ async function datasetChanged() {
       item.append(count, document.createTextNode(label)); $('quality').append(item);
     }
     $('bundle').href = `/api/datasets/${dataset.id}/bundle`;
-    $('datasetExplanation').textContent = `Case grouping: ${dataset.metadata.profile.case_columns.join(' + ')}; ${dataset.metadata.profile.case_mode || 'group'}. Time: ${dataset.metadata.time_convention}. Retained attributes: ${dataset.schema.map((a) => `${a.column} (${a.type}, ${a.scope})`).join(', ') || 'none'}.`;
+    $('datasetExplanation').textContent = `Participant/group: ${dataset.metadata.profile.case_columns.join(' + ')}. Sequences: ${caseMethods[dataset.metadata.profile.case_mode || 'group']}. Time: ${dataset.metadata.time_convention}. Retained attributes: ${dataset.schema.map((a) => `${a.column} (${a.type}, ${a.scope})`).join(', ') || 'none'}.`;
     for (const option of $('level').options) option.disabled = option.value !== 'activity' && !dataset.metadata.category_available;
     if (!dataset.metadata.category_available) $('level').value = 'activity';
   } else {
@@ -363,7 +393,7 @@ bind('preview', 'click', async () => {
   if (!response.ok) throw new Error(result.error || 'CSV preview failed.');
   uploaded = result; renderMapping(result); preparationDirty = true; updateStale(); saveWorkspaceSafely();
   $('uploadHint').textContent = '';
-  notice('Preview ready. Choose case columns and event roles explicitly.');
+  notice('Preview ready. Choose participant/group columns, a sequence-splitting method and event roles.');
 });
 bind('prepare', 'click', async () => {
   if (!uploaded) throw new Error('Preview a CSV first.');
@@ -408,7 +438,8 @@ bind('mine', 'click', async () => {
 });
 bind('model', 'change', selectModel);
 bind('modelLevel', 'change', renderModel);
-$('mappingCard').addEventListener('input', () => { preparationDirty = true; updateStale(); });
+$('mappingCard').addEventListener('input', () => { preparationDirty = true; updateCaseSettings(); updateStale(); });
+bind('caseMode', 'change', updateCaseSettings);
 for (const id of ['level', 'engine', 'support', 'confidence', 'itemsets', 'cardinality', 'outputName']) bind(id, 'input', updateStale);
 document.addEventListener('input', saveWorkspaceSafely);
 document.addEventListener('change', saveWorkspaceSafely);
