@@ -28,9 +28,8 @@ export function safeCreateIcons() {
 }
 
 export function applyInitialTheme() {
-  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   const saved = sessionStorage.getItem("research-mining-theme");
-  document.documentElement.setAttribute("data-theme", saved === "light" || saved === "dark" ? saved : prefersDark ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", saved === "light" || saved === "dark" ? saved : "dark");
   updateThemeIcon();
 }
 

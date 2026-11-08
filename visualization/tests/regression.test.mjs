@@ -355,14 +355,16 @@ test('theme survives screen switching and updates already-rendered SVG icons', (
       return { setAttribute: (key, value) => iconAttributes.set(key, value) };
     } };
     applyInitialTheme();
-    toggleTheme();
-    assert.equal(attributes.get('data-theme'), 'dark');
+    assert.equal(attributes.get('data-theme'), 'dark', 'Default remains dark even on a light OS theme');
     assert.equal(iconAttributes.get('data-lucide'), 'sun');
-    applyInitialTheme();
-    assert.equal(attributes.get('data-theme'), 'dark');
     toggleTheme();
     assert.equal(attributes.get('data-theme'), 'light');
-    assert.equal(storage.get('research-mining-theme'), 'light');
+    assert.equal(iconAttributes.get('data-lucide'), 'moon');
+    applyInitialTheme();
+    assert.equal(attributes.get('data-theme'), 'light');
+    toggleTheme();
+    assert.equal(attributes.get('data-theme'), 'dark');
+    assert.equal(storage.get('research-mining-theme'), 'dark');
   } finally {
     globalThis.document = previous.document;
     globalThis.window = previous.window;

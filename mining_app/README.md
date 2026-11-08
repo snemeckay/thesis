@@ -145,8 +145,9 @@ produce no displayed rows.
 Switching back restores the prepared dataset, mapping/preview, population
 controls, settings, selected file, and any in-progress job for that browser tab.
 This draft context is held in local `sessionStorage`; original uploaded CSVs and
-completed runs remain on the local backend. Theme choice also survives screen
-switching. The visualization does not need to contain the preparation controls;
+completed runs remain on the local backend. Both screens default to the original
+dark visualization theme; an explicit theme choice survives screen switching.
+The visualization does not need to contain the preparation controls;
 it shares the same existing graph implementation and local data API.
 
 Advanced settings choose DisCoveR or Declare4Py. Declare4Py itemset support must
