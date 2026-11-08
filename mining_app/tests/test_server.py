@@ -13,6 +13,7 @@ from mining_app.tests.test_preparation import CSV, profile
 
 # Declare4Py enables global INFO logging; keep HTTP polling out of test output.
 logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("python_multipart").setLevel(logging.WARNING)
 
 
 class ServerTests(unittest.TestCase):

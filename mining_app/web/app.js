@@ -105,6 +105,7 @@ function profile() {
 
 function applyProfile(p) {
   if (!uploaded) throw new Error('Preview a CSV before applying a profile.');
+  if (!p || typeof p !== 'object' || Array.isArray(p)) throw new Error('Profile JSON must contain a mapping object.');
   const known = new Set(columns.map((c) => c.name));
   const required = [...(p.case_columns || []), p.activity, p.timestamp,
     ...(p.attributes || []).map((a) => a.column), p.activity_category, p.end_timestamp].filter(Boolean);
@@ -285,9 +286,9 @@ function renderModel() {
     const link = document.createElement('a'); link.href = prefix + name; link.textContent = label; $('downloads').append(link);
   }
   const detail = document.createElement('p');
-  detail.textContent = `${selectedJob.population.cases} complete cases; ${selectedJob.population.events} events; ${artifact.rule_count} rules. ${selectedJob.metadata.metrics}. Population: ${JSON.stringify(selectedJob.cohort)}.`;
+  detail.textContent = `Complete cases: ${selectedJob.population.cases}; events: ${selectedJob.population.events}; rules: ${artifact.rule_count}. ${selectedJob.metadata.metrics}. Population: ${JSON.stringify(selectedJob.cohort)}.`;
   $('modelDetails').append(detail);
-  const params = new URLSearchParams({ mine_model: selectedJob.id, label_level: artifact.level, s: `builtin:${prefix}${artifact.csv}` });
+  const params = new URLSearchParams({ mine_model: selectedJob.id, label_level: artifact.level, embedded: '1', s: `builtin:${prefix}${artifact.csv}` });
   $('viewer').src = `/visualization/constraint-visualization.html?${params}`;
   $('viewer').hidden = false;
   updateStale();
@@ -354,10 +355,14 @@ bind('addFilter', 'click', addFilter);
 bind('mine', 'click', async () => {
   if (!currentDataset()) throw new Error('Choose a prepared dataset.');
   $('mine').disabled = true; const token = ++pollToken;
+  $('jobStatus').textContent = 'Validating the selected population and engine...';
   try {
     const job = await api('/api/mine', { dataset_id: currentDataset().id, configuration: configuration(), cohort: cohort() });
     notice(`Mining ${job.population.cases} complete cases (${job.population.events} events).`);
     await pollJob(job, token);
+  } catch (error) {
+    if (token === pollToken && !$('jobStatus').querySelector('a')) $('jobStatus').textContent = `Not mined: ${error.message}`;
+    throw error;
   } finally { if (token === pollToken) $('mine').disabled = !currentDataset(); }
 });
 bind('model', 'change', selectModel);

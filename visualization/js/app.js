@@ -71,6 +71,10 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
   cacheDom();
   state.dom = dom;
+  const localParams = new URLSearchParams(location.search);
+  if (localParams.get("embedded") === "1" && localParams.has("mine_model")) {
+    dom.uploadInput.closest(".filter-section").hidden = true;
+  }
   state.initialUrlState = readUrlState();
   if (state.initialUrlState?.s) {
     state.activeSourceId = state.initialUrlState.s;

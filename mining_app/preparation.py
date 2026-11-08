@@ -23,7 +23,7 @@ def read_csv(text, delimiter=None):
             delimiter = csv.Sniffer().sniff(text[:65536], delimiters=",;\t|").delimiter
         except csv.Error as exc:
             raise ValidationError("Could not suggest a delimiter. Select one explicitly.") from exc
-    if delimiter not in {",", ";", "\t", "|"}:
+    if delimiter not in (",", ";", "\t", "|"):
         raise ValidationError("Choose comma, semicolon, tab, or pipe as delimiter.")
     reader = csv.reader(io.StringIO(text.lstrip("\ufeff")), delimiter=delimiter, strict=True)
     try:
@@ -111,23 +111,23 @@ def normalize(text, profile):
     if len(set(attr_columns)) != len(attr_columns):
         raise ValidationError("An attribute column may be retained only once.")
     for attr in attrs:
-        if attr.get("scope") not in {"case", "event"} or attr.get("type") not in {"string", "number", "boolean"}:
+        if attr.get("scope") not in ("case", "event") or attr.get("type") not in ("string", "number", "boolean"):
             raise ValidationError("Choose a type and case/event scope for each retained attribute.")
     missing = profile.get("missing", "error")
     conflicts = profile.get("case_conflicts", "error")
-    if missing not in {"error", "exclude_case", "keep_attributes"} or conflicts not in {"error", "exclude_case"}:
+    if missing not in ("error", "exclude_case", "keep_attributes") or conflicts not in ("error", "exclude_case"):
         raise ValidationError("Choose explicit missing-value and case-conflict handling.")
     mode = profile.get("case_mode", "group")
-    if mode not in {"group", "calendar_day", "gap"}:
+    if mode not in ("group", "calendar_day", "gap"):
         raise ValidationError("Choose grouping, calendar day, or inactivity-gap sessions.")
     gap = profile.get("gap_minutes", 60)
     day_hour = profile.get("day_start_hour", 0)
     merge = profile.get("merge_gap_seconds", 0)
-    if not isinstance(gap, (int, float)) or not math.isfinite(gap) or gap <= 0:
+    if not isinstance(gap, (int, float)) or isinstance(gap, bool) or not math.isfinite(gap) or gap <= 0:
         raise ValidationError("Session gap must be a positive number of minutes.")
-    if not isinstance(day_hour, int) or not 0 <= day_hour <= 23:
+    if not isinstance(day_hour, int) or isinstance(day_hour, bool) or not 0 <= day_hour <= 23:
         raise ValidationError("Day start must be an integer hour from 0 to 23.")
-    if not isinstance(merge, (int, float)) or not math.isfinite(merge) or merge < 0:
+    if not isinstance(merge, (int, float)) or isinstance(merge, bool) or not math.isfinite(merge) or merge < 0:
         raise ValidationError("Merge gap must be zero (disabled) or a positive number of seconds.")
     exclusions = profile.get("exclude_activities", [])
     if not isinstance(exclusions, list) or any(not isinstance(v, str) for v in exclusions):
@@ -261,7 +261,7 @@ def select_cohort(dataset, filters):
         if attr is None:
             raise ValidationError("Cohort column must be a retained attribute.")
         op = condition.get("op")
-        if op not in {"eq", "in", "range", "missing"}:
+        if op not in ("eq", "in", "range", "missing"):
             raise ValidationError("Choose equals, one of, range, or missing.")
         if op == "range":
             if attr["type"] != "number":

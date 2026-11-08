@@ -37,7 +37,7 @@ def engine_versions(engine):
 def configuration(raw, dataset):
     engine = raw.get("engine", "discover")
     level = raw.get("label_level", "activity")
-    if engine not in {"discover", "declare4py"} or level not in {"activity", "category", "both"}:
+    if engine not in ("discover", "declare4py") or level not in ("activity", "category", "both"):
         raise ValidationError("Choose a supported engine and activity/category/both label level.")
     if level != "activity" and not dataset["metadata"]["category_available"]:
         raise ValidationError("Category mining requires a mapped, complete activity-category column.")

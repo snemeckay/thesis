@@ -9,8 +9,6 @@ import {
 } from './utils.js';
 
 export async function discoverAvailableCsvFiles(state) {
-  const manifestPaths = await fetchSourceManifest();
-  const unique = new Set([...manifestPaths, ...DEFAULT_BUILTIN_CSV_PATHS]);
   const discovered = [];
 
   const params = new URLSearchParams(globalThis.location?.search || "");
@@ -21,14 +19,24 @@ export async function discoverAvailableCsvFiles(state) {
     if (!response.ok) throw new Error("Local mining model is unavailable. Start the local mining app.");
     const job = await response.json();
     if (job.status !== "complete") throw new Error("This mining run has not completed.");
-    for (const artifact of job.artifacts) {
+    const artifacts = params.get("embedded") === "1"
+      ? job.artifacts.filter((a) => a.level === params.get("label_level")) : job.artifacts;
+    if (!artifacts.length) throw new Error("The selected label model is not available in this mining run.");
+    for (const artifact of artifacts) {
       const path = `/api/models/${modelId}/file/${artifact.csv}`;
       const descriptor = createSourceDescriptor(path, "builtin", null);
       descriptor.label = `Local model - ${artifact.level} - ${job.configuration.engine} - ${job.population.cases} cases`;
       discovered.push(descriptor);
     }
+    if (params.get("embedded") === "1") {
+      state.builtInSources = dedupeSources(discovered);
+      state.allSources = [...state.builtInSources, ...state.uploadedSources];
+      return;
+    }
   }
 
+  const manifestPaths = await fetchSourceManifest();
+  const unique = new Set([...manifestPaths, ...DEFAULT_BUILTIN_CSV_PATHS]);
   for (const relativePath of unique) {
     const text = await loadCsvText(relativePath, true);
     if (text && text.includes("rule_id") && text.includes("rule_type")) {

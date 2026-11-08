@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { applyFilters, filterGraphRecords, initializeFilterState, resetFiltersState } from '../js/filters.js';
 import { explainConstraintText } from '../js/constraint_explanations.js';
-import { normalizeConstraintRecord } from '../js/data.js';
+import { discoverAvailableCsvFiles, normalizeConstraintRecord } from '../js/data.js';
 import { buildGraphElements, renderDetails } from '../js/graph.js';
 import { readUrlState, applyInitialUrlFilters, persistUrlState } from '../js/url_state.js';
 
@@ -222,6 +222,76 @@ test('CSV normalization retains numeric occurrence bounds', () => {
   }, 'sample.csv');
   assert.equal(normalized.cardinality, 2);
   assert.match(explainConstraintText(normalized), /at least 2 times/);
+});
+
+test('local model metadata retains all endpoint categories without changing constraint arity', () => {
+  const normalized = normalizeConstraintRecord({
+    rule_id: 'a', rule_type: 'RESPONSE', activities: 'Pay|Rest', category: 'binary',
+    activity_categories: '[["Work","<Other>"],["Leisure"]]',
+    label_level: 'activity', model_id: 'local-model', dataset_id: 'local-dataset',
+    extra_study_metadata: 'preserved'
+  }, 'local.csv');
+  assert.equal(normalized.category, 'binary');
+  assert.deepEqual(normalized.activityCategoryLists, [['Work', '<Other>'], ['Leisure']]);
+  assert.equal(normalized.extra_study_metadata, 'preserved');
+  const state = {
+    selectedElement: { isNode: () => false, isEdge: () => true, data: () => 'a' },
+    selectedRecords: [normalized], filteredRecords: [normalized], dom: { detailsPanel: {} }
+  };
+  renderDetails(state);
+  assert.match(state.dom.detailsPanel.innerHTML, /Endpoint activity categories/);
+  assert.match(state.dom.detailsPanel.innerHTML, /Pay: Work, &lt;Other&gt;/);
+  assert.match(state.dom.detailsPanel.innerHTML, /Constraint category \(arity\)/);
+  assert.match(state.dom.detailsPanel.innerHTML, /local-model/);
+});
+
+test('malformed endpoint category metadata is rejected instead of selecting a category', () => {
+  const raw = { rule_id: 'a', rule_type: 'RESPONSE', activities: 'Pay|Rest', category: 'binary' };
+  assert.throws(() => normalizeConstraintRecord({ ...raw, activity_categories: '[["Work"]]' }, 'local.csv'), /one per activity/);
+  assert.throws(() => normalizeConstraintRecord({ ...raw, activity_categories: '{"Pay":"Work"}' }, 'local.csv'), /category lists/);
+});
+
+test('embedded mining viewer uses only the selected artifact, never sample substitutes', async () => {
+  const oldLocation = globalThis.location;
+  const oldFetch = globalThis.fetch;
+  const model = 'a'.repeat(64);
+  const calls = [];
+  try {
+    globalThis.location = { search: `?mine_model=${model}&embedded=1&label_level=category` };
+    globalThis.fetch = async (path) => {
+      calls.push(path);
+      return { ok: true, json: async () => ({
+        status: 'complete', configuration: { engine: 'discover' }, population: { cases: 2 },
+        artifacts: [{ level: 'activity', csv: 'activity_dcr_constraints.csv' },
+          { level: 'category', csv: 'category_dcr_constraints.csv' }]
+      }) };
+    };
+    const state = { uploadedSources: [] };
+    await discoverAvailableCsvFiles(state);
+    assert.deepEqual(calls, [`/api/jobs/${model}`]);
+    assert.equal(state.allSources.length, 1);
+    assert.match(state.allSources[0].path, /category_dcr_constraints\.csv$/);
+    globalThis.fetch = async () => ({ ok: false });
+    await assert.rejects(discoverAvailableCsvFiles({ uploadedSources: [] }), /unavailable/);
+  } finally {
+    globalThis.location = oldLocation;
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test('node details show all selected-model category metadata with escaping', () => {
+  const normalized = normalizeConstraintRecord({
+    rule_id: 'a', rule_type: 'EXISTENCE', activities: 'Pay', category: 'unary',
+    activity_categories: '[["Work","<Other>"]]'
+  }, 'local.csv');
+  const state = {
+    selectedElement: { isNode: () => true, data: () => 'Pay' },
+    selectedRecords: [normalized], filteredRecords: [normalized], dom: { detailsPanel: {} }
+  };
+  renderDetails(state);
+  assert.match(state.dom.detailsPanel.innerHTML, /Activity categories in this model/);
+  assert.match(state.dom.detailsPanel.innerHTML, /&lt;Other&gt;/);
+  assert.match(state.dom.detailsPanel.innerHTML, /Work/);
 });
 
 test('comparison details use only the selected model records and escape their contents', () => {
