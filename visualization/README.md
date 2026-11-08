@@ -182,3 +182,18 @@ node --test .\visualization\tests\regression.test.mjs
   - PapaParse
   - Cytoscape
   - Lucide
+# Connected local research workspace
+
+The [local preparation/mining app](../mining_app/README.md) launches this viewer
+with a selected persisted model and provides dataset selection, real complete-case
+population re-mining, and switching between separately mined activity/category
+models. Rule filters in this viewer only narrow displayed constraints.
+Standalone aggregate CSVs cannot perform demographic re-mining without events.
+
+Additional exported model metadata is retained on upload, including
+`activity_categories` (JSON endpoint category sets), `label_level`, `dataset_id`,
+and `model_id`. Constraint `category` still means unary/binary arity. Graph
+details distinguish the two. The viewer now uses pinned local graph/icon/CSV
+assets with included licenses in `vendor/`, so it does not download third-party
+scripts or fonts at runtime. Legacy upload, comparison, and OR/AND behavior
+remain unchanged.

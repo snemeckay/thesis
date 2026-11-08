@@ -232,3 +232,15 @@ Outputs:
   - `violation_count` is derived from the total trace count.
 
 In other words, the unified schema is shared, but the count provenance differs slightly between the two discovery engines.
+# Local research model extensions
+
+The [local mining app](mining_app/README.md) preserves the unified rule fields
+and adds `label_level`, `dataset_id`, `model_id`, and `activity_categories`.
+`activity_categories` is a JSON array of category arrays aligned to the
+`activities` endpoints; multi-category activities retain all observed categories
+in the selected cohort. The existing `category` field still means unary/binary
+constraint arity. Demographics are not assigned to aggregate rule rows: retained
+events and preparation/model metadata provide typed attributes, case scope,
+population filters, engine/configuration, and reproducible cohort context.
+Category models are mined separately, not derived by relabeling activity rules.
+Valid empty output writes a header-only CSV and an empty JSON list.
