@@ -22,7 +22,7 @@
   <main class="mining-main">
     <div id="notice" role="status" aria-live="polite"></div>
     <section id="prepareScreen">
-      <section class="card">
+      <section id="uploadCard" class="card">
         <h2>Start with your CSV</h2>
         <p>Use UTF-8 (up to 20 MiB). Delimiter and attribute types are suggestions only; the application never chooses your case definition.</p>
         <div class="grid">
@@ -30,6 +30,12 @@
           <label>Delimiter <select id="delimiter"><option value="">Suggest from file</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="&#9;">Tab</option><option value="|">Pipe</option></select></label>
           <button id="preview" type="button">Preview CSV</button>
         </div>
+        <div id="profileLoadActions" class="actions">
+          <label>Saved profile <select id="profiles" disabled><option value="">Choose a mapping profile</option></select></label>
+          <button id="loadProfile" type="button" disabled>Load profile</button>
+          <label>Import profile JSON <input id="importProfile" type="file" accept=".json,application/json" aria-describedby="profileLoadHelp" disabled></label>
+        </div>
+        <p id="profileLoadHelp" class="help">Preview the CSV before applying a profile.</p>
         <p id="previewSummary"></p><div id="previewTable" class="scroll"></div>
         <p id="uploadHint" class="help"></p>
       </section>
@@ -66,12 +72,12 @@
           <label>Exclude exact activity labels (one per line) <textarea id="excluded" rows="3" placeholder="No event exclusions by default"></textarea></label>
         </div>
         <p class="help">Merging only combines consecutive non-overlapping events with identical activity and category. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
-        <div class="actions">
-          <label>Saved profile <select id="profiles"><option value="">Choose a mapping profile</option></select></label>
-          <button id="loadProfile" type="button">Load profile</button>
-          <label>Profile name <input id="profileName" placeholder="Study mapping"></label><button id="saveProfile" type="button">Save profile locally</button>
-          <button id="exportProfile" type="button">Export profile JSON</button><label>Import profile JSON <input id="importProfile" type="file" accept=".json,application/json"></label></div>
         <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button></div>
+        <div id="profileSaveActions" class="actions">
+          <label>Profile name <input id="profileName" placeholder="Study mapping"></label>
+          <button id="saveProfile" type="button">Save profile locally</button>
+          <button id="exportProfile" type="button">Download profile JSON</button>
+        </div>
       </section>
     </section>
     <section id="studyCard" class="card">

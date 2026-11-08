@@ -46,6 +46,8 @@ class ServerTests(unittest.TestCase):
         self.assertNotIn('id="cohort"', response.text)
         self.assertNotIn('id="addFilter"', response.text)
         self.assertNotIn("Choose columns for population filters", response.text)
+        self.assertLess(response.text.index('id="importProfile"'), response.text.index('id="mappingCard"'))
+        self.assertLess(response.text.index('id="prepare"'), response.text.index('id="saveProfile"'))
 
     def test_behavioural_preparation_persists_algorithm_metadata(self):
         upload = self.client.post("/api/preview", files={"file": ("synthetic.csv", CSV.encode(), "text/csv")}).json()

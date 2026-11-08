@@ -85,6 +85,8 @@ function renderMapping(result) {
   columns = result.columns;
   $('delimiter').value = result.delimiter;
   $('mappingCard').hidden = false;
+  for (const id of ['profiles', 'loadProfile', 'importProfile']) $(id).disabled = false;
+  $('profileLoadHelp').hidden = true;
   $('caseColumns').replaceChildren();
   for (const column of columns) {
     const label = document.createElement('label');

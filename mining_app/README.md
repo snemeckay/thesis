@@ -66,7 +66,9 @@ the checks below.
    Original activity and optional activity-category labels remain available.
 5. Explicitly choose missing-event handling and optional event exclusions or
    merging. Prepare, then inspect the population and data-quality counts.
-6. Save/reuse the mapping locally or export/import a preparation-profile JSON.
+6. Import a profile JSON or load a saved profile in **Start with your CSV**,
+   after previewing the file. Save the mapping locally or download its JSON
+   below **Prepare complete cases** at the end of the mapping section.
    Imported profiles must match previewed columns and delimiter, and are
    validated again during preparation.
    Older profiles' additional attributes are not retained by new browser
