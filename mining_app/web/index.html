@@ -37,8 +37,7 @@
         <h2>Define what the events mean</h2>
         <p><strong>A case is a sequence of events analysed together.</strong> First choose whose events belong together, then choose whether to split their timeline into days or sessions. Different participants should normally stay separate.</p>
         <fieldset class="group-selection" aria-describedby="groupHelp">
-          <legend title="Every distinct combination of selected values has its own timeline.">Participant/group columns (required)</legend>
-          <p class="help">Select one or more columns. Selected columns are highlighted.</p>
+          <legend>Participant/group columns (required)</legend>
           <div id="caseColumns"></div>
           <p id="groupHelp" class="help">Normally select the participant ID (for example user_id). Add an existing session ID only to keep those sessions separate. Keep age and gender as attributes below for population filtering; selecting them alone here would combine different people's events into one timeline.</p>
         </fieldset>
@@ -47,13 +46,13 @@
           <label>Activity category (optional) <select id="category"></select></label>
           <label>Event start time (required) <select id="timestamp"></select></label>
           <label>Event end time <span id="endTimestampRequirement" class="help">(optional)</span><select id="endTimestamp" title="Needed for original behavioural days. For inactivity sessions, an unmapped end time uses the event start instead."></select></label>
-          <label>Split each participant/group into <select id="caseMode" aria-describedby="caseMethodHelp" title="This splits each selected participant/group separately; it never combines participants across a day."><option value="group">One sequence (all events together)</option><option value="calendar_day">Calendar days</option><option value="gap">Inactivity sessions</option><option value="behavioural_day">Behavioural days (original algorithm)</option></select></label>
+          <label>Split each participant/group into <select id="caseMode" aria-describedby="caseMethodHelp"><option value="group">One sequence (all events together)</option><option value="calendar_day">Calendar days</option><option value="gap">Inactivity sessions</option><option value="behavioural_day">Behavioural days (original algorithm)</option></select></label>
           <label id="gapSettings" hidden>Inactivity gap (minutes) <input id="gapMinutes" type="number" value="60" min="1" disabled title="Start a new session when inactivity exceeds this many minutes, measured from the latest preceding event end."></label>
           <label id="daySettings" hidden>Calendar day starts at hour <input id="dayHour" type="number" value="0" min="0" max="23" disabled title="0 means midnight. For example, 4 keeps events before 04:00 in the previous calendar day."></label>
         </div>
         <p id="caseMethodHelp" class="help" aria-live="polite"></p>
         <p id="behaviouralHelp" class="help" hidden>Uses your original behavioural-day algorithm: inactivity gaps of at least 4 hours, prioritising gaps ending between 04:00 and noon; otherwise nighttime (20:00-04:00) and late-sleep (03:00-10:00) fallbacks. The longest candidate per date defines a boundary. This is an inactivity-based estimate, not measured sleep. No qualifying boundary means all events remain in one sequence. An event spanning the night (such as Screen off) is not itself an inactivity gap.</p>
-        <details><summary title="Examples of grouping and splitting, and how time zones affect day boundaries.">Help: participants, days and sessions</summary>
+        <details><summary>Help: participants, days and sessions</summary>
           <p>With user_id selected, user 101 and user 102 always have separate timelines. Calendar days splits each person's timeline at the chosen hour: user 101 on May 28 is one case, user 102 on May 28 is a different case. Inactivity sessions splits whenever the gap exceeds your threshold. Behavioural days uses the original gap-detection algorithm instead of a fixed daily boundary.</p>
           <p>With user_id + session_id selected, each participant/session combination is already separate before any further day or gap splitting. Selecting age + gender alone would instead pool everybody sharing those values; that is usually not a valid individual event sequence.</p>
           <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>

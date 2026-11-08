@@ -79,15 +79,13 @@ function updateCaseSettings() {
   $('behaviouralHelp').hidden = mode !== 'behavioural_day';
   $('endTimestamp').required = mode === 'behavioural_day';
   $('endTimestampRequirement').textContent = mode === 'behavioural_day' ? '(required for behavioural days)' : '(optional)';
-  const selected = [...$('caseColumns').querySelectorAll('input:checked')].map((i) => i.value);
-  const owner = selected.length ? selected.join(' + ') : 'the participant/group columns you select';
   const explanation = {
-    group: 'All events for each distinct combination stay in one sequence, even across multiple days.',
+    group: 'All events for each participant/group stay in one sequence, even across multiple days.',
     calendar_day: 'A separate sequence for each day within each participant/group, split at the hour below.',
     gap: 'A new sequence starts when inactivity exceeds the threshold below, separately within each participant/group.',
     behavioural_day: 'Each participant/group is split using the original behavioural-day boundaries described below.'
   };
-  $('caseMethodHelp').textContent = `Events belong together by ${owner}. ${explanation[mode]}`;
+  $('caseMethodHelp').textContent = explanation[mode];
 }
 
 function renderMapping(result) {
@@ -100,7 +98,6 @@ function renderMapping(result) {
     const label = document.createElement('label');
     const input = document.createElement('input');
     input.type = 'checkbox'; input.value = column.name;
-    input.title = `Group events by ${column.name}. Tick additional columns to group by their combination.`;
     const name = document.createElement('span'); name.textContent = column.name;
     label.append(input, name);
     $('caseColumns').append(label);
