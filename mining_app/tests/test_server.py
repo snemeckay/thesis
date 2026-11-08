@@ -35,6 +35,24 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200, result.text)
         return result.json()
 
+    def test_behavioural_preparation_persists_algorithm_metadata(self):
+        upload = self.client.post("/api/preview", files={"file": ("synthetic.csv", CSV.encode(), "text/csv")}).json()
+        p = profile(case_columns=["user"], case_mode="behavioural_day")
+        response = self.client.post("/api/prepare", json={"upload_id": upload["upload_id"], "profile": p})
+        self.assertEqual(response.status_code, 200, response.text)
+        dataset = response.json()
+        self.assertEqual(dataset["metadata"]["quality"]["cases"], 2)
+        self.assertEqual(dataset["metadata"]["case_construction"]["minimum_gap_hours"], 4)
+        bundle = self.client.get(f"/api/datasets/{dataset['id']}/bundle")
+        with zipfile.ZipFile(io.BytesIO(bundle.content)) as archive:
+            import json
+            exported = json.loads(archive.read("dataset.json"))
+            self.assertEqual(exported["metadata"]["case_construction"], dataset["metadata"]["case_construction"])
+        response = self.client.post("/api/prepare", json={
+            "upload_id": upload["upload_id"], "profile": {**p, "end_timestamp": None}})
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("end-time", response.text)
+
     def test_real_job_cache_exports_and_persistence(self):
         dataset = self.prepare()
         request = {"dataset_id": dataset["id"], "configuration": {"label_level": "both"}, "output_name": "study-results.csv",

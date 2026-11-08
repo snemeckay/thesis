@@ -73,6 +73,64 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(len(normalize(text, profile(case_mode="gap"))["cases"]), 4)
         self.assertEqual(len(normalize(text, profile(case_mode="calendar_day"))["cases"]), 4)
 
+    def test_only_active_splitting_settings_are_validated(self):
+        self.assertEqual(len(normalize(CSV, profile(gap_minutes=0, day_start_hour=99))["cases"]), 2)
+        with self.assertRaisesRegex(ValidationError, "positive"):
+            normalize(CSV, profile(case_mode="gap", gap_minutes=0))
+        with self.assertRaisesRegex(ValidationError, "integer hour"):
+            normalize(CSV, profile(case_mode="calendar_day", day_start_hour=99))
+
+    def test_behavioural_day_requires_end_time(self):
+        with self.assertRaisesRegex(ValidationError, "end-time"):
+            normalize(CSV, profile(case_mode="behavioural_day", end_timestamp=None))
+
+    def test_behavioural_days_reuse_original_boundary_phases(self):
+        import pandas as pd
+        from preprocessing.day_split import assign_day_counter
+
+        examples = [
+            ("2021-05-28 22:00:00", "2021-05-29 06:00:00"),  # waking window
+            ("2021-05-28 18:00:00", "2021-05-28 23:00:00"),  # nighttime fallback
+            ("2021-05-28 22:00:00", "2021-05-29 14:00:00"),  # 04:00 within gap
+            ("2021-05-28 05:00:00", "2021-05-28 13:00:00"),  # late-sleep fallback
+        ]
+        for first, second in examples:
+            with self.subTest(first=first, second=second):
+                first_start = (pd.Timestamp(first) - pd.Timedelta(minutes=30)).isoformat(sep=" ")
+                text = "user;time;end;app;category;gender;age\n"
+                for user in ("u1", "u2"):
+                    for at, until in ((first_start, first), (second, second)):
+                        text += f"{user};{at};{until};A;Work;F;20\n"
+                data = normalize(text, profile(case_columns=["user"], case_mode="behavioural_day"))
+                reference = assign_day_counter(pd.DataFrame({
+                    "user_id": ["u1", "u1"], "start_time": pd.to_datetime([first_start, second]),
+                    "end_time": pd.to_datetime([first, second])
+                }))
+                self.assertEqual([e["case_id"] for e in data["events"][:2]],
+                                 [f'["u1","{day}"]' for day in reference["day_counter"]])
+                self.assertEqual(len(data["cases"]), 4)
+                self.assertEqual(data["metadata"]["case_construction"]["minimum_gap_hours"], 4)
+                self.assertEqual(select_cohort(data, [{"column": "gender", "op": "eq", "value": "F"}])[1], 4)
+
+    def test_behavioural_days_choose_longest_candidate_not_every_gap(self):
+        text = """user;time;end;app
+u1;2021-05-28 21:00:00;2021-05-28 22:00:00;A
+u1;2021-05-29 04:00:00;2021-05-29 04:10:00;B
+u1;2021-05-29 09:00:00;2021-05-29 09:10:00;C
+"""
+        p = profile(case_columns=["user"], attributes=[], activity_category=None, case_mode="behavioural_day")
+        data = normalize(text, p)
+        self.assertEqual(len(data["cases"]), 2)
+        self.assertEqual(data["events"][1]["case_id"], data["events"][2]["case_id"])
+        self.assertEqual(len(normalize(text, {**p, "case_mode": "gap", "gap_minutes": 240})["cases"]), 3)
+
+    def test_behavioural_days_preserve_attributes_and_no_gap_sequences(self):
+        data = normalize(CSV, profile(case_columns=["user"], case_mode="behavioural_day"))
+        self.assertEqual(len(data["events"]), 4)
+        self.assertEqual(len(data["cases"]), 2)
+        self.assertEqual(data["metadata"]["activity_categories"]["A"], ["Rest", "Work"])
+        self.assertEqual(select_cohort(data, [{"column": "age", "op": "eq", "value": 20}])[1], 1)
+
     def test_bad_csv_timestamps_ranges(self):
         for text in (CSV.replace("u1;1;", "u1;", 1), CSV.replace("2021-05-28", "bad", 1)):
             with self.assertRaises(ValidationError):

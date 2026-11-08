@@ -92,11 +92,28 @@ def preview(text, delimiter=None):
     return {"delimiter": delimiter, "columns": columns, "rows": rows[:12], "event_count": len(rows)}
 
 
+def behavioural_segments(events):
+    """Reuse the original day splitter without its fixed input schema or case-ID builder."""
+    try:
+        import pandas as pd
+    except ImportError as exc:
+        raise ValidationError("Behavioural days require pandas. Install the local app requirements.") from exc
+    from preprocessing.constants import RAW_COL_USER, RAW_COL_START, RAW_COL_END
+    from preprocessing.day_split import assign_day_counter
+
+    frame = pd.DataFrame([{
+        RAW_COL_USER: "group", RAW_COL_START: timestamp(e["timestamp"]),
+        RAW_COL_END: timestamp(e["end_timestamp"]), "source_record": e["source_record"],
+    } for e in events])
+    result = assign_day_counter(frame)
+    return {int(row["source_record"]): str(row["day_counter"]) for row in result.to_dict("records")}
+
+
 def normalize(text, profile):
     headers, rows, delimiter = read_csv(text, profile.get("delimiter"))
     case_columns = profile.get("case_columns", [])
     if not isinstance(case_columns, list) or not case_columns or any(not isinstance(c, str) for c in case_columns) or len(set(case_columns)) != len(case_columns):
-        raise ValidationError("Explicitly choose one or more distinct case/group columns. A participant is not automatically a case.")
+        raise ValidationError("Explicitly choose one or more distinct participant/group columns, normally a participant ID.")
     activity = profile.get("activity")
     start = profile.get("timestamp")
     end = profile.get("end_timestamp") or None
@@ -118,14 +135,16 @@ def normalize(text, profile):
     if missing not in ("error", "exclude_case", "keep_attributes") or conflicts not in ("error", "exclude_case"):
         raise ValidationError("Choose explicit missing-value and case-conflict handling.")
     mode = profile.get("case_mode", "group")
-    if mode not in ("group", "calendar_day", "gap"):
-        raise ValidationError("Choose grouping, calendar day, or inactivity-gap sessions.")
+    if mode not in ("group", "calendar_day", "gap", "behavioural_day"):
+        raise ValidationError("Choose all events together, calendar days, inactivity sessions, or behavioural days.")
+    if mode == "behavioural_day" and not end:
+        raise ValidationError("Behavioural days require an event end-time column to detect inactivity gaps.")
     gap = profile.get("gap_minutes", 60)
     day_hour = profile.get("day_start_hour", 0)
     merge = profile.get("merge_gap_seconds", 0)
-    if not isinstance(gap, (int, float)) or isinstance(gap, bool) or not math.isfinite(gap) or gap <= 0:
+    if mode == "gap" and (not isinstance(gap, (int, float)) or isinstance(gap, bool) or not math.isfinite(gap) or gap <= 0):
         raise ValidationError("Session gap must be a positive number of minutes.")
-    if not isinstance(day_hour, int) or isinstance(day_hour, bool) or not 0 <= day_hour <= 23:
+    if mode == "calendar_day" and (not isinstance(day_hour, int) or isinstance(day_hour, bool) or not 0 <= day_hour <= 23):
         raise ValidationError("Day start must be an integer hour from 0 to 23.")
     if not isinstance(merge, (int, float)) or isinstance(merge, bool) or not math.isfinite(merge) or merge < 0:
         raise ValidationError("Merge gap must be zero (disabled) or a positive number of seconds.")
@@ -176,12 +195,15 @@ def normalize(text, profile):
         if group in excluded_groups:
             continue
         group_events.sort(key=lambda e: (e["timestamp"], e["source_record"]))
+        behavioural = behavioural_segments(group_events) if mode == "behavioural_day" else None
         sessions = {}
         session = 0
         previous_end = None
         for event in group_events:
             at = timestamp(event["timestamp"])
-            if mode == "calendar_day":
+            if mode == "behavioural_day":
+                segment = behavioural[event["source_record"]]
+            elif mode == "calendar_day":
                 segment = (at - timedelta(hours=day_hour)).date().isoformat()
             elif mode == "gap":
                 if previous_end is not None and (at - previous_end).total_seconds() > gap * 60:
@@ -235,6 +257,16 @@ def normalize(text, profile):
                     "removed_activity_events": removed_events, "merged_events": merged_events},
         "activity_categories": {},
     }
+    if mode == "behavioural_day":
+        from preprocessing import constants
+        metadata["case_construction"] = {
+            "algorithm": "preprocessing.day_split.assign_day_counter", "version": 1,
+            "minimum_gap_hours": constants.MIN_INACTIVITY_GAP_HOURS,
+            "waking_window": [constants.WAKING_WINDOW_START, constants.WAKING_WINDOW_END],
+            "night_window": [constants.NIGHT_WINDOW_START, constants.NIGHT_WINDOW_END],
+            "late_sleep_window": [constants.LATE_SLEEP_START, constants.LATE_SLEEP_END],
+            "stage": "after exclusions, before optional merging",
+        }
     for event in events:
         categories = metadata["activity_categories"].setdefault(event["activity"], [])
         if event["activity_category"] is not None and event["activity_category"] not in categories:
