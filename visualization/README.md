@@ -24,9 +24,12 @@ This page is now the modular entry shell that loads:
 - [visualization/js/ui.js](js/ui.js)
 - [visualization/js/utils.js](js/utils.js)
 
-Alternative/legacy graph modules kept in repo:
-- [visualization/js/graph_clean.js](js/graph_clean.js)
+Active graph module:
 - [visualization/js/graph.js](js/graph.js)
+
+Alternative graph modules kept in repo:
+- [visualization/js/graph_clean.js](js/graph_clean.js)
+- [visualization/js/graph_unary.js](js/graph_unary.js)
 
 ## Run Locally
 
@@ -70,12 +73,17 @@ Additional columns (optional but recommended) are parsed when present:
 
 - Source selector + upload
 - Source quick-toggle buttons
-- Activity text search
+- Activity suggestions with case-insensitive exact-name matching; partial names use substring matching. Both comparison models use the combined activity vocabulary.
 - Categorical filters (`source`, `rule_type`, `category`)
 - Numeric range filters (`support`, `confidence`, counts)
 - Active filter chips with one-click clear
 - Graph layout switching (`cose`, `concentric`, `breadthfirst`, `grid`)
 - Node/edge detail panel
+- Side-by-side comparison with shared layout, fit, zoom and reset-selection controls. Selecting a graph element shows metadata only from its model; filtering clears the selection.
+- Comparison graphs sit beside each other on wide screens and stack in a scrollable graph area on smaller screens.
+- Rule-type matching defaults to OR (any selected type). AND keeps activities participating in every selected type somewhere in the same source file, across different constraint rows. This is evaluated separately per file in single, side-by-side and combined views.
+- AND removes edges to non-qualifying activities but preserves qualifying activities as isolated nodes. Other filters still control visible constraints; the occurrence of rule types is checked against the complete source, not just the narrowed rows.
+- Other categorical groups use OR internally; separate groups, activity search and numeric ranges use AND. Reset all returns rule-type matching to OR. Single-view URLs preserve the matching mode and selected types.
 - Theme toggle (light/dark)
 - Collapsible filters/details panels
 
@@ -84,9 +92,9 @@ Additional columns (optional but recommended) are parsed when present:
 - [visualization/js/app.js](js/app.js): app state, startup orchestration, event wiring
 - [visualization/js/data.js](js/data.js): manifest loading, CSV fetching/parsing, record normalization
 - [visualization/js/filters.js](js/filters.js): filter state init, UI rendering, filtering logic
-- [visualization/js/graph_unary.js](js/graph_unary.js): active graph renderer (unary-aware), Cytoscape rendering, details text, legends
+- [visualization/js/graph_unary.js](js/graph_unary.js): alternative unary-aware renderer
 - [visualization/js/graph_clean.js](js/graph_clean.js): simpler fallback graph renderer
-- [visualization/js/graph.js](js/graph.js): legacy/original graph renderer
+- [visualization/js/graph.js](js/graph.js): active unary-aware graph renderer, layouts, details and legends
 - [visualization/js/ui.js](js/ui.js): DOM cache, theme/panel controls, status/empty/error messages
 - [visualization/js/utils.js](js/utils.js): constants and helper utilities
 
@@ -110,7 +118,7 @@ Additional columns (optional but recommended) are parsed when present:
   - [visualization/js/utils.js](js/utils.js)
   - [visualization/js/data.js](js/data.js)
   - [visualization/js/filters.js](js/filters.js)
-  - [visualization/js/graph_unary.js](js/graph_unary.js)
+  - [visualization/js/graph.js](js/graph.js)
 
 - [visualization/js/data.js](js/data.js) imports:
   - [visualization/js/utils.js](js/utils.js)
@@ -142,6 +150,20 @@ Additional columns (optional but recommended) are parsed when present:
 7. `ui` updates theme/panels/messages
 
 ## Troubleshooting
+
+### Interpreting metrics and occurrence bounds
+- Support is the share of complete cases satisfying the rule, including cases without an activation.
+- Confidence is the share of fulfilled activations. Declare4Py uses event-level activations; DisCoveR provides trace-level activations, so the granularity differs.
+- `EXISTENCE` with cardinality `n` requires at least `n` occurrences; `ABSENCE` with cardinality `n` requires fewer than `n`. A missing cardinality defaults to `1`.
+- The bundled DisCoveR CSV is normalized to the current `discover_pipeline.py` mapping: violations = activated cases minus fulfilled cases; support count = total cases minus violations. The activity lists, mined rules, activation counts, fulfillment counts and confidence values are unchanged. Older uploaded exports may still use activation share as support and should be regenerated or normalized before comparison.
+
+### Regression checks
+
+Run the dependency-free tests from the project root:
+
+```powershell
+node --test .\visualization\tests\regression.test.mjs
+```
 
 ### Blank or no data loaded
 - Ensure the server is started from project root.

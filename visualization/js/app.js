@@ -13,13 +13,14 @@ import {
   renderFilters, 
   renderFilterMetrics, 
   renderActiveChips,
-  applyFilters
+  filterGraphRecords
 } from './filters.js';
 import { readUrlState, applyInitialUrlFilters, persistUrlState } from './url_state.js';
 import { 
   buildGraphElements, 
   renderGraph, 
   runLayout, 
+  layoutOptions,
   renderDetails, 
   renderNoSourceState, 
   renderErrorState 
@@ -38,14 +39,18 @@ export const state = {
     bSourceId: null
   },
   records: [],
+  recordGroups: [],
   filteredRecords: [],
   filters: {
     activityQuery: "",
+    ruleTypeOperator: "or",
     categorical: {},
     numeric: {}
   },
   cy: null,
   selectedElement: null,
+  selectedRecords: null,
+  selectedContext: "",
   loadedSummaryText: "",
   searchDebounce: null,
   ui: {
@@ -153,6 +158,7 @@ function bindStaticEvents() {
   dom.toggleDetailsPanel.addEventListener("click", () => toggleSidePanel(state, "details"));
   dom.resetFilters.addEventListener("click", () => {
     resetFiltersState(state);
+    initializeFilterState(state.records, state);
     renderFilters(state);
     invokeApplyFiltersAndRender();
   });
@@ -165,27 +171,24 @@ function bindStaticEvents() {
     }, 220);
   });
 
-  dom.layoutSelect.addEventListener("change", () => runLayout(state, dom.layoutSelect.value));
-  dom.relayoutBtn.addEventListener("click", () => runLayout(state, dom.layoutSelect.value));
+  dom.layoutSelect.addEventListener("change", () => runVisibleLayouts(dom.layoutSelect.value));
+  dom.relayoutBtn.addEventListener("click", () => runVisibleLayouts(dom.layoutSelect.value));
   dom.fitBtn.addEventListener("click", () => {
-    if (!state.cy) return;
-    state.cy.fit(undefined, 30);
+    visibleGraphInstances().forEach((cy) => cy.fit(undefined, 30));
   });
   dom.zoomInBtn.addEventListener("click", () => {
-    if (!state.cy) return;
-    state.cy.zoom(state.cy.zoom() * 1.15);
-    state.cy.center();
+    visibleGraphInstances().forEach((cy) => {
+      cy.zoom(cy.zoom() * 1.15);
+      cy.center();
+    });
   });
   dom.zoomOutBtn.addEventListener("click", () => {
-    if (!state.cy) return;
-    state.cy.zoom(state.cy.zoom() * 0.87);
-    state.cy.center();
+    visibleGraphInstances().forEach((cy) => {
+      cy.zoom(cy.zoom() * 0.87);
+      cy.center();
+    });
   });
-  dom.resetSelectionBtn.addEventListener("click", () => {
-    state.selectedElement = null;
-    state.cy?.elements().unselect();
-    renderDetails(state);
-  });
+  dom.resetSelectionBtn.addEventListener("click", clearSelection);
   dom.exportPngBtn.addEventListener("click", async () => {
     await exportGraphPng();
   });
@@ -194,6 +197,33 @@ function bindStaticEvents() {
   });
 
   syncPanelToggleUI(state);
+}
+
+function visibleGraphInstances() {
+  return state.mode === 'compare'
+    ? [state.compareCyA, state.compareCyB].filter(Boolean)
+    : [state.cy].filter(Boolean);
+}
+
+function clearSelection() {
+  state.selectedElement = null;
+  state.selectedRecords = null;
+  state.selectedContext = "";
+  [state.cy, state.compareCyA, state.compareCyB].filter(Boolean)
+    .forEach((cy) => cy.elements().unselect());
+  renderDetails(state);
+}
+
+function runVisibleLayouts(layoutName) {
+  if (state.mode !== 'compare') {
+    runLayout(state, layoutName);
+    return;
+  }
+  visibleGraphInstances().forEach((cy) => {
+    const layout = cy.layout(layoutOptions(layoutName));
+    layout.on('layoutstop', () => placeAllUnaryLabelsOnCy(cy));
+    layout.run();
+  });
 }
 
 async function refreshBuiltInSources(statusMessage = "Refreshing built-in sources...") {
@@ -313,7 +343,11 @@ async function handleSourceChoiceSelection(selection) {
   ensureCompareSelection();
   refreshCompareLabels();
   resetFiltersState(state);
-  await renderComparePreviewGraphs();
+  if (state.mode === 'merged') {
+    await renderMergedComparisonGraph();
+  } else {
+    await renderComparePreviewGraphs();
+  }
 }
 
 function sourceLabelById(id) {
@@ -333,6 +367,7 @@ function updateModeVisibility() {
   dom.compareGraphShell.hidden = !isCompare;
   dom.cyContainer.hidden = isCompare;
   dom.mergedLegend.hidden = !isMerged;
+  dom.compareControlsHint.hidden = !isCompare;
   if (isCompare || isMerged) clearGraphMessage();
 }
 
@@ -365,6 +400,7 @@ async function loadSelectedSourcesSingleMode() {
     return;
   }
   state.records = recordsBySource.flat();
+  state.recordGroups = recordsBySource;
 
   if (state.activeSourceId) {
     const source = selectedSources[0];
@@ -419,6 +455,8 @@ async function handleUploadedCsv(file) {
     resetFiltersState(state);
     if (state.mode === 'compare') {
       await renderComparePreviewGraphs();
+    } else if (state.mode === 'merged') {
+      await renderMergedComparisonGraph();
     } else {
       await loadSelectedSourcesSingleMode();
     }
@@ -442,46 +480,55 @@ async function loadRecordsForSourceId(sourceId) {
 async function renderComparePreviewGraphs() {
   if (state.mode !== 'compare') return;
   ensureCompareSelection();
+  const { aSourceId, bSourceId } = state.compareSelection;
   let recordsA, recordsB;
   try {
     [recordsA, recordsB] = await Promise.all([
-      loadRecordsForSourceId(state.compareSelection.aSourceId),
-      loadRecordsForSourceId(state.compareSelection.bSourceId)
+      loadRecordsForSourceId(aSourceId),
+      loadRecordsForSourceId(bSourceId)
     ]);
   } catch (err) {
     renderErrorState(state, err.message);
     return;
   }
 
+  if (state.mode !== 'compare' ||
+      state.compareSelection.aSourceId !== aSourceId ||
+      state.compareSelection.bSourceId !== bSourceId) return;
+
   const combinedRecords = [...recordsA, ...recordsB];
+  state.records = combinedRecords;
   const filtersUninitialized =
     Object.keys(state.filters.categorical || {}).length === 0 &&
     Object.keys(state.filters.numeric || {}).length === 0;
 
   if (filtersUninitialized) {
-    state.records = combinedRecords;
     initializeFilterState(state.records, state);
     renderFilters(state);
   }
 
   const labelA = sourceLabelById(state.compareSelection.aSourceId) || 'No dataset selected.';
   const labelB = sourceLabelById(state.compareSelection.bSourceId) || 'No dataset selected.';
-  const filteredA = applyFilters(recordsA, state.filters);
-  const filteredB = applyFilters(recordsB, state.filters);
+  const resultA = filterGraphRecords(recordsA, state.filters, combinedRecords);
+  const resultB = filterGraphRecords(recordsB, state.filters, combinedRecords);
+  const filteredA = resultA.records;
+  const filteredB = resultB.records;
   dom.compareGraphLabelA.textContent = `${labelA} · ${filteredA.length.toLocaleString()}/${recordsA.length.toLocaleString()} rows`;
   dom.compareGraphLabelB.textContent = `${labelB} · ${filteredB.length.toLocaleString()}/${recordsB.length.toLocaleString()} rows`;
 
   // Keep metrics/chips meaningful in compare mode too.
   state.filteredRecords = [...filteredA, ...filteredB];
-  const graphCombined = buildGraphElements(state.filteredRecords);
+  const graphCombined = buildGraphElements(state.filteredRecords, [...resultA.activities, ...resultB.activities]);
   renderFilterMetrics(state, state.filteredRecords.length, graphCombined.nodes.length, graphCombined.edges.length);
   renderActiveChips(state);
 
-  renderComparePreviewGraph('A', filteredA);
-  renderComparePreviewGraph('B', filteredB);
+  clearSelection();
+  renderComparePreviewGraph('A', filteredA, resultA.activities);
+  renderComparePreviewGraph('B', filteredB, resultB.activities);
 }
 
 function clearComparePreviewGraphs() {
+  clearSelection();
   if (state.compareCyA) {
     state.compareCyA.destroy();
     state.compareCyA = null;
@@ -611,10 +658,10 @@ function previewGraphStyle() {
   ];
 }
 
-function renderComparePreviewGraph(side, records) {
+function renderComparePreviewGraph(side, records, activities = []) {
   const key = side === 'A' ? 'compareCyA' : 'compareCyB';
   const container = side === 'A' ? dom.cyCompareA : dom.cyCompareB;
-  const graph = buildGraphElements(records);
+  const graph = buildGraphElements(records, activities);
 
   const elements = [
     ...graph.nodes,
@@ -626,12 +673,13 @@ function renderComparePreviewGraph(side, records) {
       container,
       elements,
       style: previewGraphStyle(),
-      layout: { name: 'cose', animate: false, fit: true, padding: 20 },
+      layout: layoutOptions(dom.layoutSelect.value),
       userZoomingEnabled: true,
       userPanningEnabled: true,
       boxSelectionEnabled: false,
       autoungrabify: false
     });
+    state[key].scratch('_detailsRecords', records);
 
     state[key].on('layoutstop', () => {
       placeAllUnaryLabelsOnCy(state[key]);
@@ -639,16 +687,35 @@ function renderComparePreviewGraph(side, records) {
     state[key].on("position", "node[isUnaryLabel != 'true']", (event) => {
       placeUnaryLabelsForActivityOnCy(state[key], event.target);
     });
+    state[key].on('select', 'node, edge', (event) => {
+      const otherCy = side === 'A' ? state.compareCyB : state.compareCyA;
+      otherCy?.elements().unselect();
+      state.selectedElement = event.target;
+      state.selectedRecords = state[key].scratch('_detailsRecords');
+      state.selectedContext = `Model ${side}`;
+      renderDetails(state);
+    });
+    state[key].on('unselect', 'node, edge', () => {
+      if (state.selectedContext !== `Model ${side}`) return;
+      const selected = state[key].$('node:selected, edge:selected').first();
+      state.selectedElement = selected.nonempty() ? selected : null;
+      if (!state.selectedElement) {
+        state.selectedRecords = null;
+        state.selectedContext = "";
+      }
+      renderDetails(state);
+    });
     setTimeout(() => placeAllUnaryLabelsOnCy(state[key]), 0);
     return;
   }
 
   const cy = state[key];
+  cy.scratch('_detailsRecords', records);
   cy.batch(() => {
     cy.elements().remove();
     cy.add(elements);
   });
-  const layout = cy.layout({ name: 'cose', animate: false, fit: true, padding: 20 });
+  const layout = cy.layout(layoutOptions(dom.layoutSelect.value));
   layout.on('layoutstop', () => placeAllUnaryLabelsOnCy(cy));
   layout.run();
 }
@@ -721,17 +788,33 @@ async function renderMergedComparisonGraph() {
   const labelA = sourceLabelById(state.compareSelection.aSourceId) || 'No dataset selected.';
   const labelB = sourceLabelById(state.compareSelection.bSourceId) || 'No dataset selected.';
   
-  const filtered = applyFilters(merged, state.filters);
+  let filtered;
+  let activities = [];
+  const activityStatuses = new Map();
+  if (state.filters.ruleTypeOperator === 'and') {
+    const combinedRecords = [...recordsA, ...recordsB];
+    const resultA = filterGraphRecords(recordsA, state.filters, combinedRecords);
+    const resultB = filterGraphRecords(recordsB, state.filters, combinedRecords);
+    filtered = mergeAndTagConstraints(resultA.records, resultB.records);
+    const activitiesB = new Set(resultB.activities);
+    resultA.activities.forEach(name => activityStatuses.set(name, activitiesB.has(name) ? 'both' : 'only_a'));
+    resultB.activities.forEach(name => {
+      if (!activityStatuses.has(name)) activityStatuses.set(name, 'only_b');
+    });
+    activities = [...activityStatuses.keys()];
+  } else {
+    filtered = filterGraphRecords(merged, state.filters).records;
+  }
   state.filteredRecords = filtered;
 
-  const graph = buildGraphElements(filtered);
+  const graph = buildGraphElements(filtered, activities, activityStatuses);
   renderFilterMetrics(state, filtered.length, graph.nodes.length, graph.edges.length);
   renderActiveChips(state);
 
   showStatus(`Combined comparison: ${labelA} ↔ ${labelB}`);
   clearGraphMessage();
 
-  if (filtered.length === 0) {
+  if (filtered.length === 0 && graph.nodes.length === 0) {
     renderGraph(state, graph.nodes, graph.edges);
     renderGraphMessage("No constraints match current filters. Try broadening the selected values.");
     renderDetails(state);
@@ -745,6 +828,8 @@ async function renderMergedComparisonGraph() {
     const hasBinaryConstraint = filtered.some((r) => !r.isUnary);
     if (hasBinaryConstraint) {
       renderGraphMessage("Only unary or isolated constraints are visible. Select a node to inspect unary rules.");
+    } else if (filtered.length === 0) {
+      renderGraphMessage("Matching activities remain isolated because their other endpoints do not match every selected rule type.");
     }
   }
 }
@@ -762,14 +847,16 @@ function invokeApplyFiltersAndRender() {
     return;
   }
 
-  const filtered = applyFilters(state.records, state.filters);
+  const results = state.recordGroups.map(records => filterGraphRecords(records, state.filters, state.records));
+  const filtered = results.flatMap(result => result.records);
+  const activities = results.flatMap(result => result.activities);
   state.filteredRecords = filtered;
 
-  const graph = buildGraphElements(filtered);
+  const graph = buildGraphElements(filtered, activities);
   renderFilterMetrics(state, filtered.length, graph.nodes.length, graph.edges.length);
   renderActiveChips(state);
 
-  if (filtered.length === 0) {
+  if (filtered.length === 0 && graph.nodes.length === 0) {
     renderGraph(state, graph.nodes, graph.edges);
     renderGraphMessage("No constraints match current filters. Try broadening the selected values.");
     renderDetails(state);
@@ -787,6 +874,8 @@ function invokeApplyFiltersAndRender() {
     const hasBinaryConstraint = filtered.some((r) => !r.isUnary);
     if (hasBinaryConstraint) {
       renderGraphMessage("Only unary or isolated constraints are visible. Select a node to inspect unary rules.");
+    } else if (filtered.length === 0) {
+      renderGraphMessage("Matching activities remain isolated because their other endpoints do not match every selected rule type.");
     } else {
       clearGraphMessage();
     }

@@ -9,36 +9,44 @@ import {
 import { explainConstraintText } from './constraint_explanations.js';
 import { normalizeRuleTypeKey } from './ruleTypeHierarchy.js';
 
-export function buildGraphElements(records) {
-  const mergedComparisonMode = records.some((r) => isComparisonStatus(r?.comparisonStatus));
+export function buildGraphElements(records, activityNames = [], activityStatuses = new Map()) {
+  const mergedComparisonMode = activityStatuses.size > 0 ||
+    records.some((r) => isComparisonStatus(r?.comparisonStatus));
   const nodeMap = new Map();
   const edges = [];
   const unaryByNode = new Map();
   const nodeStatuses = new Map();
   const unaryLabelNodes = [];
 
+  const addActivity = (name) => {
+    if (!nodeMap.has(name)) {
+      nodeMap.set(name, {
+        data: {
+          id: nodeId(name),
+          label: name,
+          originalName: name,
+          isUnaryLabel: 'false',
+          hasUnary: 'false',
+          showUnaryPie: 'false',
+          nodeColor: '#4c5a6d',
+          comparisonStatus: 'normal',
+          u1Color: '#000000', u1Size: 0,
+          u2Color: '#000000', u2Size: 0,
+          u3Color: '#000000', u3Size: 0,
+          u4Color: '#000000', u4Size: 0
+        }
+      });
+    }
+  };
+  activityNames.forEach((name) => {
+    addActivity(name);
+    const status = activityStatuses.get(name);
+    if (isComparisonStatus(status)) addNodeStatus(nodeStatuses, name, status);
+  });
+
   for (const r of records) {
     const names = r.activityList.length ? r.activityList : [r.activities];
-    names.forEach((name) => {
-      if (!nodeMap.has(name)) {
-        nodeMap.set(name, {
-          data: {
-            id: nodeId(name),
-            label: name,
-            originalName: name,
-            isUnaryLabel: 'false',
-            hasUnary: 'false',
-            showUnaryPie: 'false',
-            nodeColor: '#4c5a6d',
-            comparisonStatus: 'normal',
-            u1Color: '#000000', u1Size: 0,
-            u2Color: '#000000', u2Size: 0,
-            u3Color: '#000000', u3Size: 0,
-            u4Color: '#000000', u4Size: 0
-          }
-        });
-      }
-    });
+    names.forEach(addActivity);
 
     const sourceName = r.activityA || names[0];
     const targetName = r.activityB || names[0];
@@ -326,6 +334,8 @@ export function renderGraph(state, nodes = [], edges = []) {
 
     state.cy.on('select', 'node, edge', (event) => {
       state.selectedElement = event.target;
+      state.selectedRecords = null;
+      state.selectedContext = "";
       state.renderDetails();
     });
 
@@ -342,6 +352,9 @@ export function renderGraph(state, nodes = [], edges = []) {
   } else {
     cacheVisibleNodePositions(state);
 
+    state.selectedElement = null;
+    state.selectedRecords = null;
+    state.selectedContext = "";
     state.cy.elements().remove();
     state.cy.add(elements);
 
@@ -398,7 +411,11 @@ export function layoutOptions(name) {
 
 export function renderDetails(state) {
   const selected = state.selectedElement;
-  if (!selected || selected.empty?.()) {
+  const records = state.selectedRecords ?? state.filteredRecords;
+  const contextHtml = state.selectedContext
+    ? `<div class="helper">Selected in ${escapeHtml(state.selectedContext)}</div>`
+    : '';
+  if (!selected || selected.empty?.() || selected.removed?.()) {
     state.dom.detailsPanel.innerHTML = `
       <div class="note">Select a node or edge to view plain-language explanation and technical metadata.</div>
       ${detailsLegendHtml(state)}
@@ -408,7 +425,7 @@ export function renderDetails(state) {
 
   if (selected.isNode()) {
     const name = selected.data('originalName') || selected.data('label');
-    const related = state.filteredRecords.filter((r) => r.activityList.includes(name));
+    const related = records.filter((r) => r.activityList.includes(name));
     const visibleRelated = related;
     const unary = visibleRelated.filter((r) => r.isUnary);
     const binary = visibleRelated.length - unary.length;
@@ -419,11 +436,13 @@ export function renderDetails(state) {
       .map((record) => {
         const ruleLabel = escapeHtml(prettifyRel(normalizeRelationKey(record.rule_type || 'unary')));
         const explanation = escapeHtml(explainConstraint(record));
+        const source = record.source && record.source !== 'unknown'
+          ? record.source : record.source_file;
         return `
           <li style="margin-bottom:10px;">
             <div style="font-weight:600; color:${edgeColorForRelation(normalizeRelationKey(record.rule_type || 'unary'))};">${ruleLabel}</div>
             <div style="margin-top:4px;">${explanation}</div>
-            <div class="helper" style="margin-top:4px;">Support: ${fmt(record.support)} • Confidence: ${fmt(record.confidence)} • Rule: ${escapeHtml(record.rule_id)}</div>
+            <div class="helper" style="margin-top:4px;">Support: ${formatMetric(record.support)} • Confidence: ${formatMetric(record.confidence)} • Source: ${escapeHtml(source || 'Not specified')} • Rule: ${escapeHtml(record.rule_id)}</div>
           </li>
         `;
       })
@@ -431,6 +450,8 @@ export function renderDetails(state) {
 
     state.dom.detailsPanel.innerHTML = `
       <h4>${escapeHtml(name)}</h4>
+      ${contextHtml}
+      ${state.filters?.ruleTypeOperator === 'and' ? '<div class="helper">This activity participates in every selected rule type within a selected source file. Relationships to non-matching activities are hidden.</div>' : ''}
       <p>${visibleRelated.length.toLocaleString()} related constraints in current filtered view.</p>
       <p class="helper">Unary: ${unary.length.toLocaleString()} • Binary: ${binary.toLocaleString()}</p>
       ${unaryRows ? `<h5 style="margin:10px 0 6px">Unary rules on this node</h5><ul style="margin:0;padding-left:18px">${unaryRows}</ul>` : '<div class="helper">No unary rules matched the current filters for this node.</div>'}
@@ -441,7 +462,7 @@ export function renderDetails(state) {
 
   if (selected.isEdge()) {
     const ruleId = selected.data('ruleId');
-    const record = state.filteredRecords.find((r) => r.rule_id === ruleId);
+    const record = records.find((r) => r.rule_id === ruleId);
     if (!record) {
       state.dom.detailsPanel.innerHTML = '<div class="empty">Selected edge metadata is not available.</div>';
       return;
@@ -474,14 +495,16 @@ export function renderDetails(state) {
 
     state.dom.detailsPanel.innerHTML = `
       <h4>Constraint ${escapeHtml(record.rule_id)}</h4>
+      ${contextHtml}
       ${comparisonHtml}
       <p><strong>Plain-language explanation:</strong><br>${escapeHtml(explanation)}</p>
       <dl class="kv">
         <dt>Activities</dt><dd>${escapeHtml(involved)}</dd>
         <dt>Rule type</dt><dd>${escapeHtml(record.rule_type)}</dd>
         <dt>Category</dt><dd>${escapeHtml(record.category)}</dd>
-        <dt>Support</dt><dd>${fmt(record.support)}</dd>
-        <dt>Confidence</dt><dd>${fmt(record.confidence)}</dd>
+        <dt>Cardinality</dt><dd>${fmt(record.cardinality)}</dd>
+        <dt>Support</dt><dd>${formatMetric(record.support)} of cases satisfy this rule</dd>
+        <dt>Confidence</dt><dd>${formatMetric(record.confidence)} of activations fulfilled</dd>
         <dt>Trace count</dt><dd>${fmt(record.trace_count, true)}</dd>
         <dt>Support count</dt><dd>${fmt(record.support_count, true)}</dd>
         <dt>Violation count</dt><dd>${fmt(record.violation_count, true)}</dd>
@@ -498,6 +521,11 @@ export function renderDetails(state) {
 
 export function explainConstraint(record) {
   return explainConstraintText(record);
+}
+
+function formatMetric(value) {
+  if (typeof value !== 'number' || value < 0 || value > 1) return fmt(value);
+  return `${fmt(value)} (${Math.round(value * 1000) / 10}%)`;
 }
 
 export function renderNoSourceState(state) {

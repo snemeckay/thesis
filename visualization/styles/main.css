@@ -211,6 +211,7 @@ button:hover {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
@@ -467,11 +468,21 @@ button:hover {
   border-bottom: 1px solid var(--border);
 }
 
+.compare-controls-hint {
+  flex: 1 0 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.compare-controls-hint[hidden] {
+  display: none;
+}
+
 .graph-wrap {
   padding: var(--space-3);
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 }
 
@@ -493,12 +504,11 @@ button:hover {
 }
 
 .compare-graph-shell {
-  margin-top: var(--space-3);
   display: grid;
-  grid-template-columns: 1fr;
-  grid-auto-rows: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: max-content;
+  align-content: start;
   gap: var(--space-2);
-  height: 100%;
   min-height: 0;
 }
 
@@ -510,6 +520,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
 }
 
 .compare-graph-title {
@@ -524,12 +535,15 @@ button:hover {
   margin-top: var(--space-1);
   font-size: 0.88rem;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .compare-graph-cy {
   margin-top: var(--space-2);
   width: 100%;
-  height: 320px;
+  height: clamp(380px, 55vh, 620px);
+  flex-shrink: 0;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface-2);
@@ -647,20 +661,32 @@ button:hover {
     grid-template-areas:
       "filters graph"
       "details details";
+    grid-template-rows: minmax(540px, 1fr) minmax(240px, auto);
+    overflow: auto;
   }
 
   .layout .panel:nth-child(1) { grid-area: filters; }
   .layout .panel:nth-child(2) { grid-area: graph; }
   .layout .panel:nth-child(3) { grid-area: details; }
+
+  .compare-graph-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
+  .layout,
+  .layout.filters-collapsed,
+  .layout.details-collapsed,
+  .layout.filters-collapsed.details-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "filters" "graph" "details";
+    grid-template-rows: minmax(320px, 440px) minmax(620px, auto) minmax(240px, 300px);
     overflow: auto;
   }
 
   #cy { min-height: 380px; }
+  .graph-wrap { min-height: 320px; }
   .metrics { grid-template-columns: 1fr; }
 }
 
