@@ -39,7 +39,7 @@
         <fieldset class="group-selection" aria-describedby="groupHelp">
           <legend>Participant/group columns (required)</legend>
           <div id="caseColumns"></div>
-          <p id="groupHelp" class="help">Normally select the participant ID (for example user_id). Add an existing session ID only to keep those sessions separate. Keep age and gender as attributes below for population filtering; selecting them alone here would combine different people's events into one timeline.</p>
+          <p id="groupHelp" class="help">Select the participant ID (for example user_id), then use the splitting option below to create days or sessions. If your data already has numbered sessions, select both the participant ID and session ID, and choose One sequence to keep each existing session as a separate case. Keep age and gender as attributes below for population filtering, not as participant identifiers.</p>
         </fieldset>
         <div class="grid">
           <label>Activity label (required) <select id="activity"></select></label>
@@ -55,7 +55,8 @@
         <details><summary>Help: participants, days and sessions</summary>
           <p>With user_id selected, user 101 and user 102 always have separate timelines. Calendar days splits each person's timeline at the chosen hour: user 101 on May 28 is one case, user 102 on May 28 is a different case. Inactivity sessions splits whenever the gap exceeds your threshold. Behavioural days estimates sleep from long inactivity breaks instead of using a fixed daily boundary.</p>
           <p>Behavioural-day rules: the original algorithm considers gaps of at least 4 hours, prioritising gaps ending between 04:00 and noon; otherwise it uses nighttime (20:00-04:00, including 04:00 within a gap) and late-sleep (03:00-10:00) fallbacks. It selects the longest candidate per date, not simply any gap after 21:00. Without a qualifying boundary, all events remain in one sequence. An event spanning the night (such as Screen off) is not itself an inactivity gap.</p>
-          <p>With user_id + session_id selected, each participant/session combination is already separate before any further day or gap splitting. Selecting age + gender alone would instead pool everybody sharing those values; that is usually not a valid individual event sequence.</p>
+          <p>If sessions are already numbered in your data, select user_id + session_id and choose One sequence. For example, participant 101's sessions 1 and 2 become two separate cases; participant 102's session 1 is another case. No additional splitting is needed. Without existing session numbers, select only user_id and let the day or inactivity method create the cases.</p>
+          <p>Selecting age + gender alone would pool everybody sharing those values into one timeline; that is usually not a valid individual event sequence. Retain those columns as attributes to filter the population instead.</p>
           <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>
         </details>
         <h3>Keep only the attributes your study needs</h3>

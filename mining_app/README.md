@@ -84,8 +84,10 @@ column is intrinsically a case identifier; a wakefulness ID may repeat between
 participants. This sample is a format illustration, not a recommended study
 definition.
 
-Normally group by participant ID. Add a session ID only if existing sessions
-should remain separate; each distinct combination then has its own timeline.
+Normally group by participant ID and use day/inactivity splitting to create cases.
+If the data already has numbered sessions, select participant ID + session ID
+and choose **One sequence** to keep each existing session as a separate case;
+no additional splitting is needed.
 Calendar and behavioural days split **within** those timelines, never across
 participants. Age and gender usually belong under retained attributes for
 cohort selection: grouping by them alone would pool different people's events
