@@ -221,3 +221,7 @@ __marimo__/
 
 # env files
 venv-pm4py/
+
+# Private local preparation datasets, models, profiles, and jobs
+.mining-local/
+.venv-python/
