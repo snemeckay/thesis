@@ -95,7 +95,7 @@ def preview(text, delimiter=None):
 def normalize(text, profile):
     headers, rows, delimiter = read_csv(text, profile.get("delimiter"))
     case_columns = profile.get("case_columns", [])
-    if not isinstance(case_columns, list) or not case_columns or len(set(case_columns)) != len(case_columns):
+    if not isinstance(case_columns, list) or not case_columns or any(not isinstance(c, str) for c in case_columns) or len(set(case_columns)) != len(case_columns):
         raise ValidationError("Explicitly choose one or more distinct case/group columns. A participant is not automatically a case.")
     activity = profile.get("activity")
     start = profile.get("timestamp")
@@ -106,7 +106,7 @@ def normalize(text, profile):
         raise ValidationError("Attributes must be a list of column/type/scope definitions.")
     attr_columns = [a.get("column") for a in attrs]
     selected = case_columns + [activity, start] + ([end] if end else []) + ([category] if category else []) + attr_columns
-    if any(c not in headers for c in selected):
+    if any(not isinstance(c, str) or c not in headers for c in selected):
         raise ValidationError("Every selected column must exist in this CSV.")
     if len(set(attr_columns)) != len(attr_columns):
         raise ValidationError("An attribute column may be retained only once.")
@@ -254,6 +254,8 @@ def select_cohort(dataset, filters):
         by_case.setdefault(event["case_id"], []).append(event)
     selected = set(dataset["cases"])
     for condition in filters:
+        if not isinstance(condition, dict) or not isinstance(condition.get("column"), str):
+            raise ValidationError("Each cohort filter needs a retained column name.")
         column = condition.get("column")
         attr = schema.get(column)
         if attr is None:
@@ -270,6 +272,13 @@ def select_cohort(dataset, filters):
                 raise ValidationError("Provide finite, ordered lower and upper numeric bounds.")
         if op == "in" and not isinstance(condition.get("value"), list):
             raise ValidationError("One-of requires a list of typed values.")
+        if op in {"eq", "in"}:
+            values = condition.get("value", []) if op == "in" else [condition.get("value")]
+            for value in values:
+                if (attr["type"] == "number" and (not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value))
+                        or attr["type"] == "boolean" and not isinstance(value, bool)
+                        or attr["type"] == "string" and not isinstance(value, str)):
+                    raise ValidationError(f"Cohort values for {column} must match its retained {attr['type']} type; use 'missing' for null values.")
         def matches(value):
             if op == "missing":
                 return value is None

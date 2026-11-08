@@ -69,9 +69,6 @@ def save_csv(rows: list, path: Path, fieldnames: list) -> None:
         fieldnames: Ordered list of column names for the CSV header.
     """
     path.parent.mkdir(parents=True, exist_ok=True)
-    if not rows:
-        return
-
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()

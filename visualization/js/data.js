@@ -13,6 +13,22 @@ export async function discoverAvailableCsvFiles(state) {
   const unique = new Set([...manifestPaths, ...DEFAULT_BUILTIN_CSV_PATHS]);
   const discovered = [];
 
+  const params = new URLSearchParams(globalThis.location?.search || "");
+  const modelId = params.get("mine_model");
+  if (modelId) {
+    if (!/^[a-f0-9]{64}$/.test(modelId)) throw new Error("Invalid local mining model identifier.");
+    const response = await fetch(`/api/jobs/${modelId}`);
+    if (!response.ok) throw new Error("Local mining model is unavailable. Start the local mining app.");
+    const job = await response.json();
+    if (job.status !== "complete") throw new Error("This mining run has not completed.");
+    for (const artifact of job.artifacts) {
+      const path = `/api/models/${modelId}/file/${artifact.csv}`;
+      const descriptor = createSourceDescriptor(path, "builtin", null);
+      descriptor.label = `Local model - ${artifact.level} - ${job.configuration.engine} - ${job.population.cases} cases`;
+      discovered.push(descriptor);
+    }
+  }
+
   for (const relativePath of unique) {
     const text = await loadCsvText(relativePath, true);
     if (text && text.includes("rule_id") && text.includes("rule_type")) {
@@ -169,7 +185,8 @@ export function parseConstraintsCsv(csvText, sourceName) {
 }
 
 export function normalizeConstraintRecord(rawRecord, sourceName) {
-  const record = {};
+  // Keep exported endpoint/category and model metadata without changing legacy fields.
+  const record = { ...rawRecord };
   for (const key of EXPECTED_COLUMNS) {
     const value = rawRecord[key];
     record[key] = typeof value === "string" ? value.trim() : (value ?? "");
@@ -193,6 +210,15 @@ export function normalizeConstraintRecord(rawRecord, sourceName) {
   record.activityB = activityInfo.activityB;
   record.isUnary = activityInfo.isUnary;
   record.directionUncertain = activityInfo.directionUncertain;
+  if (record.activity_categories) {
+    const categories = typeof record.activity_categories === "string"
+      ? JSON.parse(record.activity_categories) : record.activity_categories;
+    if (!Array.isArray(categories) || categories.length !== record.activityList.length ||
+        categories.some((values) => !Array.isArray(values) || values.some((v) => typeof v !== "string"))) {
+      throw new Error("Endpoint activity categories must be a JSON list of category lists, one per activity.");
+    }
+    record.activityCategoryLists = categories;
+  }
   record.source_file = sourceName;
   return record;
 }

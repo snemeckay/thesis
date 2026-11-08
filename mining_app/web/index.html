@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Research process mining</title>
+  <link rel="stylesheet" href="/app/style.css">
+  <script type="module" src="/app/app.js"></script>
+</head>
+<body>
+  <header><div><p class="eyebrow">LOCAL RESEARCH WORKSPACE</p><h1>From event logs to behavioral patterns</h1>
+    <p>Your data stays on this computer. Define a case, prepare the events, then explore rules for a population.</p></div>
+    <span class="badge">Private &middot; loopback only</span></header>
+  <nav aria-label="Workspace screens">
+    <button id="prepareTab" class="active" type="button">1. Prepare &amp; mine</button>
+    <button id="exploreTab" type="button">2. Explore results</button>
+    <a href="/visualization/constraint-visualization.html" target="_blank" rel="noopener">Open legacy CSV viewer</a>
+  </nav>
+  <main>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <section id="prepareScreen">
+      <section class="card">
+        <h2>Start with your CSV</h2>
+        <p>Use UTF-8 (up to 20 MiB). Delimiter and attribute types are suggestions only; the application never chooses your case definition.</p>
+        <div class="grid">
+          <label>Event log <input id="csvFile" type="file" accept=".csv,text/csv"></label>
+          <label>Delimiter <select id="delimiter"><option value="">Suggest from file</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="&#9;">Tab</option><option value="|">Pipe</option></select></label>
+          <button id="preview" type="button">Preview CSV</button>
+        </div>
+        <p id="previewSummary"></p><div id="previewTable" class="scroll"></div>
+      </section>
+      <section id="mappingCard" class="card" hidden>
+        <h2>Define what the events mean</h2>
+        <p><strong>A case is one complete sequence you want to study.</strong> A participant ID alone may span many sessions. Select multiple grouping columns when a session ID is only unique within a participant.</p>
+        <div class="grid">
+          <fieldset><legend>Case/group columns (required)</legend><div id="caseColumns"></div></fieldset>
+          <label>Activity label (required) <select id="activity"></select></label>
+          <label>Activity category (optional) <select id="category"></select></label>
+          <label>Event start time (required) <select id="timestamp"></select></label>
+          <label>Event end time (optional) <select id="endTimestamp"></select></label>
+          <label>Construct cases <select id="caseMode"><option value="group">One case per selected group</option><option value="calendar_day">One case per group and calendar day</option><option value="gap">Sessions separated by inactivity</option></select></label>
+          <label>Inactivity gap (minutes) <input id="gapMinutes" type="number" value="60" min="1"></label>
+          <label>Calendar day starts at hour <input id="dayHour" type="number" value="0" min="0" max="23"></label>
+        </div>
+        <p class="help">Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Calendar grouping uses that clock. This explicit day/gap preset does not invoke the legacy heuristic behavioral-day splitter.</p>
+        <h3>Keep only the attributes your study needs</h3>
+        <p>Unselected columns are removed. Case attributes must be constant in a case, including missingness. Changing measurements belong at event scope; their cohort filters explicitly match any or all events.</p>
+        <div class="scroll"><table><thead><tr><th>Keep</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
+        <div class="grid">
+          <label>Missing or invalid values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="keep_attributes">Keep missing attributes as missing; stop for invalid events</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
+          <label>Conflicting case attributes <select id="conflicts"><option value="error">Stop and explain (recommended)</option><option value="exclude_case">Exclude conflicting complete cases</option></select></label>
+          <label>Merge identical consecutive events within (seconds; 0 = off) <input id="mergeGap" type="number" value="0" min="0"></label>
+          <label>Exclude exact activity labels (one per line) <textarea id="excluded" rows="3" placeholder="No event exclusions by default"></textarea></label>
+        </div>
+        <p class="help">Merging only combines consecutive non-overlapping events with identical category and every retained attribute. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
+        <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button>
+          <label>Saved profile <select id="profiles"><option value="">Choose a mapping profile</option></select></label>
+          <button id="loadProfile" type="button">Load profile</button>
+          <label>Profile name <input id="profileName" placeholder="Study mapping"></label><button id="saveProfile" type="button">Save profile locally</button>
+          <button id="exportProfile" type="button">Export profile JSON</button><label>Import profile JSON <input id="importProfile" type="file" accept=".json,application/json"></label></div>
+      </section>
+    </section>
+    <section id="studyCard" class="card">
+      <h2>Choose a dataset and population</h2>
+      <label>Prepared dataset <select id="dataset"><option value="">Prepare a CSV to begin</option></select></label>
+      <div id="quality" class="counts"></div>
+      <p id="datasetExplanation"></p>
+      <div class="actions"><a id="bundle" hidden>Download events, profiles, metadata &amp; models (ZIP)</a></div>
+      <h3>Population filters</h3>
+      <p>Filters select <strong>whole cases</strong>, not individual rule rows. Different filters combine with AND. An event-scope match keeps all events of the matching case. Empty filters mean the full prepared population.</p>
+      <div id="cohort"></div><button id="addFilter" type="button" disabled>Add population filter</button>
+      <div class="grid">
+        <label>Mine relationships between <select id="level"><option value="activity">Activities</option><option value="category">Activity categories</option><option value="both">Both (two separately mined models)</option></select></label>
+      </div>
+      <details><summary>Advanced engine settings</summary><div class="grid">
+        <label>Mining engine <select id="engine"><option value="discover">DisCoveR (pm4py)</option><option value="declare4py">Declare4Py</option></select></label>
+        <label>Engine minimum activation support / discovery support <input id="support" type="number" min="0" max="1" step=".05" value="0"></label>
+        <label>DisCoveR minimum activated-trace confidence <input id="confidence" type="number" min="0" max="1" step=".05" value="0"></label>
+        <label>Declare4Py itemset support (must be above zero) <input id="itemsets" type="number" min=".01" max="1" step=".05" value=".1"></label>
+        <label>Declare4Py maximum cardinality <input id="cardinality" type="number" min="1" max="10" value="2"></label>
+      </div><p class="help">Exported support = cases without a violation / cases. DisCoveR confidence is fulfilled activated traces / activated traces; Declare4Py confidence is fulfilled event activations / event activations. Engine discovery thresholds are not interchangeable with exported support. Zero DisCoveR thresholds discover all rules and may be expensive for large activity vocabularies. Declare4Py requires positive itemset support; its default here is 0.1.</p></details>
+      <div class="actions"><button id="mine" type="button" class="primary" disabled>Apply cohort and mine</button><span id="jobStatus" role="status" aria-live="polite"></span></div>
+    </section>
+    <section id="exploreScreen" hidden>
+      <section class="card">
+        <h2>Explore a reproducible model</h2>
+        <p>Activity and category models are mined separately from the same complete cases. “Category” in legacy constraint rows still means unary/binary arity, not an activity category. Standalone rule CSVs cannot support population re-mining without retained events.</p>
+        <div class="grid"><label>Saved mining run <select id="model"><option value="">No results yet</option></select></label>
+          <label>Label model <select id="modelLevel"></select></label></div>
+        <p id="resultState" role="status"></p><div id="modelDetails"></div><div id="downloads" class="actions"></div>
+      </section>
+      <iframe id="viewer" title="Constraint graph and rule filters" hidden></iframe>
+    </section>
+  </main>
+  <footer>Local-only research tool. Results describe the selected cases, not causal effects. Close the terminal to stop the server.</footer>
+</body>
+</html>
