@@ -111,7 +111,9 @@ into an artificial sequence, not simply select a population.
   sessions. Merging is disabled by default and only merges consecutive
   non-overlapping events with identical activity, category, and **all retained
   attributes**. Intervening activities and differing metadata are never lost.
-- **Behavioural days (original algorithm)** directly reuses
+- **Behavioural days (estimated sleep)** treats long inactivity breaks as possible
+  sleep periods and separates days around those breaks rather than midnight.
+  It directly reuses the original algorithm,
   `preprocessing.day_split.assign_day_counter` separately for each selected
   participant/group. It considers gaps of at least 4 hours, prioritises gaps
   ending at 04:00-12:00, then uses nighttime (20:00-04:00, including 04:00

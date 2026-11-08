@@ -67,7 +67,7 @@ const caseMethods = {
   group: 'one sequence with all events together',
   calendar_day: 'calendar days',
   gap: 'inactivity sessions',
-  behavioural_day: 'behavioural days (original algorithm)'
+  behavioural_day: 'behavioural days (estimated sleep)'
 };
 
 function updateCaseSettings() {
@@ -83,7 +83,7 @@ function updateCaseSettings() {
     group: 'All events for each participant/group stay in one sequence, even across multiple days.',
     calendar_day: 'A separate sequence for each day within each participant/group, split at the hour below.',
     gap: 'A new sequence starts when inactivity exceeds the threshold below, separately within each participant/group.',
-    behavioural_day: 'Each participant/group is split using the original behavioural-day boundaries described below.'
+    behavioural_day: 'Treats long inactivity breaks as possible sleep periods and uses them to separate each participant/group into days, rather than splitting at midnight.'
   };
   $('caseMethodHelp').textContent = explanation[mode];
 }
