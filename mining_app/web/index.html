@@ -59,18 +59,13 @@
           <p>To study a population separately, prepare a CSV containing that population and keep participant IDs for its sequences. Using age alone as the grouping column would combine different people's events into one timeline, not create a separate model for that age group.</p>
           <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>
         </details>
-        <details id="additionalColumns"><summary>Additional columns to preserve (optional)</summary>
-          <p>Keep extra information, such as demographics, in the prepared event export for separate analysis. These columns do not filter the rules in this app.</p>
-          <div class="scroll"><table><thead><tr><th>Keep</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
-          <p class="help">Case values must stay the same throughout a sequence, including whether they are missing. Event values may change between events.</p>
-        </details>
+        <p class="help">Unmapped columns are left out of prepared exports.</p>
         <div class="grid">
-          <label>Missing or invalid values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="keep_attributes">Keep missing attributes as missing; stop for invalid events</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
-          <label>Conflicting case attributes <select id="conflicts"><option value="error">Stop and explain (recommended)</option><option value="exclude_case">Exclude conflicting complete cases</option></select></label>
+          <label>Missing or invalid event values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
           <label>Merge identical consecutive events within (seconds; 0 = off) <input id="mergeGap" type="number" value="0" min="0"></label>
           <label>Exclude exact activity labels (one per line) <textarea id="excluded" rows="3" placeholder="No event exclusions by default"></textarea></label>
         </div>
-        <p class="help">Merging only combines consecutive non-overlapping events with identical category and every retained attribute. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
+        <p class="help">Merging only combines consecutive non-overlapping events with identical activity and category. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
         <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button>
           <label>Saved profile <select id="profiles"><option value="">Choose a mapping profile</option></select></label>
           <button id="loadProfile" type="button">Load profile</button>

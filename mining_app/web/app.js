@@ -13,6 +13,7 @@ let preparationDirty = false;
 let activeJobId = null;
 let restoring = true;
 const workspaceKey = 'research-mining-workspace';
+const profileMigrationNotice = 'Additional columns are no longer retained in new preparations. Existing prepared datasets and models are unchanged. Check the mapping and prepare again.';
 
 function notice(message, error = false) {
   $('notice').textContent = message;
@@ -85,7 +86,6 @@ function renderMapping(result) {
   $('delimiter').value = result.delimiter;
   $('mappingCard').hidden = false;
   $('caseColumns').replaceChildren();
-  $('attributes').replaceChildren();
   for (const column of columns) {
     const label = document.createElement('label');
     const input = document.createElement('input');
@@ -93,21 +93,6 @@ function renderMapping(result) {
     const name = document.createElement('span'); name.textContent = column.name;
     label.append(input, name);
     $('caseColumns').append(label);
-    const tr = document.createElement('tr');
-    const keep = document.createElement('input'); keep.type = 'checkbox'; keep.dataset.column = column.name;
-    keep.setAttribute('aria-label', `Keep ${column.name} in prepared events`);
-    const type = document.createElement('select');
-    options(type, ['string', 'number', 'boolean'].map((v) => [v, v]));
-    type.value = column.suggested_type; type.setAttribute('aria-label', `${column.name} type`);
-    const scope = document.createElement('select');
-    options(scope, [['case', 'Case (constant)'], ['event', 'Event (may change)']]);
-    scope.setAttribute('aria-label', `${column.name} scope`);
-    for (const content of [keep, column.name, type, scope, `${column.missing} / ${column.distinct}`]) {
-      const cell = document.createElement('td');
-      if (typeof content === 'string') cell.textContent = content; else cell.append(content);
-      tr.append(cell);
-    }
-    $('attributes').append(tr);
   }
   for (const id of ['activity', 'category', 'timestamp', 'endTimestamp']) {
     options($(id), columns.map((c) => [c.name, c.name]), id === 'category' || id === 'endTimestamp' ? 'Not mapped' : 'Choose explicitly');
@@ -127,17 +112,13 @@ function renderMapping(result) {
 }
 
 function profile() {
-  const attrs = [...$('attributes').rows].filter((tr) => tr.querySelector('input').checked).map((tr) => ({
-    column: tr.querySelector('input').dataset.column,
-    type: tr.querySelectorAll('select')[0].value, scope: tr.querySelectorAll('select')[1].value
-  }));
   return {
     delimiter: $('delimiter').value, case_columns: [...$('caseColumns').querySelectorAll('input:checked')].map((i) => i.value),
     activity: $('activity').value, activity_category: $('category').value,
     timestamp: $('timestamp').value, end_timestamp: $('endTimestamp').value,
     case_mode: $('caseMode').value, gap_minutes: Number($('gapMinutes').value),
     day_start_hour: Number($('dayHour').value), merge_gap_seconds: Number($('mergeGap').value),
-    missing: $('missing').value, case_conflicts: $('conflicts').value, attributes: attrs,
+    missing: $('missing').value, case_conflicts: 'error', attributes: [],
     exclude_activities: $('excluded').value.split(/\r?\n/).map((s) => s.trim()).filter(Boolean)
   };
 }
@@ -145,26 +126,25 @@ function profile() {
 function applyProfile(p) {
   if (!uploaded) throw new Error('Preview a CSV before applying a profile.');
   if (!p || typeof p !== 'object' || Array.isArray(p)) throw new Error('Profile JSON must contain a mapping object.');
+  if (p.attributes !== undefined && !Array.isArray(p.attributes)) throw new Error('Profile attributes must be a list.');
+  const migrated = !!p.attributes?.length || p.missing === 'keep_attributes';
   const known = new Set(columns.map((c) => c.name));
   const required = [...(p.case_columns || []), p.activity, p.timestamp,
-    ...(p.attributes || []).map((a) => a.column), p.activity_category, p.end_timestamp].filter(Boolean);
+    p.activity_category, p.end_timestamp].filter(Boolean);
   if (required.some((c) => !known.has(c))) throw new Error('This profile refers to columns not present in the previewed CSV.');
   if (p.delimiter !== $('delimiter').value) throw new Error('Profile delimiter differs from preview. Select its delimiter and preview again before loading it.');
   for (const input of $('caseColumns').querySelectorAll('input')) input.checked = p.case_columns?.includes(input.value) || false;
   const map = { activity: 'activity', category: 'activity_category', timestamp: 'timestamp', endTimestamp: 'end_timestamp',
     caseMode: 'case_mode', gapMinutes: 'gap_minutes', dayHour: 'day_start_hour', mergeGap: 'merge_gap_seconds',
-    missing: 'missing', conflicts: 'case_conflicts' };
+    missing: 'missing' };
   for (const [id, key] of Object.entries(map)) if (p[key] !== undefined) $(id).value = p[key];
+  if (p.missing === 'keep_attributes') $('missing').value = 'error';
   $('excluded').value = (p.exclude_activities || []).join('\n');
-  for (const tr of $('attributes').rows) {
-    const input = tr.querySelector('input');
-    const attr = p.attributes?.find((a) => a.column === input.dataset.column);
-    input.checked = !!attr;
-    if (attr) { tr.querySelectorAll('select')[0].value = attr.type; tr.querySelectorAll('select')[1].value = attr.scope; }
-  }
   preparationDirty = true;
   updateCaseSettings();
   updateStale();
+  saveWorkspaceSafely();
+  return migrated;
 }
 
 function downloadJson(value, filename) {
@@ -202,7 +182,7 @@ async function datasetChanged() {
       item.append(count, document.createTextNode(label)); $('quality').append(item);
     }
     $('bundle').href = `/api/datasets/${dataset.id}/bundle`;
-    $('datasetExplanation').textContent = `Participant/group: ${dataset.metadata.profile.case_columns.join(' + ')}. Sequences: ${caseMethods[dataset.metadata.profile.case_mode || 'group']}. Time: ${dataset.metadata.time_convention}. Retained attributes: ${dataset.schema.map((a) => `${a.column} (${a.type}, ${a.scope})`).join(', ') || 'none'}.`;
+    $('datasetExplanation').textContent = `Participant/group: ${dataset.metadata.profile.case_columns.join(' + ')}. Sequences: ${caseMethods[dataset.metadata.profile.case_mode || 'group']}. Time: ${dataset.metadata.time_convention}.`;
     for (const option of $('level').options) option.disabled = option.value !== 'activity' && !dataset.metadata.category_available;
     if (!dataset.metadata.category_available) $('level').value = 'activity';
   } else {
@@ -323,12 +303,14 @@ bind('saveProfile', 'click', async () => {
 bind('loadProfile', 'click', () => {
   const saved = profiles.find((p) => p.id === $('profiles').value);
   if (!saved) throw new Error('Choose a saved profile.');
-  applyProfile(saved.profile); notice('Profile loaded. Check the mapping and prepare again.');
+  const migrated = applyProfile(saved.profile);
+  notice(migrated ? profileMigrationNotice : 'Profile loaded. Check the mapping and prepare again.');
 });
 bind('exportProfile', 'click', () => downloadJson(profile(), 'preparation-profile.json'));
 bind('importProfile', 'change', async (event) => {
   const file = event.target.files[0]; if (!file) return;
-  applyProfile(JSON.parse(await file.text())); notice('Imported mapping applied. Validate by preparing the CSV.');
+  const migrated = applyProfile(JSON.parse(await file.text()));
+  notice(migrated ? profileMigrationNotice : 'Imported mapping applied. Validate by preparing the CSV.');
 });
 bind('dataset', 'change', datasetChanged);
 bind('mine', 'click', async () => {
@@ -375,10 +357,11 @@ async function initialize() {
   const datasetId = params.get('dataset') || saved?.dataset_id;
   const matchingSaved = saved && saved.dataset_id === datasetId ? saved : null;
   await Promise.all([refreshDatasets(datasetId), refreshProfiles()]);
+  let migratedProfile = false;
   if (matchingSaved?.uploaded) {
     uploaded = matchingSaved.uploaded; renderMapping(uploaded);
-    if (matchingSaved.profile) applyProfile(matchingSaved.profile);
-    preparationDirty = matchingSaved.preparation_dirty;
+    if (matchingSaved.profile) migratedProfile = applyProfile(matchingSaved.profile);
+    preparationDirty = matchingSaved.preparation_dirty || migratedProfile;
     $('uploadHint').textContent = 'Your previous preview and mapping are restored. Choose a new CSV only to replace that upload.';
   }
   const modelId = params.get('model') || matchingSaved?.model_id;
@@ -392,8 +375,12 @@ async function initialize() {
     renderModel();
   }
   restoring = false; updateStale(); saveWorkspaceSafely();
-  if (matchingSaved?.cohort?.length) {
-    notice('Previous population filters are no longer applied here. New mining runs use all cases in the selected prepared dataset; saved runs keep their original results.');
+  const migrationNotices = [
+    ...(migratedProfile ? [profileMigrationNotice] : []),
+    ...(matchingSaved?.cohort?.length ? ['Previous population filters are no longer applied here. New mining runs use all cases in the selected prepared dataset; saved runs keep their original results.'] : [])
+  ];
+  if (migrationNotices.length) {
+    notice(migrationNotices.join(' '));
   }
   if (matchingSaved?.active_job_id) {
     const running = await api(`/api/jobs/${matchingSaved.active_job_id}`);

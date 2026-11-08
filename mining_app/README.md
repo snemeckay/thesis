@@ -61,16 +61,19 @@ the checks below.
    gap threshold for inactivity sessions (default 60 minutes, measured from
    the latest preceding event end). Behavioural days require mapped end times.
    The page includes contextual explanations, hover tooltips and expandable help.
-4. Optionally expand **Additional columns to preserve** to retain attributes in
-   the prepared event export for separate analysis. These do not filter rules
-   in this app. Assign their types and scopes. String IDs
-   retain leading zeros. Numbers must be finite; booleans accept true/false or
-   1/0. Case attributes must be constant in a case; event attributes may change.
-5. Explicitly choose missing/conflict handling and optional event exclusions or
+4. New browser preparations retain only the mapped event roles and grouping
+   information, not arbitrary extra attributes. Grouping IDs retain leading zeros.
+   Original activity and optional activity-category labels remain available.
+5. Explicitly choose missing-event handling and optional event exclusions or
    merging. Prepare, then inspect the population and data-quality counts.
 6. Save/reuse the mapping locally or export/import a preparation-profile JSON.
    Imported profiles must match previewed columns and delimiter, and are
    validated again during preparation.
+   Older profiles' additional attributes are not retained by new browser
+   preparations; importing/restoring them displays a notice and marks the
+   preparation as changed. Their attribute-only missing-value option becomes
+   the default stop-on-invalid-events policy. Existing datasets/models are not
+   rewritten. The original raw upload also remains on disk.
 
 For the raw mobile sample:
 
@@ -110,9 +113,11 @@ into an artificial sequence, not create a model for that population.
   exclude option removes the **whole source group** containing such a record,
   before day/session splitting, so invalid timestamps cannot leave a truncated
   case. Missing case identifiers always stop preparation.
-- Missing attributes can be retained as null; no age/gender/category is invented.
-  A case mixing null and a value is a conflict, not “first row wins.”
-  Conflicting case attributes stop preparation or exclude that complete case.
+- The browser no longer has additional-attribute type/scope/conflict controls.
+  The underlying API retains typed case/event attributes for compatibility with
+  older clients and datasets: missing attributes can be null, and case-value
+  conflicts must stop preparation or exclude that complete case, never use
+  “first row wins.” No age/gender/category is invented.
 - Exact activity exclusions intentionally remove events before constructing
   sessions. Merging is disabled by default and only merges consecutive
   non-overlapping events with identical activity, category, and **all retained
@@ -128,7 +133,7 @@ into an artificial sequence, not create a model for that population.
   case. This estimates behavioural boundaries from gaps; it does not measure
   sleep, and a long event such as Screen off is not itself an inactivity gap.
   The app applies this algorithm after exclusions and before optional safe
-  merging; it preserves attributes and creates unique group/segment IDs instead
+  merging; it creates unique group/segment IDs instead
   of using the legacy date-based case-ID builder. Algorithm settings/stage are
   saved in dataset metadata and exports. Both day methods use the normalized clock.
 - Calendar/inactivity presets remain separate from the behavioural algorithm.
@@ -222,7 +227,8 @@ Private state lives under ignored `.mining-local`:
 - `models`: job states, engine logs, input snapshots, separately mined model
   CSV/JSON, and model metadata.
 
-The ZIP export includes normalized events, full case/attribute data, preparation
+The ZIP export includes normalized events, case data (and attributes for older
+datasets/API clients), preparation
 profile/schema/quality metadata, and completed model CSV/JSON plus model
 metadata. Raw uploads are not exported. Case IDs encode the selected grouping
 values, so exports may still be sensitive even if attributes were removed.
