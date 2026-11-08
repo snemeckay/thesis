@@ -56,14 +56,13 @@
           <p>With user_id selected, user 101 and user 102 always have separate timelines. Calendar days splits each person's timeline at the chosen hour: user 101 on May 28 is one case, user 102 on May 28 is a different case. Inactivity sessions splits whenever the gap exceeds your threshold. Behavioural days estimates sleep from long inactivity breaks instead of using a fixed daily boundary.</p>
           <p>Behavioural-day rules: the original algorithm considers gaps of at least 4 hours, prioritising gaps ending between 04:00 and noon; otherwise it uses nighttime (20:00-04:00, including 04:00 within a gap) and late-sleep (03:00-10:00) fallbacks. It selects the longest candidate per date, not simply any gap after 21:00. Without a qualifying boundary, all events remain in one sequence. An event spanning the night (such as Screen off) is not itself an inactivity gap.</p>
           <p>If sessions are already numbered in your data, select user_id + session_id and choose One sequence. For example, participant 101's sessions 1 and 2 become two separate cases; participant 102's session 1 is another case. No additional splitting is needed. Without existing session numbers, select only user_id and let the day or inactivity method create the cases.</p>
-          <p>Selecting age + gender alone would pool everybody sharing those values into one timeline; that is usually not a valid individual event sequence. Retain those columns as attributes to filter the population instead.</p>
+          <p>To study a population separately, prepare a CSV containing that population and keep participant IDs for its sequences. Using age alone as the grouping column would combine different people's events into one timeline, not create a separate model for that age group.</p>
           <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>
         </details>
-        <h3>Choose columns for population filters</h3>
-        <p>Select the columns you want to filter by later, such as gender or age. Population filters let you mine and compare rules for selected groups, for example a particular age range. Applying a filter selects complete cases and re-mines their rules. Unselected attributes will not be available for filtering.</p>
-        <div class="scroll"><table><thead><tr><th>Use for filters</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
-        <details><summary>What does attribute scope mean?</summary>
-          <p>Choose Case for a value that describes the whole sequence, such as a participant's gender or age. It must stay the same throughout that case, including whether it is missing. Choose Event for a value that can change between events. Its population filter can match any event or all events, but still keeps the complete case for mining.</p>
+        <details id="additionalColumns"><summary>Additional columns to preserve (optional)</summary>
+          <p>Keep extra information, such as demographics, in the prepared event export for separate analysis. These columns do not filter the rules in this app.</p>
+          <div class="scroll"><table><thead><tr><th>Keep</th><th>Column</th><th>Type (suggested)</th><th>Scope</th><th>Missing / distinct</th></tr></thead><tbody id="attributes"></tbody></table></div>
+          <p class="help">Case values must stay the same throughout a sequence, including whether they are missing. Event values may change between events.</p>
         </details>
         <div class="grid">
           <label>Missing or invalid values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="keep_attributes">Keep missing attributes as missing; stop for invalid events</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
@@ -80,14 +79,12 @@
       </section>
     </section>
     <section id="studyCard" class="card">
-      <h2>Choose a dataset and population</h2>
+      <h2>Mine a prepared dataset</h2>
       <label>Prepared dataset <select id="dataset"><option value="">Prepare a CSV to begin</option></select></label>
       <div id="quality" class="counts"></div>
       <p id="datasetExplanation"></p>
       <div class="actions"><a id="bundle" hidden>Download events, profiles, metadata &amp; models (ZIP)</a></div>
-      <h3>Population filters</h3>
-      <p>Filters select <strong>whole cases</strong>, not individual rule rows. Different filters combine with AND. An event-scope match keeps all events of the matching case. Empty filters mean the full prepared population.</p>
-      <div id="cohort"></div><button id="addFilter" type="button" disabled>Add population filter</button>
+      <p class="help">Mining uses all cases in the selected dataset. To study different populations, prepare and mine separate input CSVs; saved models can be compared in Visualize.</p>
       <div class="grid">
         <label>Mine relationships between <select id="level"><option value="activity">Activities</option><option value="category">Activity categories</option><option value="both">Both (two separately mined models)</option></select></label>
         <label>Mined CSV file name (required) <input id="outputName" type="text" required maxlength="84" placeholder="e.g. my-study.csv" aria-describedby="filenameHelp"></label>
@@ -100,12 +97,13 @@
         <label>Declare4Py itemset support (must be above zero) <input id="itemsets" type="number" min=".01" max="1" step=".05" value=".1"></label>
         <label>Declare4Py maximum cardinality <input id="cardinality" type="number" min="1" max="10" value="2"></label>
       </div><p class="help">Exported support = cases without a violation / cases. DisCoveR confidence is fulfilled activated traces / activated traces; Declare4Py confidence is fulfilled event activations / event activations. Engine discovery thresholds are not interchangeable with exported support. Zero DisCoveR thresholds discover all rules and may be expensive for large activity vocabularies. Declare4Py requires positive itemset support; its default here is 0.1.</p></details>
-      <div class="actions"><button id="mine" type="button" class="primary" disabled>Apply cohort and mine</button><span id="jobStatus" role="status" aria-live="polite"></span></div>
+      <div class="actions"><button id="mine" type="button" class="primary" disabled>Mine dataset</button><span id="jobStatus" role="status" aria-live="polite"></span></div>
     </section>
     <section id="resultsCard">
       <section class="card">
         <h2>Mined files</h2>
         <p>Download here or use the Visualize switcher above. The selected CSV loads automatically in the full-page graph; no manual re-upload is needed.</p>
+        <p><a href="/visualization/constraint-visualization.html?workspace=1">Compare downloaded models</a> from separately mined datasets.</p>
         <div class="grid"><label>Saved mining run <select id="model"><option value="">No results yet</option></select></label>
           <label>Label model <select id="modelLevel"></select></label></div>
         <p id="resultState" role="status"></p><div id="modelDetails"></div><div id="downloads" class="actions"></div>

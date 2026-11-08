@@ -4,8 +4,9 @@ The application connects **Prepare & mine** and **Visualize** using a compact
 top switcher. These are two full-page screens, not a graph embedded below the
 preparation controls. Both use the existing visualization's colors, components,
 and theme. It runs
-only on this computer and retains normalized events so a population filter can
-run a new mining job on **complete cases**, rather than filter aggregate rules.
+only on this computer and mines all complete cases in the selected prepared
+dataset. Different study populations use separately prepared input CSVs and
+saved models; there are no demographic filter controls in the browser workflow.
 The existing command-line preprocessing/mining and standalone CSV viewer remain
 available.
 
@@ -60,10 +61,9 @@ the checks below.
    gap threshold for inactivity sessions (default 60 minutes, measured from
    the latest preceding event end). Behavioural days require mapped end times.
    The page includes contextual explanations, hover tooltips and expandable help.
-4. Under **Choose columns for population filters**, select the attributes that
-   should be available for later filtering and assign their types and scopes.
-   Applying population filters selects complete cases and re-mines their rules,
-   rather than filtering previously aggregated rule rows. String IDs
+4. Optionally expand **Additional columns to preserve** to retain attributes in
+   the prepared event export for separate analysis. These do not filter rules
+   in this app. Assign their types and scopes. String IDs
    retain leading zeros. Numbers must be finite; booleans accept true/false or
    1/0. Case attributes must be constant in a case; event attributes may change.
 5. Explicitly choose missing/conflict handling and optional event exclusions or
@@ -92,9 +92,10 @@ If the data already has numbered sessions, select participant ID + session ID
 and choose **One sequence** to keep each existing session as a separate case;
 no additional splitting is needed.
 Calendar and behavioural days split **within** those timelines, never across
-participants. Age and gender usually belong under retained attributes for
-cohort selection: grouping by them alone would pool different people's events
-into an artificial sequence, not simply select a population.
+participants. To study an age/gender population separately, create a CSV
+containing that population, keeping its participants' complete event sequences.
+Using age alone as the grouping column would pool different people's events
+into an artificial sequence, not create a model for that population.
 
 ### Preparation semantics
 
@@ -134,26 +135,29 @@ into an artificial sequence, not simply select a population.
   The legacy preprocessing CLI is unchanged; its app-plus-URL activity-label
   builder is not automatically applied by this application.
 
-## Mine and explore populations
+## Mine separate datasets and explore results
 
 Choose activities, activity categories, or both. “Both” runs the chosen engine
-twice on the **same normalized complete-case cohort**, with separate labels and
+twice on the **same normalized complete cases**, with separate labels and
 outputs. Grouping or relabeling existing activity edges is not category mining.
 
-Population controls derive from retained attribute names, types, and scopes.
-Numeric bounds are inclusive. Multiple filters combine with AND.
-Case attributes match the case value; event attributes explicitly match **any
-event** or **all events**. All events of a matching case enter mining, even those
-that did not individually match. Missingness has its own filter. Up to 500
-distinct values are displayed per attribute; large numerical vocabularies can
-use ranges. No-match cohorts produce an explanation, not an empty substitute
-model.
+Each browser run uses **all cases in the selected prepared dataset**. There is
+no population-filter/re-mining panel. For different populations, prepare separate
+input CSVs, mine each once with a distinct filename, then compare their downloaded
+models in the standalone viewer. Keep participant identities separate within
+each population; group membership is not an individual sequence identifier.
 
-Click **Apply cohort and mine** to submit a real background job. Editing controls
+Click **Mine dataset** to submit a real background job. Editing controls
 does not mutate saved results. The result screen says whether a saved model
-matches the current dataset, population, settings, and pending mapping edits.
+matches the current dataset, settings, and pending mapping edits.
 The graph's own rule/support/activity filters only narrow the displayed mined
 model; they do not define a new population.
+
+Older population-restricted runs remain downloadable/viewable and are labelled
+as such, never as current full-dataset results. Restoring a tab with old population
+filter drafts explicitly reports that they no longer apply. The underlying API
+retains cohort support for compatibility; the browser always submits an empty
+cohort (all cases), and does not launch mining when ordinary viewer filters change.
 
 Enter a **Mined CSV file name** before mining. Use letters, digits, spaces,
 hyphens, or underscores, optionally followed by `.csv`; do not enter a path or
@@ -171,8 +175,8 @@ theme control above it. Its existing toolbar can also download the currently
 filtered constraints. The original-file link works even when rule filters
 produce no displayed rows.
 
-Switching back restores the prepared dataset, mapping/preview, population
-controls, settings, selected file, and any in-progress job for that browser tab.
+Switching back restores the prepared dataset, mapping/preview,
+settings, selected file, and any in-progress job for that browser tab.
 This draft context is held in local `sessionStorage`; original uploaded CSVs and
 completed runs remain on the local backend. Both screens default to the original
 dark visualization theme; an explicit theme choice survives screen switching.

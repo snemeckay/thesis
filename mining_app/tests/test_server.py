@@ -35,6 +35,16 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200, result.text)
         return result.json()
 
+    def test_browser_workflow_mines_datasets_without_population_controls(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Mine dataset</button>", response.text)
+        self.assertIn("Additional columns to preserve (optional)", response.text)
+        self.assertIn("Compare downloaded models", response.text)
+        self.assertNotIn('id="cohort"', response.text)
+        self.assertNotIn('id="addFilter"', response.text)
+        self.assertNotIn("Choose columns for population filters", response.text)
+
     def test_behavioural_preparation_persists_algorithm_metadata(self):
         upload = self.client.post("/api/preview", files={"file": ("synthetic.csv", CSV.encode(), "text/csv")}).json()
         p = profile(case_columns=["user"], case_mode="behavioural_day")

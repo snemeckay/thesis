@@ -6,7 +6,7 @@ Activity log analysis and preprocessing pipeline for behavioral process mining.
 
 The [local preparation and mining app](mining_app/README.md) adds guided CSV
 mapping, retained demographics, configurable cases, separate activity/category
-mining, complete-case cohort re-mining, reusable profiles, and connected graph
+mining of separately prepared populations, reusable profiles, and connected graph
 exploration. Launch with `python -m mining_app.server` after installing
 `requirements.txt` in a local Python 3.11 environment; open
 <http://127.0.0.1:8765>. Data and jobs remain in ignored `.mining-local`.

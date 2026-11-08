@@ -40,19 +40,11 @@ function options(select, values, placeholder) {
   for (const [value, label] of values) select.add(new Option(label, value));
 }
 
-function cohortDraft() {
-  return [...$('cohort').children].map((row) => ({
-    column: row.querySelector('.column').value, op: row.querySelector('.operator').value,
-    raw_values: [...row.querySelectorAll('.value input, .value select')].map((i) => i.value),
-    quantifier: row.querySelector('.quantifier').value
-  }));
-}
-
 function saveWorkspace() {
   if (restoring) return;
   sessionStorage.setItem(workspaceKey, JSON.stringify({
     dataset_id: currentDataset()?.id, model_id: selectedJob?.id, model_level: $('modelLevel').value,
-    configuration: configuration(), cohort: cohortDraft(), output_name: $('outputName').value,
+    configuration: configuration(), output_name: $('outputName').value,
     uploaded, profile: uploaded ? profile() : null, preparation_dirty: preparationDirty, active_job_id: activeJobId
   }));
 }
@@ -103,7 +95,7 @@ function renderMapping(result) {
     $('caseColumns').append(label);
     const tr = document.createElement('tr');
     const keep = document.createElement('input'); keep.type = 'checkbox'; keep.dataset.column = column.name;
-    keep.setAttribute('aria-label', `Use ${column.name} for population filters`);
+    keep.setAttribute('aria-label', `Keep ${column.name} in prepared events`);
     const type = document.createElement('select');
     options(type, ['string', 'number', 'boolean'].map((v) => [v, v]));
     type.value = column.suggested_type; type.setAttribute('aria-label', `${column.name} type`);
@@ -197,9 +189,8 @@ async function refreshDatasets(preferred) {
 async function datasetChanged() {
   ++pollToken;
   const dataset = currentDataset();
-  $('cohort').replaceChildren(); $('quality').replaceChildren();
+  $('quality').replaceChildren();
   $('mine').disabled = !dataset;
-  $('addFilter').disabled = !dataset?.schema.length;
   $('bundle').hidden = !dataset;
   if (dataset) {
     const quality = dataset.metadata.quality;
@@ -215,89 +206,12 @@ async function datasetChanged() {
     for (const option of $('level').options) option.disabled = option.value !== 'activity' && !dataset.metadata.category_available;
     if (!dataset.metadata.category_available) $('level').value = 'activity';
   } else {
-    $('datasetExplanation').textContent = 'Prepare an event log to enable complete-case population filtering and mining.';
+    $('datasetExplanation').textContent = 'Prepare an event log to enable mining.';
   }
   selectedJob = null;
   await refreshModels();
   updateStale();
   saveWorkspaceSafely();
-}
-
-function addFilter(draft = null) {
-  const dataset = currentDataset();
-  if (!dataset?.schema.length) return;
-  const row = document.createElement('div'); row.className = 'filter-row';
-  const column = document.createElement('select'); column.className = 'column'; column.setAttribute('aria-label', 'Population attribute');
-  options(column, dataset.schema.map((a) => [a.column, `${a.column} (${a.scope})`]));
-  const op = document.createElement('select'); op.className = 'operator'; op.setAttribute('aria-label', 'Population match');
-  const value = document.createElement('div'); value.className = 'value';
-  const quantifier = document.createElement('select'); quantifier.className = 'quantifier';
-  quantifier.setAttribute('aria-label', 'Event-scope matching');
-  options(quantifier, [['any', 'Any event in case'], ['all', 'All events in case']]);
-  const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = 'Remove';
-  remove.addEventListener('click', () => { row.remove(); updateStale(); });
-  function renderValue() {
-    const attr = dataset.schema.find((a) => a.column === column.value);
-    value.replaceChildren();
-    if (op.value === 'range') {
-      for (const name of ['Lower bound', 'Upper bound']) {
-        const label = document.createElement('label'); label.textContent = name;
-        const input = document.createElement('input'); input.type = 'number'; input.step = 'any';
-        label.append(input); value.append(label);
-      }
-    } else if (op.value === 'eq') {
-      const select = document.createElement('select'); select.setAttribute('aria-label', 'Attribute value');
-      options(select, attr.values.filter((v) => v !== null).map((v) => [JSON.stringify(v), String(v)]), 'Choose value');
-      value.append(select);
-      if (attr.values_truncated) {
-        const text = document.createElement('p'); text.className = 'help';
-        text.textContent = 'First 500 values shown. Use a numeric range or a smaller prepared vocabulary for larger schemas.';
-        value.append(text);
-      }
-    }
-    updateStale();
-  }
-  function renderOperators() {
-    const attr = dataset.schema.find((a) => a.column === column.value);
-    options(op, [['eq', 'Equals'], ...(attr.type === 'number' ? [['range', 'Inclusive range']] : []), ['missing', 'Is missing']]);
-    quantifier.hidden = attr.scope !== 'event';
-    renderValue();
-  }
-  column.addEventListener('change', renderOperators);
-  op.addEventListener('change', renderValue);
-  row.append(column, op, value, quantifier, remove);
-  row.addEventListener('change', updateStale); row.addEventListener('input', updateStale);
-  $('cohort').append(row); renderOperators();
-  if (draft) {
-    column.value = draft.column; renderOperators();
-    op.value = draft.op; renderValue();
-    for (const [index, input] of [...value.querySelectorAll('input, select')].entries()) {
-      input.value = draft.raw_values?.[index] ?? '';
-    }
-    quantifier.value = draft.quantifier || 'any';
-    updateStale();
-  }
-}
-
-function cohort() {
-  return [...$('cohort').children].map((row) => {
-    const column = row.querySelector('.column').value;
-    const attr = currentDataset().schema.find((a) => a.column === column);
-    const op = row.querySelector('.operator').value;
-    let value;
-    if (op === 'eq') {
-      const raw = row.querySelector('.value select').value;
-      if (!raw) throw new Error(`Choose a value for ${column}.`);
-      value = JSON.parse(raw);
-    } else if (op === 'range') {
-      value = [...row.querySelectorAll('.value input')].map((i) => {
-        if (i.value === '') throw new Error(`Enter both range bounds for ${column}.`);
-        return Number(i.value);
-      });
-    }
-    return { column, op, ...(value !== undefined ? { value } : {}),
-      ...(attr.scope === 'event' ? { quantifier: row.querySelector('.quantifier').value } : {}) };
-  });
 }
 
 function configuration() {
@@ -308,17 +222,16 @@ function configuration() {
 
 function signature(datasetId, config, filters) { return JSON.stringify([datasetId, config, filters]); }
 function updateStale() {
-  if (!selectedJob) { $('resultState').textContent = 'Apply a population and mine to create a model, or choose a saved run.'; return; }
-  let matches = false;
-  try {
-    matches = signature(currentDataset()?.id, configuration(), cohort()) === signature(selectedJob.dataset_id, selectedJob.configuration, selectedJob.cohort);
-  } catch { /* An incomplete filter cannot match a saved run. */ }
+  if (!selectedJob) { $('resultState').textContent = 'Mine the dataset to create a model, or choose a saved run.'; return; }
+  const matches = signature(currentDataset()?.id, configuration(), []) === signature(selectedJob.dataset_id, selectedJob.configuration, selectedJob.cohort || []);
   const stale = !matches || preparationDirty || (selectedJob.output_name &&
     $('outputName').value.trim().replace(/\.csv$/i, '') !== selectedJob.output_name);
   $('resultState').classList.toggle('stale', stale);
-  $('resultState').textContent = stale
-    ? 'Saved result - not current for the edited mapping, population, engine settings or file name. Prepare changed mappings, then Apply cohort and mine. Downloads and Visualize still use the selected saved run.'
-    : 'Current result - matches the selected prepared dataset, population and mining settings.';
+  $('resultState').textContent = selectedJob.cohort?.length
+    ? 'Saved result from a population-restricted run. New runs here use all prepared cases. Downloads and Visualize retain this saved run and its original population.'
+    : stale
+      ? 'Saved result - not current for the edited mapping, engine settings or file name. Prepare changed mappings, then Mine dataset. Downloads and Visualize still use the selected saved run.'
+      : 'Current result - matches the selected prepared dataset and mining settings.';
 }
 
 async function refreshModels(preferred) {
@@ -350,7 +263,7 @@ function renderModel() {
   metadata.href = `/api/models/${selectedJob.id}/file/metadata.json`;
   metadata.textContent = 'Model & preparation metadata'; $('downloads').append(metadata);
   const detail = document.createElement('p');
-  detail.textContent = `Complete cases: ${selectedJob.population.cases}; events: ${selectedJob.population.events}; rules: ${artifact.rule_count}. ${selectedJob.metadata.metrics}. Population: ${JSON.stringify(selectedJob.cohort)}.`;
+  detail.textContent = `Complete cases: ${selectedJob.population.cases}; events: ${selectedJob.population.events}; rules: ${artifact.rule_count}. ${selectedJob.metadata.metrics}. ${selectedJob.cohort?.length ? 'Original population definition is included in the model metadata.' : 'Includes all prepared cases.'}`;
   $('modelDetails').append(detail);
   $('exploreTab').href = modelViewerUrl(selectedJob, artifact.level);
   updateStale();
@@ -400,7 +313,7 @@ bind('prepare', 'click', async () => {
     const dataset = await api('/api/prepare', { upload_id: uploaded.upload_id, profile: profile() });
     preparationDirty = false;
     await refreshDatasets(dataset.id);
-    notice('Complete cases prepared. Review the retained/excluded counts, then choose a population and mine.');
+    notice('Complete cases prepared. Review the retained/excluded counts, then mine the dataset.');
   } finally { $('prepare').disabled = false; }
 });
 bind('saveProfile', 'click', async () => {
@@ -418,14 +331,13 @@ bind('importProfile', 'change', async (event) => {
   applyProfile(JSON.parse(await file.text())); notice('Imported mapping applied. Validate by preparing the CSV.');
 });
 bind('dataset', 'change', datasetChanged);
-bind('addFilter', 'click', () => addFilter());
 bind('mine', 'click', async () => {
   if (!currentDataset()) throw new Error('Choose a prepared dataset.');
   if (!$('outputName').reportValidity()) return;
   $('mine').disabled = true; const token = ++pollToken;
-  $('jobStatus').textContent = 'Validating the selected population and engine...';
+  $('jobStatus').textContent = 'Validating the dataset and engine...';
   try {
-    const job = await api('/api/mine', { dataset_id: currentDataset().id, configuration: configuration(), cohort: cohort(), output_name: $('outputName').value });
+    const job = await api('/api/mine', { dataset_id: currentDataset().id, configuration: configuration(), cohort: [], output_name: $('outputName').value });
     activeJobId = job.id; saveWorkspaceSafely();
     notice(`Mining ${job.population.cases} complete cases (${job.population.events} events).`);
     await pollJob(job, token);
@@ -473,10 +385,6 @@ async function initialize() {
   const job = models.find((m) => m.id === modelId);
   if (matchingSaved?.configuration) applyConfiguration(matchingSaved.configuration);
   else if (job) applyConfiguration(job.configuration);
-  const drafts = matchingSaved?.cohort || job?.cohort.map((c) => ({
-    ...c, raw_values: c.op === 'range' ? c.value.map(String) : c.op === 'eq' ? [JSON.stringify(c.value)] : []
-  })) || [];
-  for (const draft of drafts) addFilter(draft);
   $('outputName').value = matchingSaved?.output_name ?? job?.output_name ?? '';
   if (job) {
     $('model').value = job.id; selectModel();
@@ -484,6 +392,9 @@ async function initialize() {
     renderModel();
   }
   restoring = false; updateStale(); saveWorkspaceSafely();
+  if (matchingSaved?.cohort?.length) {
+    notice('Previous population filters are no longer applied here. New mining runs use all cases in the selected prepared dataset; saved runs keep their original results.');
+  }
   if (matchingSaved?.active_job_id) {
     const running = await api(`/api/jobs/${matchingSaved.active_job_id}`);
     if (running.dataset_id === currentDataset()?.id) {

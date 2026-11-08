@@ -48,7 +48,7 @@ class Store:
         for path in self.root.glob("models/*/job.json"):
             job = read_json(path)
             if job["status"] in {"queued", "running"}:
-                write_json(path, {**job, "status": "failed", "error": "Server stopped before this job completed. Apply cohort and mine again."})
+                write_json(path, {**job, "status": "failed", "error": "Server stopped before this job completed. Select the dataset and mine again."})
 
     def path(self, kind, identifier):
         if kind not in {"uploads", "datasets", "models", "profiles"} or not isinstance(identifier, str) or not re.fullmatch(r"[a-f0-9]{64}", identifier):

@@ -34,8 +34,6 @@ th { background: var(--surface-2); }
 #notice:not(:empty) { border: 1px solid var(--border); border-radius: var(--radius-md); padding: .8rem; margin-bottom: 1rem; background: var(--accent-soft); }
 #notice.error { color: var(--danger); background: var(--surface); border-color: var(--danger); }
 #resultState.stale { color: var(--warning); border-left: 3px solid var(--warning); padding: .6rem; }
-.filter-row { border: 1px solid var(--border); padding: .8rem; border-radius: var(--radius-md); margin: .7rem 0; display: flex; gap: .7rem; flex-wrap: wrap; align-items: end; }
-.filter-row select, .filter-row input { max-width: 260px; width: auto; }
 .mining-main details { margin-top: 1rem; background: var(--surface-2); padding: .9rem; border-radius: var(--radius-md); }
 summary { cursor: pointer; font-weight: 600; margin-bottom: .5rem; }
 footer { padding: 1rem; color: var(--text-muted); font-size: .8rem; text-align: center; }
