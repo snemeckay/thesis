@@ -1,9 +1,11 @@
 import { getAllCategoricalValues } from './filters.js';
+import { normalizeRuleTypeKey } from './ruleTypeHierarchy.js';
 
 export function readUrlState() {
   const params = new URLSearchParams(window.location.search);
   const s = params.get("s") || null;
   const q = (params.get("q") || "").trim().toLowerCase();
+  const rt = params.get("rt") === "and" ? "and" : "or";
 
   let c = {};
   const cRaw = params.get("c");
@@ -23,12 +25,13 @@ export function readUrlState() {
     } catch { /* ignore malformed numeric param */ }
   }
 
-  return { s, q, c, n };
+  return { s, q, c, n, rt };
 }
 
 export function applyInitialUrlFilters(state) {
   const snapshot = state.initialUrlState;
   if (!snapshot) return;
+  state.filters.ruleTypeOperator = snapshot.rt === "and" ? "and" : "or";
 
   if (snapshot.q) {
     state.filters.activityQuery = snapshot.q;
@@ -40,9 +43,11 @@ export function applyInitialUrlFilters(state) {
       if (!Array.isArray(rawValues)) continue;
       if (!state.filters.categorical[field]) continue;
 
-      const allowed = new Set(getAllCategoricalValues(state, field));
-      const values = rawValues.filter((v) => typeof v === "string" && allowed.has(v));
-      if (values.length > 0) {
+      const allowed = new Set(state.filters.categoricalAllValues?.[field] ?? getAllCategoricalValues(state, field));
+      const values = rawValues.filter((v) => typeof v === "string")
+        .map(v => field === "rule_type" ? normalizeRuleTypeKey(v) : v)
+        .filter(v => allowed.has(v));
+      if (rawValues.length === 0 || values.length > 0) {
         state.filters.categorical[field] = new Set(values);
       }
     }
@@ -74,6 +79,8 @@ export function persistUrlState(state) {
   params.delete("q");
   params.delete("c");
   params.delete("n");
+  params.delete("rt");
+  if (state.filters.ruleTypeOperator === "and") params.set("rt", "and");
 
   if (state.activeSourceId) {
     params.set("s", state.activeSourceId);
@@ -87,7 +94,7 @@ export function persistUrlState(state) {
   for (const [field, selectedSet] of Object.entries(state.filters.categorical || {})) {
     const allValues = state.filters.categoricalAllValues?.[field] ?? getAllCategoricalValues(state, field);
     const selected = [...(selectedSet || [])];
-    if (selected.length === 0 || selected.length === allValues.length) continue;
+    if (selected.length === allValues.length) continue;
     categorical[field] = selected;
   }
   if (Object.keys(categorical).length > 0) {

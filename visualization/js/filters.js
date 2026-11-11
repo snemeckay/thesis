@@ -11,8 +11,18 @@ import { RULE_TYPE_HIERARCHY, getHierarchyForRendering, normalizeRuleTypeKey } f
 import { createTooltipIcon } from './tooltipManager.js';
 
 export function initializeFilterState(records, state) {
+  state.filters.ruleTypeOperator ??= "or";
   state.filters.activityQuery = "";
   state.dom.activitySearch.value = "";
+  state.dom.activitySuggestions.replaceChildren(
+    ...[...new Set(records.flatMap((record) => record.activityList).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b))
+      .map((activity) => {
+        const option = document.createElement("option");
+        option.value = activity;
+        return option;
+      })
+  );
 
   state.filters.categorical = {};
   state.filters.categoricalAllValues = {};
@@ -41,11 +51,15 @@ export function initializeFilterState(records, state) {
 export function resetFiltersState(state) {
   state.filters = {
     activityQuery: "",
+    ruleTypeOperator: "or",
     categorical: {},
     categoricalAllValues: {},
     numeric: {}
   };
   state.selectedElement = null;
+  state.selectedRecords = null;
+  state.selectedContext = "";
+  clearTimeout(state.searchDebounce);
   state.dom.activitySearch.value = "";
 }
 
@@ -211,7 +225,7 @@ function renderRuleTypeTree(state, field) {
 
   const titleInfo = createTooltipIcon(
     "info",
-    "Grouped by meaning so you can browse constraint families more easily."
+    "OR shows any selected rule type. AND keeps activities participating in every selected type within the same source file, across different constraint rows."
   );
 
   header.append(title, titleInfo);
@@ -314,7 +328,29 @@ function renderRuleTypeTree(state, field) {
     tree.append(categoryWrap);
   });
 
-  section.append(header, tree);
+  const hint = document.createElement("div");
+  hint.className = "helper";
+  const updateHint = () => {
+    hint.textContent = state.filters.ruleTypeOperator === "and"
+      ? "AND keeps activities with every selected rule type somewhere in the same source file. Other filters still apply. Edges to non-matching activities are hidden; matching activities can remain isolated."
+      : "OR shows constraints of any selected type. Existence and End shows Existence rules or End rules.";
+  };
+  updateHint();
+
+  const operatorLabel = document.createElement("label");
+  operatorLabel.htmlFor = "ruleTypeOperator";
+  operatorLabel.textContent = "Match activities by rule type";
+  const operator = document.createElement("select");
+  operator.id = "ruleTypeOperator";
+  operator.innerHTML = '<option value="or">Any selected type (OR)</option><option value="and">Every selected type (AND)</option>';
+  operator.value = state.filters.ruleTypeOperator || "or";
+  operator.addEventListener("change", () => {
+    state.filters.ruleTypeOperator = operator.value;
+    updateHint();
+    if (state._onFilterChange) state._onFilterChange();
+  });
+
+  section.append(header, operatorLabel, operator, hint, tree);
   state.dom.categoricalFilters.appendChild(section);
 }
 
@@ -461,10 +497,23 @@ export function getAllCategoricalValues(state, field) {
   return [...new Set(state.records.map((r) => r[field] || "unknown"))].sort((a, b) => a.localeCompare(b));
 }
 
-export function applyFilters(records, filters) {
-  return records.filter((r) => {
+export function applyFilters(records, filters, activityRecords = records) {
+  return filterGraphRecords(records, filters, activityRecords).records;
+}
+
+export function filterGraphRecords(records, filters, activityRecords = records) {
+  const exactActivityMatch = filters.activityQuery && activityRecords.some((record) =>
+    record.activityList.some((name) => name.toLowerCase() === filters.activityQuery)
+  );
+
+  const matchingRecords = records.filter((r) => {
     if (filters.activityQuery) {
-      const any = r.activityList.some((name) => name.toLowerCase().includes(filters.activityQuery));
+      const any = r.activityList.some((name) => {
+        const normalizedName = name.toLowerCase();
+        return exactActivityMatch
+          ? normalizedName === filters.activityQuery
+          : normalizedName.includes(filters.activityQuery);
+      });
       if (!any) return false;
     }
 
@@ -491,6 +540,33 @@ export function applyFilters(records, filters) {
 
     return true;
   });
+
+  if (filters.ruleTypeOperator !== "and") {
+    return { records: matchingRecords, activities: [] };
+  }
+
+  const selectedTypes = filters.categorical.rule_type;
+  if (!selectedTypes?.size) return { records: [], activities: [] };
+  const activityTypes = new Map();
+  for (const record of records) {
+    const ruleType = normalizeRuleTypeKey(record.rule_type);
+    if (!selectedTypes.has(ruleType)) continue;
+    for (const activity of record.activityList) {
+      if (!activityTypes.has(activity)) activityTypes.set(activity, new Set());
+      activityTypes.get(activity).add(ruleType);
+    }
+  }
+  const qualified = new Set(
+    [...activityTypes].filter(([, types]) => types.size === selectedTypes.size)
+      .map(([activity]) => activity)
+  );
+  const activities = [...new Set(
+    matchingRecords.flatMap(record => record.activityList).filter(activity => qualified.has(activity))
+  )];
+  return {
+    records: matchingRecords.filter(record => record.activityList.every(activity => qualified.has(activity))),
+    activities
+  };
 }
 
 export function renderFilterMetrics(state, matchingConstraints, nodeCount, edgeCount) {
@@ -507,6 +583,9 @@ export function renderActiveChips(state) {
 
   if (state.filters.activityQuery) {
     chips.push({ key: "activity", text: `Activity: ${state.filters.activityQuery}` });
+  }
+  if (state.filters.ruleTypeOperator === "and") {
+    chips.push({ key: "ruleTypeOperator", text: "Rule-type matching: AND" });
   }
 
   for (const field of CATEGORICAL_FIELDS) {
@@ -553,6 +632,9 @@ export function clearChipFilter(state, key) {
   if (key === "activity") {
     state.filters.activityQuery = "";
     state.dom.activitySearch.value = "";
+  } else if (key === "ruleTypeOperator") {
+    state.filters.ruleTypeOperator = "or";
+    renderCategoricalFilters(state);
   } else if (CATEGORICAL_FIELDS.includes(key)) {
     state.filters.categorical[key] = key === "rule_type"
       ? new Set(getAllCategoricalValues(state, key).map((value) => normalizeRuleTypeKey(value)))

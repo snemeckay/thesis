@@ -5,12 +5,13 @@ export function explainConstraintText(record) {
   const rawTemplate = String(record.template || record.rule_type || '').trim();
   const t = normalizeRuleTypeKey(rawTemplate) || rawTemplate.toLowerCase().replace(/[\s-]+/g, '_');
   const compact = t.replace(/_/g, '');
+  const cardinality = record.cardinality ?? 1;
 
   const map = {
-    existence: () => `${a || 'This activity'} is expected to appear in a case.`,
-    absence: () => `${a || 'This activity'} is expected not to appear in a case.`,
-    init: () => `${a || 'This activity'} is often observed at the start of a case.`,
-    end: () => `${a || 'This activity'} is often observed at the end of a case.`,
+    existence: () => `${a || 'This activity'} is expected to appear ${cardinality === 1 ? 'at least once' : `at least ${cardinality} times`} in a case. Support shows the share of cases satisfying this occurrence requirement.`,
+    absence: () => `${a || 'This activity'} is expected ${cardinality === 1 ? 'not to appear' : `to occur fewer than ${cardinality} times`} in a case. Support shows the share of cases satisfying this limit; it does not mean the dataset is missing.`,
+    init: () => `${a || 'This activity'} is expected to be the first recorded activity in a case. Support shows how often that start pattern holds.`,
+    end: () => `${a || 'This activity'} is expected to be the last recorded activity in a case. Support shows how often that end pattern holds.`,
     exactly_one: () => `${a || 'This activity'} is expected to occur once in a case.`,
     exactlyone: () => `${a || 'This activity'} is expected to occur once in a case.`,
     responded_existence: () => `When ${a || 'activity A'} happens, ${b || 'activity B'} usually appears somewhere as well.`,

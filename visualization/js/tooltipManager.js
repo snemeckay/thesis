@@ -11,7 +11,7 @@
 export const TOOLTIPS = {
   // Visualization modes
   vizModeSingle: "View constraints from a single source at a time",
-  vizModeCompare: "Compare two models side-by-side (top and bottom)",
+  vizModeCompare: "Compare two models beside each other, stacked on smaller screens",
   vizModeMerged: "See one combined view showing common constraints and differences",
   
   // Data source
@@ -19,7 +19,7 @@ export const TOOLTIPS = {
   uploadCustomCSV: "Load your own constraint data from a CSV file",
   
   // Activity search
-  activitySearch: "Filter constraints by activity name. Shows only constraints involving matching activities.",
+  activitySearch: "Complete activity names match exactly; partial names use substring matching. Both comparison models use the same matching rule.",
   
   // Filters
   filterMetrics: "Shows how many constraints are currently visible based on your filters",
@@ -32,8 +32,8 @@ For example, 0.95 means the constraint is satisfied in 95% of cases.`,
   confidence: `How reliable the constraint pattern is.
 Based on the number of times the constraint was fulfilled versus how many times it could have been tested.`,
   
-  cardinality: `Some rules include a numeric bound or count.
-Most users can ignore it unless they specifically need to inspect exact frequencies.`,
+  cardinality: `Occurrence bound for a unary rule.
+Existence requires at least this many occurrences; Absence requires fewer.`,
   
   category: `Semantic grouping of the constraint.
 Helps understand whether it involves one activity, two activities, or more.`,

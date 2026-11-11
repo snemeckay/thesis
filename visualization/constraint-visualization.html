@@ -73,7 +73,7 @@
               </fieldset>
               <p class="helper">
                 <span><strong>Single:</strong> One source at a time.</span><br>
-                <span><strong>Side-by-side comparison:</strong> Model A (top) and Model B (bottom).</span><br>
+                <span><strong>Side-by-side comparison:</strong> Model A and Model B beside each other, stacked on smaller screens.</span><br>
                 <span><strong>Combined comparison:</strong> One graph showing what's common and what differs.</span>
               </p>
 
@@ -94,7 +94,7 @@
             </div>
           </div>
 
-          <div class="helper">Use filters to narrow visible constraints and inspect model behavior in context.</div>
+          <div class="note filter-logic-note"><strong>How filters combine:</strong> rule types use the chosen OR/AND mode; other categorical groups use OR. Different groups and numeric ranges use AND.</div>
 
           <div id="sourceFilterSection" class="filter-section">
             <h4>Source</h4>
@@ -107,8 +107,9 @@
           <div class="filter-section">
             <h4>Activity search</h4>
             <label for="activitySearch" class="sr-only">Activity name search</label>
-            <input id="activitySearch" type="text" placeholder="Type activity name..." />
-            <div class="helper">Keep only constraints where any activity name matches your text.</div>
+            <input id="activitySearch" type="text" list="activitySuggestions" placeholder="Type or choose an activity..." autocomplete="off" />
+            <datalist id="activitySuggestions"></datalist>
+            <div class="helper">A complete activity name matches exactly; partial text searches all activity names. Both comparison models use the same matching rule. Other filters still apply.</div>
           </div>
 
           <div id="categoricalFilters"></div>
@@ -142,6 +143,7 @@
           <button id="resetSelectionBtn" type="button"><i data-lucide="x-circle"></i>Reset selection</button>
           <button id="exportPngBtn" type="button" aria-label="Export graph as PNG"><i data-lucide="image-down"></i>Export PNG</button>
           <button id="downloadFilteredBtn" type="button" aria-label="Download filtered constraints as CSV"><i data-lucide="download"></i>Download filtered CSV</button>
+          <span id="compareControlsHint" class="helper compare-controls-hint" hidden>In side-by-side mode, layout, fit, zoom and reset selection controls apply to both graphs.</span>
         </div>
 
         <div class="graph-wrap">
