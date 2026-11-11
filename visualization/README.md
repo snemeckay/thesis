@@ -80,6 +80,7 @@ Additional columns (optional but recommended) are parsed when present:
 - Graph layout switching (`cose`, `concentric`, `breadthfirst`, `grid`)
 - Node/edge detail panel
 - Side-by-side comparison with shared layout, fit, zoom and reset-selection controls. Selecting a graph element shows metadata only from its model; filtering clears the selection.
+- Comparison filter ranges include the original values from both models, including shared rules. Superseded source loads and errors cannot replace the current view.
 - Comparison graphs sit beside each other on wide screens and stack in a scrollable graph area on smaller screens.
 - Rule-type matching defaults to OR (any selected type). AND keeps activities participating in every selected type somewhere in the same source file, across different constraint rows. This is evaluated separately per file in single, side-by-side and combined views.
 - AND removes edges to non-qualifying activities but preserves qualifying activities as isolated nodes. Other filters still control visible constraints; the occurrence of rule types is checked against the complete source, not just the narrowed rows.

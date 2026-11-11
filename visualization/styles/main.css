@@ -685,6 +685,18 @@ button:hover {
     overflow: auto;
   }
 
+  .layout.filters-collapsed {
+    grid-template-rows: min-content minmax(620px, auto) minmax(240px, 300px);
+  }
+
+  .layout.details-collapsed {
+    grid-template-rows: minmax(320px, 440px) minmax(620px, auto) min-content;
+  }
+
+  .layout.filters-collapsed.details-collapsed {
+    grid-template-rows: min-content minmax(620px, auto) min-content;
+  }
+
   #cy { min-height: 380px; }
   .graph-wrap { min-height: 320px; }
   .metrics { grid-template-columns: 1fr; }

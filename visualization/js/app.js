@@ -67,6 +67,19 @@ state.clearGraphMessage = () => clearGraphMessage();
 state.renderGraphMessage = (msg, isError = false) => renderGraphMessage(msg, isError);
 state.renderDetails = () => renderDetails(state);
 
+let sourceLoadVersion = 0;
+
+function beginSourceLoad() {
+  const version = ++sourceLoadVersion;
+  const { mode, activeSourceId } = state;
+  const { aSourceId, bSourceId } = state.compareSelection;
+  return () => version === sourceLoadVersion && state.mode === mode &&
+    (mode === 'single'
+      ? state.activeSourceId === activeSourceId
+      : state.compareSelection.aSourceId === aSourceId &&
+        state.compareSelection.bSourceId === bSourceId);
+}
+
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
@@ -111,10 +124,10 @@ function bindStaticEvents() {
   dom.modeRadioSingle.addEventListener("change", async (e) => {
     if (!e.target.checked) return;
     state.mode = 'single';
+    clearComparePreviewGraphs();
     updateModeVisibility();
     resetFiltersState(state);
     await loadSelectedSourcesSingleMode();
-    clearComparePreviewGraphs();
   });
 
   dom.modeRadioCompare.addEventListener("change", async (e) => {
@@ -382,7 +395,9 @@ function updateModeVisibility() {
 }
 
 async function loadSelectedSourcesSingleMode() {
+  if (state.mode !== 'single') return;
   updateWorkspaceSelection(state);
+  const isCurrentLoad = beginSourceLoad();
   const selectedSources = state.activeSourceId
     ? state.allSources.filter((s) => s.id === state.activeSourceId)
     : state.allSources;
@@ -407,9 +422,11 @@ async function loadSelectedSourcesSingleMode() {
       selectedSources.map((s) => loadRecordsForSourceId(s.id))
     );
   } catch (err) {
+    if (!isCurrentLoad()) return;
     renderErrorState(state, err.message);
     return;
   }
+  if (!isCurrentLoad()) return;
   state.records = recordsBySource.flat();
   state.recordGroups = recordsBySource;
 
@@ -490,6 +507,7 @@ async function renderComparePreviewGraphs() {
   if (state.mode !== 'compare') return;
   updateWorkspaceSelection(state);
   ensureCompareSelection();
+  const isCurrentLoad = beginSourceLoad();
   const { aSourceId, bSourceId } = state.compareSelection;
   let recordsA, recordsB;
   try {
@@ -498,13 +516,12 @@ async function renderComparePreviewGraphs() {
       loadRecordsForSourceId(bSourceId)
     ]);
   } catch (err) {
+    if (!isCurrentLoad()) return;
     renderErrorState(state, err.message);
     return;
   }
 
-  if (state.mode !== 'compare' ||
-      state.compareSelection.aSourceId !== aSourceId ||
-      state.compareSelection.bSourceId !== bSourceId) return;
+  if (!isCurrentLoad()) return;
 
   const combinedRecords = [...recordsA, ...recordsB];
   state.records = combinedRecords;
@@ -773,24 +790,30 @@ function mergeAndTagConstraints(recordsA, recordsB) {
 async function renderMergedComparisonGraph() {
   if (state.mode !== 'merged') return;
   ensureCompareSelection();
+  const isCurrentLoad = beginSourceLoad();
+  const { aSourceId, bSourceId } = state.compareSelection;
   let recordsA, recordsB;
   try {
     [recordsA, recordsB] = await Promise.all([
-      loadRecordsForSourceId(state.compareSelection.aSourceId),
-      loadRecordsForSourceId(state.compareSelection.bSourceId)
+      loadRecordsForSourceId(aSourceId),
+      loadRecordsForSourceId(bSourceId)
     ]);
   } catch (err) {
+    if (!isCurrentLoad()) return;
     renderErrorState(state, err.message);
     return;
   }
 
+  if (!isCurrentLoad()) return;
+
+  const combinedRecords = [...recordsA, ...recordsB];
+  state.records = combinedRecords;
   const merged = mergeAndTagConstraints(recordsA, recordsB);
   const filtersUninitialized =
     Object.keys(state.filters.categorical || {}).length === 0 &&
     Object.keys(state.filters.numeric || {}).length === 0;
 
   if (filtersUninitialized) {
-    state.records = merged;
     initializeFilterState(state.records, state);
     renderFilters(state);
   }
@@ -802,7 +825,6 @@ async function renderMergedComparisonGraph() {
   let activities = [];
   const activityStatuses = new Map();
   if (state.filters.ruleTypeOperator === 'and') {
-    const combinedRecords = [...recordsA, ...recordsB];
     const resultA = filterGraphRecords(recordsA, state.filters, combinedRecords);
     const resultB = filterGraphRecords(recordsB, state.filters, combinedRecords);
     filtered = mergeAndTagConstraints(resultA.records, resultB.records);
