@@ -158,12 +158,12 @@ Additional columns (optional but recommended) are parsed when present:
 - `EXISTENCE` with cardinality `n` requires at least `n` occurrences; `ABSENCE` with cardinality `n` requires fewer than `n`. A missing cardinality defaults to `1`.
 - The bundled DisCoveR CSV is normalized to the current `discover_pipeline.py` mapping: violations = activated cases minus fulfilled cases; support count = total cases minus violations. The activity lists, mined rules, activation counts, fulfillment counts and confidence values are unchanged. Older uploaded exports may still use activation share as support and should be regenerated or normalized before comparison.
 
-### Regression checks
+### Local workspace checks
 
-Run the dependency-free tests from the project root:
+Run the dependency-free mining-workspace integration tests from the project root:
 
 ```powershell
-node --test .\visualization\tests\regression.test.mjs
+node --test .\visualization\tests\workspace.test.mjs
 ```
 
 ### Blank or no data loaded

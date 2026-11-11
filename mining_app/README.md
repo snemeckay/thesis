@@ -265,7 +265,7 @@ re-import.
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m unittest discover -s mining_app\tests -v
-node --test .\visualization\tests\regression.test.mjs
+node --test .\visualization\tests\workspace.test.mjs
 ```
 
 Tests use synthetic temporary data, exercise both real engines, complete-case
