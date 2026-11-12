@@ -195,3 +195,10 @@ MIN_INACTIVITY_GAP_HOURS = 4
 ```
 
 Adjust these values to match your dataset's characteristics and behavioral patterns.
+# Guided preparation alternative
+
+For CSVs with different column names or activity categories, use
+the [local research mining application](../mining_app/README.md). Its explicit
+column mapping and case/day/gap presets preserve mapped activity/category
+labels. Its behavioural-day option reuses the original boundary algorithm;
+it does not silently apply this pipeline's app/URL labels or merging.

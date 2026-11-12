@@ -26,6 +26,7 @@ import {
   renderErrorState 
 } from './graph.js';
 import { initializeTooltips } from './tooltipManager.js';
+import { initializeWorkspaceNavigation, updateWorkspaceSelection } from './workspace.js';
 
 // Global state object
 export const state = {
@@ -108,6 +109,9 @@ async function init() {
   try {
     const hasSources = await refreshBuiltInSources("Discovering available CSV sources...");
     if (!hasSources) return;
+    if (new URLSearchParams(location.search).get('workspace') === '1') {
+      initializeWorkspaceNavigation(state);
+    }
     await loadSelectedSourcesSingleMode();
   } catch (err) {
     console.error("[init] Data load error:", err);
@@ -128,9 +132,10 @@ function bindStaticEvents() {
 
   dom.modeRadioCompare.addEventListener("change", async (e) => {
     if (!e.target.checked) return;
+    const keepSingleSelection = state.mode === 'single';
     state.mode = 'compare';
     updateModeVisibility();
-    ensureCompareSelection();
+    ensureCompareSelection(keepSingleSelection);
     refreshCompareLabels();
     resetFiltersState(state);
     await renderComparePreviewGraphs();
@@ -138,10 +143,11 @@ function bindStaticEvents() {
 
   dom.modeRadioMerged.addEventListener("change", async (e) => {
     if (!e.target.checked) return;
+    const keepSingleSelection = state.mode === 'single';
     state.mode = 'merged';
     clearComparePreviewGraphs();
     updateModeVisibility();
-    ensureCompareSelection();
+    ensureCompareSelection(keepSingleSelection);
     resetFiltersState(state);
     await renderMergedComparisonGraph();
   });
@@ -274,10 +280,13 @@ async function refreshBuiltInSources(statusMessage = "Refreshing built-in source
   return true;
 }
 
-function ensureCompareSelection() {
+function ensureCompareSelection(preferActive = false) {
   const ids = state.allSources.map((s) => s.id);
   const set = new Set(ids);
   const preferred = pickPreferredComparePair();
+  if (preferActive && set.has(state.activeSourceId)) {
+    state.compareSelection.aSourceId = state.activeSourceId;
+  }
 
   if (!state.compareSelection.aSourceId || !set.has(state.compareSelection.aSourceId)) {
     state.compareSelection.aSourceId = preferred.aSourceId || ids[0] || null;
@@ -375,6 +384,7 @@ function refreshCompareLabels() {
 }
 
 function updateModeVisibility() {
+  updateWorkspaceSelection(state);
   const isCompare = state.mode === 'compare';
   const isMerged = state.mode === 'merged';
   dom.compareGraphShell.hidden = !isCompare;
@@ -386,6 +396,7 @@ function updateModeVisibility() {
 
 async function loadSelectedSourcesSingleMode() {
   if (state.mode !== 'single') return;
+  updateWorkspaceSelection(state);
   const isCurrentLoad = beginSourceLoad();
   const selectedSources = state.activeSourceId
     ? state.allSources.filter((s) => s.id === state.activeSourceId)
@@ -457,16 +468,14 @@ async function handleUploadedCsv(file) {
     descriptor.uploadText = text;
     descriptor.filename = file.name;
 
-    state.uploadedSources = dedupeSources([...state.uploadedSources, descriptor]);
+    state.uploadedSources = dedupeSources([...state.uploadedSources.filter((s) => s.id !== descriptor.id), descriptor]);
     state.allSources = [...state.builtInSources, ...state.uploadedSources];
-    ensureCompareSelection();
-
-    if (!state.compareSelection.aSourceId) {
-      state.compareSelection.aSourceId = descriptor.id;
-    }
-    if (!state.compareSelection.bSourceId) {
+    if (state.mode === 'single') {
+      state.activeSourceId = descriptor.id;
+    } else {
       state.compareSelection.bSourceId = descriptor.id;
     }
+    ensureCompareSelection();
     refreshCompareLabels();
 
     resetFiltersState(state);
@@ -478,9 +487,9 @@ async function handleUploadedCsv(file) {
       await loadSelectedSourcesSingleMode();
     }
 
-    showStatus(`Uploaded source active: ${file.name}.`);
-  } catch {
-    renderErrorState(state, "Upload failed. Please provide a UTF-8 CSV file with the expected schema.");
+    showStatus(`Uploaded source selected: ${file.name}.`);
+  } catch (error) {
+    renderErrorState(state, `Upload failed: ${error.message || String(error)}. Please provide a UTF-8 CSV file with the expected schema.`);
   }
 }
 
@@ -496,6 +505,7 @@ async function loadRecordsForSourceId(sourceId) {
 
 async function renderComparePreviewGraphs() {
   if (state.mode !== 'compare') return;
+  updateWorkspaceSelection(state);
   ensureCompareSelection();
   const isCurrentLoad = beginSourceLoad();
   const { aSourceId, bSourceId } = state.compareSelection;
@@ -884,6 +894,7 @@ function invokeApplyFiltersAndRender() {
     renderDetails(state);
     showStatus(state.loadedSummaryText || "No source loaded.");
     persistUrlState(state);
+    updateWorkspaceSelection(state);
     return;
   }
 
@@ -904,6 +915,7 @@ function invokeApplyFiltersAndRender() {
   }
 
   persistUrlState(state);
+  updateWorkspaceSelection(state);
 }
 
 function getActiveSourceBaseName() {

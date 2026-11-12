@@ -158,6 +158,14 @@ Additional columns (optional but recommended) are parsed when present:
 - `EXISTENCE` with cardinality `n` requires at least `n` occurrences; `ABSENCE` with cardinality `n` requires fewer than `n`. A missing cardinality defaults to `1`.
 - The bundled DisCoveR CSV is normalized to the current `discover_pipeline.py` mapping: violations = activated cases minus fulfilled cases; support count = total cases minus violations. The activity lists, mined rules, activation counts, fulfillment counts and confidence values are unchanged. Older uploaded exports may still use activation share as support and should be regenerated or normalized before comparison.
 
+### Local workspace checks
+
+Run the dependency-free mining-workspace integration tests from the project root:
+
+```powershell
+node --test .\visualization\tests\workspace.test.mjs
+```
+
 ### Blank or no data loaded
 - Ensure the server is started from project root.
 - Confirm CSV files exist in `output/`.
@@ -175,3 +183,38 @@ Additional columns (optional but recommended) are parsed when present:
   - PapaParse
   - Cytoscape
   - Lucide
+# Connected local research workspace
+
+The [local preparation/mining app](../mining_app/README.md) uses a compact
+**Prepare & mine / Visualize** top switcher. It opens this viewer as a full page,
+not an iframe inside the preparation screen. The selected persisted model CSV
+loads automatically via URL parameters. The app provides dataset selection,
+whole-dataset mining, and switching between separately mined activity/category
+models. Study different populations using separate prepared input CSVs and compare
+their downloaded models. Rule filters in this viewer only narrow displayed
+constraints and do not trigger mining. Standalone aggregate CSVs cannot
+recalculate population-specific metrics from demographic case IDs.
+
+The same Visualize panel always retains CSV upload, the original datasets and
+comparison modes; no separate viewer is needed. Opening a mining result selects
+that CSV initially without mixing other available datasets into its graph.
+Uploads become the selected single model or comparison model B; uploading the
+same filename again replaces its previous uploaded contents.
+
+The full-page view offers an activity/category selector when viewing a local
+run mined at both levels, and **Download CSV** follows the selected original
+file (including uploaded CSVs). Those model-specific controls do not point to
+an unrelated mining artifact after switching sources; the download is hidden
+for combined/all-source views.
+The graph toolbar separately downloads filtered constraints. The preparation
+screen also has original CSV/JSON/metadata downloads; switching back restores
+that tab's preview/mapping/settings context. Both screens share the existing
+visualization theme and avoid large decorative headers.
+
+Additional exported model metadata is retained on upload, including
+`activity_categories` (JSON endpoint category sets), `label_level`, `dataset_id`,
+and `model_id`. Constraint `category` still means unary/binary arity. Graph
+details distinguish the two. The viewer now uses pinned local graph/icon/CSV
+assets with included licenses in `vendor/`, so it does not download third-party
+scripts or fonts at runtime. Legacy upload, comparison, and OR/AND behavior
+remain unchanged.

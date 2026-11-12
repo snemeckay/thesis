@@ -69,7 +69,10 @@ class BasePipeline:
         if self._df is not None:
             return self._df
 
-        df = pd.read_csv(self.csv_path, sep=",")
+        df = pd.read_csv(self.csv_path, sep=",", dtype={
+            CASE_COL: str, ACTIVITY_COL: str,
+            "case:concept:name": str, "concept:name": str,
+        }, keep_default_na=False)
         rename_map = {src: dst for src, dst in _PM4PY_COLUMN_MAP.items() if src in df.columns}
         df = df.rename(columns=rename_map)
         df["time:timestamp"] = pd.to_datetime(df["time:timestamp"])

@@ -429,6 +429,8 @@ export function renderDetails(state) {
     const visibleRelated = related;
     const unary = visibleRelated.filter((r) => r.isUnary);
     const binary = visibleRelated.length - unary.length;
+    const activityCategories = [...new Set(related.flatMap((r) =>
+      r.activityCategoryLists?.[r.activityList.indexOf(name)] || []))].sort();
 
     const unaryRows = unary
       .slice()
@@ -451,6 +453,7 @@ export function renderDetails(state) {
     state.dom.detailsPanel.innerHTML = `
       <h4>${escapeHtml(name)}</h4>
       ${contextHtml}
+      ${activityCategories.length ? `<p class="helper">Activity categories in this model: ${activityCategories.map(escapeHtml).join(', ')}</p>` : ''}
       ${state.filters?.ruleTypeOperator === 'and' ? '<div class="helper">This activity participates in every selected rule type within a selected source file. Relationships to non-matching activities are hidden.</div>' : ''}
       <p>${visibleRelated.length.toLocaleString()} related constraints in current filtered view.</p>
       <p class="helper">Unary: ${unary.length.toLocaleString()} • Binary: ${binary.toLocaleString()}</p>
@@ -500,8 +503,10 @@ export function renderDetails(state) {
       <p><strong>Plain-language explanation:</strong><br>${escapeHtml(explanation)}</p>
       <dl class="kv">
         <dt>Activities</dt><dd>${escapeHtml(involved)}</dd>
+        ${record.label_level ? `<dt>Label level</dt><dd>${escapeHtml(record.label_level)}</dd>` : ''}
+        ${record.activityCategoryLists ? `<dt>Endpoint activity categories</dt><dd>${record.activityList.map((a, i) => `${escapeHtml(a)}: ${record.activityCategoryLists[i].map(escapeHtml).join(', ') || 'not mapped'}`).join('<br>')}</dd>` : ''}
         <dt>Rule type</dt><dd>${escapeHtml(record.rule_type)}</dd>
-        <dt>Category</dt><dd>${escapeHtml(record.category)}</dd>
+        <dt>Constraint category (arity)</dt><dd>${escapeHtml(record.category)}</dd>
         <dt>Cardinality</dt><dd>${fmt(record.cardinality)}</dd>
         <dt>Support</dt><dd>${formatMetric(record.support)} of cases satisfy this rule</dd>
         <dt>Confidence</dt><dd>${formatMetric(record.confidence)} of activations fulfilled</dd>
@@ -513,6 +518,7 @@ export function renderDetails(state) {
         <dt>Activation trace count</dt><dd>${fmt(record.activation_trace_count, true)}</dd>
         <dt>Raw activities</dt><dd>${escapeHtml(record.activities)}</dd>
         <dt>Source file</dt><dd>${escapeHtml(record.source_file)}</dd>
+        ${record.model_id ? `<dt>Local model</dt><dd>${escapeHtml(record.model_id)}</dd>` : ''}
       </dl>
       ${detailsLegendHtml(state)}
     `;

@@ -2,6 +2,21 @@
 
 Activity log analysis and preprocessing pipeline for behavioral process mining.
 
+## Local researcher application
+
+The [local preparation and mining app](mining_app/README.md) adds guided CSV
+mapping, configurable cases, separate activity/category
+mining of separately prepared populations, reusable profiles, and connected graph
+exploration. Launch with `python -m mining_app.server` after installing
+`requirements.txt` in a local Python 3.11 environment; open
+<http://127.0.0.1:8765>. Data and jobs remain in ignored `.mining-local`.
+The legacy tools below remain available.
+
+**Prepare & mine / Visualize** is a compact top switcher between full-page
+screens. Enter a mined CSV filename, mine, and either download the file on the
+mining screen or switch to its automatically loaded graph. The visualization is
+not nested inside the preparation page.
+
 ## Project Structure
 
 This project consists of three sequential components, each with detailed documentation in their respective folders:

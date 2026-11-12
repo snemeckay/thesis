@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,15 +9,13 @@
   <title>Constraint Visualization | Diploma Thesis</title>
   <meta name="description" content="Interactive visualization of declarative process mining constraints exported as CSV files." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/workspace.css" />
 
     <link rel="stylesheet" href="./styles/enhancements.css" />
-  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://unpkg.com/cytoscape@3.29.2/dist/cytoscape.min.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="./vendor/papaparse.min.js"></script>
+  <script src="./vendor/cytoscape.min.js"></script>
+  <script src="./vendor/lucide.min.js"></script>
 
   <script type="module" src="./js/app.js"></script>
 </head>
@@ -25,15 +23,19 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="app">
-    <header>
+    <header class="workspace-header">
       <div class="header-top">
-        <div class="title-wrap">
-          <h1>Declarative Constraint Visualization</h1>
-        </div>
+        <h1 class="sr-only">Constraint visualization</h1>
+        <nav class="workspace-switcher" aria-label="Workspace screens">
+          <a id="prepareTab" class="workspace-tab" href="/">Prepare &amp; mine</a>
+          <a id="exploreTab" class="workspace-tab" href="./constraint-visualization.html" aria-current="page">Visualize</a>
+        </nav>
         <div class="header-controls">
+          <label class="workspace-level" hidden><span class="workspace-label">Labels</span> <select id="workspaceLevel" aria-label="Mined label model"></select></label>
+          <a id="downloadModel" class="workspace-download" hidden>Download mined CSV</a>
           <button id="themeToggle" type="button" aria-label="Toggle light and dark mode">
             <i data-lucide="moon"></i>
-            Theme
+            <span class="theme-label">Theme</span>
           </button>
         </div>
       </div>

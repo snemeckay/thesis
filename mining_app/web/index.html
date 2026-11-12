@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Research process mining</title>
+  <link rel="stylesheet" href="/visualization/styles/main.css">
+  <link rel="stylesheet" href="/visualization/styles/workspace.css">
+  <link rel="stylesheet" href="/app/style.css">
+  <script src="/visualization/vendor/lucide.min.js"></script>
+  <script type="module" src="/app/app.js"></script>
+</head>
+<body>
+  <header class="workspace-header"><div class="header-top">
+    <h1 class="sr-only">Prepare and mine event logs</h1>
+    <nav class="workspace-switcher" aria-label="Workspace screens">
+      <a id="prepareTab" class="workspace-tab" href="/" aria-current="page">Prepare &amp; mine</a>
+      <a id="exploreTab" class="workspace-tab" href="/visualization/constraint-visualization.html?workspace=1">Visualize</a>
+    </nav>
+    <div class="header-controls"><button id="themeToggle" type="button" aria-label="Toggle light and dark mode"><i data-lucide="moon"></i><span class="theme-label">Theme</span></button></div>
+  </div></header>
+  <main class="mining-main">
+    <div id="notice" role="status" aria-live="polite"></div>
+    <section id="prepareScreen">
+      <section id="uploadCard" class="card">
+        <h2>Start with your CSV</h2>
+        <p>Use UTF-8 (up to 20 MiB). Delimiter and attribute types are suggestions only; the application never chooses your case definition.</p>
+        <div class="grid">
+          <label>Event log <input id="csvFile" type="file" accept=".csv,text/csv"></label>
+          <label>Delimiter <select id="delimiter"><option value="">Suggest from file</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="&#9;">Tab</option><option value="|">Pipe</option></select></label>
+          <button id="preview" type="button">Preview CSV</button>
+        </div>
+        <div id="profileLoadActions" class="actions">
+          <label>Saved profile <select id="profiles" disabled><option value="">Choose a mapping profile</option></select></label>
+          <button id="loadProfile" type="button" disabled>Load profile</button>
+          <label>Import profile JSON <input id="importProfile" type="file" accept=".json,application/json" aria-describedby="profileLoadHelp" disabled></label>
+        </div>
+        <p id="profileLoadHelp" class="help">Preview the CSV before applying a profile.</p>
+        <p id="previewSummary"></p><div id="previewTable" class="scroll"></div>
+        <p id="uploadHint" class="help"></p>
+      </section>
+      <section id="mappingCard" class="card" hidden>
+        <h2>Define what the events mean</h2>
+        <p><strong>A case is a sequence of events analysed together.</strong> First choose whose events belong together, then choose whether to split their timeline into days or sessions. Different participants should normally stay separate.</p>
+        <fieldset class="group-selection" aria-describedby="groupHelp">
+          <legend>Participant/group columns (required)</legend>
+          <div id="caseColumns"></div>
+          <p id="groupHelp" class="help">Select the participant ID (for example user_id), then use the splitting option below to create days or sessions. If your data already has numbered sessions, select both the participant ID and session ID, and choose One sequence to keep each existing session as a separate case.</p>
+        </fieldset>
+        <div class="grid">
+          <label>Activity label (required) <select id="activity"></select></label>
+          <label>Activity category (optional) <select id="category"></select></label>
+          <label>Event start time (required) <select id="timestamp"></select></label>
+          <label>Event end time <span id="endTimestampRequirement" class="help">(optional)</span><select id="endTimestamp" title="Needed for original behavioural days. For inactivity sessions, an unmapped end time uses the event start instead."></select></label>
+          <label>Split each participant/group into <select id="caseMode" aria-describedby="caseMethodHelp"><option value="group">One sequence (all events together)</option><option value="calendar_day">Calendar days</option><option value="gap">Inactivity sessions</option><option value="behavioural_day">Behavioural days (estimated sleep)</option></select></label>
+          <label id="gapSettings" hidden>Inactivity gap (minutes) <input id="gapMinutes" type="number" value="60" min="1" disabled title="Start a new session when inactivity exceeds this many minutes, measured from the latest preceding event end."></label>
+          <label id="daySettings" hidden>Calendar day starts at hour <input id="dayHour" type="number" value="0" min="0" max="23" disabled title="0 means midnight. For example, 4 keeps events before 04:00 in the previous calendar day."></label>
+        </div>
+        <p id="caseMethodHelp" class="help" aria-live="polite"></p>
+        <p id="behaviouralHelp" class="help" hidden>For example, no recorded activity between 22:00 and 06:00 could indicate sleep; the morning activity would start a new behavioural day. The algorithm looks for the longest qualifying break of at least 4 hours, favouring breaks that end in the morning. This is an estimate, not measured sleep.</p>
+        <details><summary>Help: participants, days and sessions</summary>
+          <p>With user_id selected, user 101 and user 102 always have separate timelines. Calendar days splits each person's timeline at the chosen hour: user 101 on May 28 is one case, user 102 on May 28 is a different case. Inactivity sessions splits whenever the gap exceeds your threshold. Behavioural days estimates sleep from long inactivity breaks instead of using a fixed daily boundary.</p>
+          <p>Behavioural-day rules: the original algorithm considers gaps of at least 4 hours, prioritising gaps ending between 04:00 and noon; otherwise it uses nighttime (20:00-04:00, including 04:00 within a gap) and late-sleep (03:00-10:00) fallbacks. It selects the longest candidate per date, not simply any gap after 21:00. Without a qualifying boundary, all events remain in one sequence. An event spanning the night (such as Screen off) is not itself an inactivity gap.</p>
+          <p>If sessions are already numbered in your data, select user_id + session_id and choose One sequence. For example, participant 101's sessions 1 and 2 become two separate cases; participant 102's session 1 is another case. No additional splitting is needed. Without existing session numbers, select only user_id and let the day or inactivity method create the cases.</p>
+          <p>To study a population separately, prepare a CSV containing that population and keep participant IDs for its sequences. Using age alone as the grouping column would combine different people's events into one timeline, not create a separate model for that age group.</p>
+          <p>Times must use ISO date/time. Naive times retain the source clock; timezone-aware times are converted to UTC. Mixed conventions are rejected. Both day methods use that clock: standardise timestamps to your study's intended clock before preparation.</p>
+        </details>
+        <p class="help">Unmapped columns are left out of prepared exports.</p>
+        <div class="grid">
+          <label>Missing or invalid event values <select id="missing"><option value="error">Stop and explain (recommended)</option><option value="exclude_case">Exclude the entire group containing an invalid/missing record</option></select></label>
+          <label>Merge identical consecutive events within (seconds; 0 = off) <input id="mergeGap" type="number" value="0" min="0"></label>
+          <label>Exclude exact activity labels (one per line) <textarea id="excluded" rows="3" placeholder="No event exclusions by default"></textarea></label>
+        </div>
+        <p class="help">Merging only combines consecutive non-overlapping events with identical activity and category. Activity exclusions intentionally remove events before constructing cases; review the counts before mining.</p>
+        <div class="actions"><button id="prepare" type="button" class="primary">Prepare complete cases</button></div>
+        <div id="profileSaveActions" class="actions">
+          <label>Profile name <input id="profileName" placeholder="Study mapping"></label>
+          <button id="saveProfile" type="button">Save profile locally</button>
+          <button id="exportProfile" type="button">Download profile JSON</button>
+        </div>
+      </section>
+    </section>
+    <section id="studyCard" class="card">
+      <h2>Mine a prepared dataset</h2>
+      <label>Prepared dataset <select id="dataset"><option value="">Prepare a CSV to begin</option></select></label>
+      <div id="quality" class="counts"></div>
+      <p id="datasetExplanation"></p>
+      <div class="actions"><a id="bundle" hidden>Download events, profiles, metadata &amp; models (ZIP)</a></div>
+      <p class="help">Mining uses all cases in the selected dataset. To study different populations, prepare and mine separate input CSVs; saved models can be compared in Visualize.</p>
+      <div class="grid">
+        <label>Mine relationships between <select id="level"><option value="activity">Activities</option><option value="category">Activity categories</option><option value="both">Both (two separately mined models)</option></select></label>
+        <label>Mined CSV file name (required) <input id="outputName" type="text" required maxlength="84" placeholder="e.g. my-study.csv" aria-describedby="filenameHelp"></label>
+      </div>
+      <p id="filenameHelp" class="help">Choose a file name, not a folder path. When mining both levels, downloads use your name with _activity.csv and _category.csv suffixes.</p>
+      <details><summary>Advanced engine settings</summary><div class="grid">
+        <label>Mining engine <select id="engine"><option value="discover">DisCoveR (pm4py)</option><option value="declare4py">Declare4Py</option></select></label>
+        <label>Engine minimum activation support / discovery support <input id="support" type="number" min="0" max="1" step=".05" value="0"></label>
+        <label>DisCoveR minimum activated-trace confidence <input id="confidence" type="number" min="0" max="1" step=".05" value="0"></label>
+        <label>Declare4Py itemset support (must be above zero) <input id="itemsets" type="number" min=".01" max="1" step=".05" value=".1"></label>
+        <label>Declare4Py maximum cardinality <input id="cardinality" type="number" min="1" max="10" value="2"></label>
+      </div><p class="help">Exported support = cases without a violation / cases. DisCoveR confidence is fulfilled activated traces / activated traces; Declare4Py confidence is fulfilled event activations / event activations. Engine discovery thresholds are not interchangeable with exported support. Zero DisCoveR thresholds discover all rules and may be expensive for large activity vocabularies. Declare4Py requires positive itemset support; its default here is 0.1.</p></details>
+      <div class="actions"><button id="mine" type="button" class="primary" disabled>Mine dataset</button><span id="jobStatus" role="status" aria-live="polite"></span></div>
+    </section>
+    <section id="resultsCard">
+      <section class="card">
+        <h2>Mined files</h2>
+        <p>Download here or use the Visualize switcher above. The selected CSV loads automatically in the full-page graph; no manual re-upload is needed.</p>
+        <p><a href="/visualization/constraint-visualization.html?workspace=1">Compare downloaded models</a> from separately mined datasets.</p>
+        <div class="grid"><label>Saved mining run <select id="model"><option value="">No results yet</option></select></label>
+          <label>Label model <select id="modelLevel"></select></label></div>
+        <p id="resultState" role="status"></p><div id="modelDetails"></div><div id="downloads" class="actions"></div>
+      </section>
+    </section>
+  </main>
+  <footer>Local-only research tool. Results describe the selected cases, not causal effects. Close the terminal to stop the server.</footer>
+</body>
+</html>
